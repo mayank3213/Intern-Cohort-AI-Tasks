@@ -1,0 +1,9 @@
+{
+  "transaction_id": "tx-cli-001",
+  "amount": 7500,
+  "currency": "USD",
+  "merchant_category": "crypto",
+  "country": "US",
+  "device_id": "device-cli",
+  "timestamp": "2025-06-17T03:15:00Z"
+}

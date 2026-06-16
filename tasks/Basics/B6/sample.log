@@ -1,0 +1,5 @@
+2024-06-16 10:00:00 INFO Application started
+2024-06-16 10:00:01 INFO User logged in
+2024-06-16 10:00:02 WARN Disk space below 20%
+2024-06-16 10:00:03 ERROR Database connection failed
+plain status line with no level

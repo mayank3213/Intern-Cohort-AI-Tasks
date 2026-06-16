@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/fraud-score/data-contract.json",
+  "title": "Fraud Score System Data Contract",
+  "description": "Shared payloads between FastAPI ingestion, the Node.js worker, and the Rust scorer.",
+  "definitions": {
+    "TransactionInput": {
+      "type": "object",
+      "required": [
+        "transaction_id",
+        "amount",
+        "currency",
+        "merchant_category",
+        "country",
+        "device_id",
+        "timestamp"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "transaction_id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Unique id assigned at ingestion time."
+        },
+        "amount": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "description": "Transaction amount in the given currency."
+        },
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$",
+          "description": "ISO 4217 currency code."
+        },
+        "merchant_category": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Merchant category slug, e.g. retail, gambling, crypto."
+        },
+        "country": {
+          "type": "string",
+          "pattern": "^[A-Z]{2}$",
+          "description": "ISO 3166-1 alpha-2 country code."
+        },
+        "device_id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Client device identifier."
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Transaction time in ISO-8601 UTC."
+        }
+      }
+    },
+    "RiskScoreResult": {
+      "type": "object",
+      "required": [
+        "transaction_id",
+        "risk_score",
+        "risk_level",
+        "reasons",
+        "computed_at"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "transaction_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "risk_score": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "risk_level": {
+          "type": "string",
+          "enum": ["LOW", "MEDIUM", "HIGH"]
+        },
+        "reasons": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "computed_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "TransactionStatus": {
+      "type": "object",
+      "required": ["transaction_id", "status"],
+      "properties": {
+        "transaction_id": { "type": "string" },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "scored"]
+        },
+        "risk_score": { "$ref": "#/definitions/RiskScoreResult" }
+      }
+    }
+  }
+}

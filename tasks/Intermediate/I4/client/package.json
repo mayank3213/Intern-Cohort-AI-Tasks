@@ -1,0 +1,17 @@
+{
+  "name": "currency-convert-cli",
+  "version": "1.0.0",
+  "description": "CLI client for the currency converter FastAPI service",
+  "type": "module",
+  "bin": {
+    "convert": "./bin/convert.js"
+  },
+  "scripts": {
+    "convert": "node bin/convert.js",
+    "verify": "node scripts/verify.mjs",
+    "test": "node scripts/verify.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

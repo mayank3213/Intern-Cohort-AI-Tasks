@@ -1,0 +1,9 @@
+[tools]
+python = "3.12"
+
+[env]
+_.python.venv = { path = ".venv", create = true }
+
+[tasks.bootstrap]
+description = "Install pinned tools, deps, and run tests (fresh-clone entry point)"
+run = "make bootstrap"

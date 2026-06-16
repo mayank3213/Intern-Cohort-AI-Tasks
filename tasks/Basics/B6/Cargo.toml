@@ -1,0 +1,13 @@
+[package]
+name = "log-counter"
+version = "0.1.0"
+edition = "2021"
+description = "CLI tool to count INFO, WARN, and ERROR lines in a log file"
+
+[[bin]]
+name = "log-counter"
+path = "src/main.rs"
+
+[lib]
+name = "log_counter"
+path = "src/lib.rs"
