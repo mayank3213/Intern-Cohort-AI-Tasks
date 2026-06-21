@@ -69,10 +69,10 @@ tasks/
 
 | Track | Focus | Typical skills tested |
 |-------|--------|------------------------|
-| [**Basics**](Basics/) | Read unfamiliar code fast | Artifact inventory, route mapping, test discovery |
+| [**Basics**](Basics/README.md) | Read unfamiliar code fast | Artifact inventory, route mapping, test discovery |
 | [**Intermediate**](Intermediate/) | Operate and extend repos | ER diagrams, flow traces, surgical patches, Docker, polyglot services |
-| [**Advanced**](Advanced/) | Plan, execute, review at scale | Parallel git worktrees, multi-language pipelines, modernization, PR review, perf |
-| [**Infra and DevOps**](Infra%20and%20DevOps/) | Ship and observe systems | Terraform, Compose, CI, Kubernetes, bootstrap tooling, metrics |
+| [**Advanced**](Advanced/README.md) | Plan, execute, review at scale | Parallel git worktrees, multi-language pipelines, modernization, PR review, perf |
+| [**Infra and DevOps**](Infra%20and%20DevOps/README.md) | Ship and observe systems | Terraform, Compose, CI, Kubernetes, bootstrap tooling, metrics |
 
 Tracks are **independent** — you can start anywhere — but the [recommended path](#recommended-learning-path) below builds skills in a logical order.
 
@@ -315,7 +315,10 @@ For AI eval runs: read the task `README.md` first, then the agent workflow spec,
 
 ### Track overviews
 
+- [Basics track README](Basics/README.md)
 - [Intermediate track README](Intermediate/README.md)
+- [Advanced track README](Advanced/README.md)
+- [Infra and DevOps track README](Infra%20and%20DevOps/README.md)
 
 ### Flagship build tasks (runnable systems)
 
