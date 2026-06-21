@@ -72,3 +72,7 @@ Teardown:
 ```bash
 ./scripts/stack-down.sh
 ```
+
+## Captured run output
+
+See [`stack-run-d2-demo.md`](stack-run-d2-demo.md) for command output and E2E proof notes.

@@ -27,13 +27,13 @@ stack_name: d2-job-stack
 services: [db, api, worker]
 api_port: 8080
 e2e_command: ./scripts/run-e2e.sh
-e2e_result: blocked_local_docker_daemon
+e2e_result: 1  # blocked — Docker Hub TLS in Colima VM (2026-06-21)
 teardown_command: ./scripts/stack-down.sh
-reup_e2e_result: blocked_local_docker_daemon
-result: ready
+reup_e2e_result: not_run
+result: partial  # scripts complete; live E2E blocked by registry TLS
 ```
 
-**Local verification note:** Reference implementation and scripts are complete. Live `docker compose` run in this session was blocked because the Docker daemon was not running (`unix:///var/run/docker.sock` missing; Colima start failed on image checksum). Run the commands in [Quick Reference](#quick-reference) on a machine with Docker to produce live green output and log excerpts.
+**Environment note:** `./scripts/run-e2e.sh` was executed with Colima Docker running, but image pulls from Docker Hub failed with `x509: certificate signed by unknown authority`. Re-run on a host with working registry access for the full green E2E output (3 passed + inter-service logs).
 
 ### Summary
 
@@ -212,9 +212,21 @@ chmod +x scripts/*.sh
 ./scripts/run-e2e.sh
 ```
 
-### Expected output (when Docker daemon is running)
+### Output (actual — 2026-06-21, registry TLS blocked)
 
+```text
+==> ensure stack is up
+==> docker compose up --build -d
+ Image postgres:16-alpine Pulling
+ Image postgres:16-alpine Error failed to resolve reference "docker.io/library/postgres:16-alpine": failed to do request: Head "https://registry-1.docker.io/v2/library/postgres/manifests/16-alpine": tls: failed to verify certificate: x509: certificate signed by unknown authority
+Error response from daemon: failed to resolve reference "docker.io/library/postgres:16-alpine": failed to do request: Head "https://registry-1.docker.io/v2/library/postgres/manifests/16-alpine": tls: failed to verify certificate: x509: certificate signed by unknown authority
 ```
+
+Exit code: **1**
+
+### Output (expected when Docker registry works)
+
+```text
 ==> ensure stack is up
 ==> docker compose up --build -d
 ...
@@ -236,7 +248,7 @@ All E2E checks passed.
 
 ## Inter-Service Log Proof
 
-When the stack runs, expect log lines like these (patterns to grep after `./scripts/run-e2e.sh`):
+**Not captured in this run** — stack did not start (registry TLS). When the stack runs, expect log lines like these (patterns to grep after `./scripts/run-e2e.sh`):
 
 | step | service | log excerpt (expected) |
 |---|---|---|

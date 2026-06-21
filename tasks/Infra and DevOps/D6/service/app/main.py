@@ -1,0 +1,120 @@
+import time
+import uuid
+from contextlib import asynccontextmanager
+
+import structlog
+from fastapi import FastAPI, Request
+from fastapi.responses import PlainTextResponse
+from prometheus_client import CONTENT_TYPE_LATEST, Counter, Histogram, generate_latest
+from starlette.middleware.base import BaseHTTPMiddleware
+
+SERVICE_NAME = "d6-echo-api"
+SERVICE_VERSION = "1.0.0"
+
+REQUEST_COUNT = Counter(
+    "http_requests_total",
+    "Total HTTP requests",
+    ["method", "path", "status"],
+)
+REQUEST_LATENCY = Histogram(
+    "http_request_duration_seconds",
+    "HTTP request duration in seconds",
+    ["method", "path"],
+)
+
+
+def configure_logging() -> None:
+    structlog.configure(
+        processors=[
+            structlog.contextvars.merge_contextvars,
+            structlog.processors.add_log_level,
+            structlog.processors.TimeStamper(fmt="iso", utc=True),
+            structlog.processors.EventRenamer(to="message"),
+            structlog.processors.JSONRenderer(),
+        ],
+        wrapper_class=structlog.make_filtering_bound_logger(20),
+        context_class=dict,
+        logger_factory=structlog.PrintLoggerFactory(),
+        cache_logger_on_first_use=True,
+    )
+
+
+def normalize_path(path: str) -> str:
+    if path in {"/health", "/metrics"}:
+        return path
+    if path.startswith("/echo/"):
+        return "/echo/{message}"
+    return path
+
+
+class ObservabilityMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request: Request, call_next):
+        request_id = str(uuid.uuid4())[:8]
+        structlog.contextvars.clear_contextvars()
+        structlog.contextvars.bind_contextvars(request_id=request_id)
+
+        start = time.perf_counter()
+        status_code = 500
+        response = None
+        try:
+            response = await call_next(request)
+            status_code = response.status_code
+            return response
+        finally:
+            duration_ms = (time.perf_counter() - start) * 1000
+            metric_path = normalize_path(request.url.path)
+            method = request.method
+
+            REQUEST_COUNT.labels(
+                method=method,
+                path=metric_path,
+                status=str(status_code),
+            ).inc()
+            REQUEST_LATENCY.labels(method=method, path=metric_path).observe(
+                duration_ms / 1000
+            )
+
+            log = structlog.get_logger().bind(
+                method=method,
+                path=request.url.path,
+                status_code=status_code,
+                duration_ms=round(duration_ms, 2),
+                request_id=request_id,
+            )
+            if status_code >= 500:
+                log.error("request_completed")
+            elif status_code >= 400:
+                log.warning("request_completed")
+            else:
+                log.info("request_completed")
+
+
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
+    configure_logging()
+    structlog.get_logger().info(
+        "application_started",
+        service=SERVICE_NAME,
+        version=SERVICE_VERSION,
+        port=8080,
+    )
+    yield
+
+
+app = FastAPI(title="D6 Echo API", version=SERVICE_VERSION, lifespan=lifespan)
+app.add_middleware(ObservabilityMiddleware)
+
+
+@app.get("/health")
+def health() -> dict[str, str]:
+    return {"status": "ok"}
+
+
+@app.get("/echo/{message}")
+def echo(message: str) -> dict[str, str]:
+    return {"message": message}
+
+
+@app.get("/metrics")
+def metrics() -> PlainTextResponse:
+    return PlainTextResponse(generate_latest(), media_type=CONTENT_TYPE_LATEST)

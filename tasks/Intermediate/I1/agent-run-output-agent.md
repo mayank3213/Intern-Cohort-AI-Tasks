@@ -91,7 +91,7 @@ All relationships below are **declared** in DDL (`ON DELETE CASCADE ON UPDATE CA
 | model | storage | fields | source |
 |---|---|---|---|
 | `TransactionResponse` | in-memory list (`TransactionStore`) | id, amount, type, description | `tasks/Basics/B4/app/schemas.py:26-31`, `tasks/Basics/B4/app/store.py:6-9` |
-| `Transaction` | in-memory list (`TransactionStore`) | id (UUID), type, amount, description, created_at | `tasks/Basics/B5/app/schemas.py:19-24`, `tasks/Basics/B5/app/store.py:11-14` |
+| `Transaction` (JS object) | in-memory list (`TransactionStore`) | id, amount, type, description | `tasks/Basics/B5/src/store.js:42-47`, `tasks/Basics/B5/src/app.js:14-15` |
 
 No FKs or ER edges apply to these models.
 

@@ -1,6 +1,17 @@
-# Currency Converter — Two-Component System
+# I4 — Polyglot Service Pair (90 min)
 
-A small FastAPI service with a `/convert` endpoint and a Node.js CLI client that calls it. Exchange rates are hardcoded in the service.
+Build a **FastAPI** service with a `/convert` endpoint and a **Node.js CLI** that calls it. Use hardcoded exchange rates. Include tests and two-terminal run instructions.
+
+This folder contains a **reference implementation** you can run and verify against the pass criteria below.
+
+## Pass criteria
+
+- [ ] `POST /convert` converts between USD, EUR, GBP, INR using hardcoded rates
+- [ ] Input validation on service (amount > 0, 3-letter codes, unsupported → 400)
+- [ ] Node CLI validates args before calling the service
+- [ ] Service tests pass: `pytest -q`
+- [ ] Client verification passes with service running: `npm run verify`
+- [ ] README documents two-terminal workflow
 
 ## Layout
 

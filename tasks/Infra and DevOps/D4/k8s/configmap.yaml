@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: d4-echo-config
+  namespace: d4-echo
+  labels:
+    app: d4-echo-api
+data:
+  LOG_LEVEL: "info"
+  APP_NAME: "d4-echo-api"

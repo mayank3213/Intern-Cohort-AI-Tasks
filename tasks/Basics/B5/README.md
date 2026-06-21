@@ -1,79 +1,71 @@
-# Transaction Ledger API
+# Transaction Ledger API (Node.js)
 
-A small **FastAPI** service with in-memory storage for deposits, withdrawals, balance, and transaction history.
-
-> **Note:** FastAPI is a Python framework. This service uses Python 3.10+.
+Small **Express** service that tracks credits and debits in memory — the Node.js counterpart to the B4 FastAPI ledger.
 
 ## Endpoints
 
 | Method | Path | Description |
 |--------|------|-------------|
-| `POST` | `/transactions` | Create a deposit or withdrawal |
+| `POST` | `/transactions` | Create a credit or debit transaction |
 | `GET` | `/transactions` | List all transactions |
-| `GET` | `/balance` | Get current balance |
+| `GET` | `/balance` | Return the current balance |
 
-### POST /transactions body
+### Example request
 
-```json
-{
-  "type": "deposit",
-  "amount": 100.0,
-  "description": "Paycheck"
-}
+```bash
+curl -X POST http://127.0.0.1:8000/transactions \
+  -H "Content-Type: application/json" \
+  -d '{"amount": "100.00", "type": "credit", "description": "Opening deposit"}'
 ```
-
-- `type`: `"deposit"` or `"withdrawal"`
-- `amount`: must be **> 0**
-- `description`: 1–200 characters
-
-Withdrawals return `400` when balance is insufficient. Invalid input returns `422`.
 
 ## Install
 
 From this directory (`tasks/Basics/B5`):
 
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
+npm install
 ```
+
+Requires **Node.js 18+**.
 
 ## Run
 
 ```bash
-uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
+npm start
 ```
 
-Open http://127.0.0.1:8000/docs for interactive Swagger UI.
-
-### Example requests
+Development mode with auto-reload:
 
 ```bash
-curl -X POST http://127.0.0.1:8000/transactions \
-  -H "Content-Type: application/json" \
-  -d '{"type":"deposit","amount":100,"description":"Paycheck"}'
-
-curl http://127.0.0.1:8000/balance
-
-curl http://127.0.0.1:8000/transactions
+npm run dev
 ```
+
+The server listens on [http://127.0.0.1:8000](http://127.0.0.1:8000). Override the port with `PORT=3000 npm start`.
 
 ## Test
 
 ```bash
-pytest -v
+npm test
 ```
+
+## Validation rules
+
+- `amount` must be greater than zero (stored with 2 decimal places)
+- `type` must be `credit` or `debit`
+- `description` is required (1–200 characters)
+- debits that would make the balance negative return `400 Bad Request`
+- invalid input returns `422 Unprocessable Entity`
 
 ## Project layout
 
 ```
 B5/
-├── app/
-│   ├── main.py      # FastAPI app and routes
-│   ├── schemas.py   # Pydantic models + validation
-│   └── store.py     # In-memory transaction store
+├── src/
+│   ├── app.js       # Express app and routes
+│   ├── store.js     # In-memory transaction store
+│   └── server.js    # HTTP server entry point
 ├── tests/
-│   └── test_api.py  # API tests
-├── requirements.txt
+│   └── api.test.js  # API tests (Vitest + Supertest)
+├── package.json
 └── README.md
 ```

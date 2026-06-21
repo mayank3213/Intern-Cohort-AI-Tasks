@@ -1,0 +1,21 @@
+# Optional — requires ingress-nginx on the cluster (see README).
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: d4-echo-api
+  namespace: d4-echo
+  labels:
+    app: d4-echo-api
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: echo.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: d4-echo-api
+                port:
+                  number: 80

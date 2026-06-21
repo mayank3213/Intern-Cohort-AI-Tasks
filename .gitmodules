@@ -1,0 +1,4 @@
+[submodule "reSlim"]
+	path = reSlim
+	url = https://github.com/aalfiann/reSlim.git
+	branch = master

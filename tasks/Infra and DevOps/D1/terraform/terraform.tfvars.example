@@ -1,0 +1,10 @@
+aws_region          = "us-east-1"
+name_prefix         = "d1-small-api"
+environment         = "dev"
+use_localstack      = true
+localstack_endpoint = "http://localhost:4566"
+
+tags = {
+  ManagedBy = "terraform"
+  Project   = "d1-small-api"
+}

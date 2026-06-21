@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: d4-echo-api
+  namespace: d4-echo
+  labels:
+    app: d4-echo-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: d4-echo-api
+  template:
+    metadata:
+      labels:
+        app: d4-echo-api
+    spec:
+      containers:
+        - name: echo-api
+          image: d4-echo-api:1.0.0
+          imagePullPolicy: Never
+          ports:
+            - name: http
+              containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: d4-echo-config
+          env:
+            - name: PORT
+              value: "8080"
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
