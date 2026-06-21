@@ -21,7 +21,7 @@ This pulls [aalfiann/reSlim](https://github.com/aalfiann/reSlim) (PHP Slim 3 RES
 | [I3](I3/README.md) | 60 min | `tasks/Basics/B4` or `B5` | Minimal diff + test + risk report |
 | [I4](I4/README.md) | 90 min | `I4/` | FastAPI `/convert` + Node CLI + tests |
 | [I5](I5/README.md) | 60 min | `I5/` | Dockerfile + running container proof |
-| [I6](I6/README.md) | 60 min | `tasks/Basics/B5` | Reproduce bug, root cause, minimal fix |
+| [I6](I6/README.md) | 60 min | `I6/fixture/sandbox/` (from B5) | Reproduce bug, root cause, minimal fix |
 
 ## Golden samples & answer keys
 

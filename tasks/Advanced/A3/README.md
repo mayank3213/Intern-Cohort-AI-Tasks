@@ -52,6 +52,7 @@ A3/
 |---|---|
 | amount ≥ 5000 | +35 (`high_amount_tier2`) |
 | amount ≥ 1000 | +20 (`high_amount_tier1`) |
+| amount ≥ 10000 | +15 (`high_amount_tier3`, stacks with tier2) |
 | country ≠ US | +15 (`foreign_country`) |
 | category ∈ gambling, crypto, wire_transfer | +30 (`risky_merchant_category`) |
 | hour 00:00–05:59 UTC | +10 (`night_transaction`) |
@@ -179,3 +180,29 @@ npm test
 3. Start Node worker pointing at the same data dir and scorer binary.
 4. `POST /transactions` with a high-risk payload.
 5. `GET /transactions/{id}` until `status` is `scored` and `risk_level` is `HIGH`.
+
+## Output
+
+### Rust scorer (`cargo build --release` + CLI score)
+
+<p align="center">
+  <img src="proof/rust-scorer-cli-output.png" alt="Terminal showing cargo build --release and fraud-scorer score output with risk_score 75 and risk_level HIGH" width="900" />
+</p>
+
+### Python API setup (`python3 -m venv .venv` + `pip install -r requirements.txt`)
+
+<p align="center">
+  <img src="proof/python-api-setup.png" alt="Terminal showing Python virtualenv creation and pip install of FastAPI dependencies" width="900" />
+</p>
+
+### FastAPI server (`uvicorn app.main:app --reload --host 127.0.0.1 --port 8000`)
+
+<p align="center">
+  <img src="proof/python-api-uvicorn-running.png" alt="Terminal showing Uvicorn running on http://127.0.0.1:8000 with application startup complete" width="900" />
+</p>
+
+### Node.js worker (`npm start`)
+
+<p align="center">
+  <img src="proof/node-worker-started.png" alt="Terminal showing Node worker started with data and scorer paths configured" width="900" />
+</p>

@@ -1,0 +1,15 @@
+.vscode/
+
+### Composer / PHP ###
+vendor/
+composer.lock
+
+### Runtime artifacts ###
+logs/
+*.log
+.env
+.env.local
+
+### OS cruft ###
+.DS_Store
+Thumbs.db

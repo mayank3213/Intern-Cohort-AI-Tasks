@@ -6,7 +6,9 @@ Diagnose a **seeded bug** in an unfamiliar repo: reproduce it, find root cause w
 
 ## Target
 
-**Repo:** `tasks/Basics/B5` (Node.js Express transaction ledger)
+**Sandbox:** `tasks/Intermediate/I6/fixture/sandbox/` — disposable copy of the B5 ledger with a **seeded bug** applied.
+
+**Do not modify** canonical `tasks/Basics/B5` (that copy must stay green for B5 eval).
 
 ## Symptom (do not read EVALUATOR.md)
 
@@ -22,8 +24,13 @@ After seeding balance with a credit, a **debit equal to the full balance** shoul
 
 ## Setup
 
+Prepare the sandbox (copies B5 and applies the seeded bug):
+
 ```bash
-cd tasks/Basics/B5
+cd tasks/Intermediate/I6
+chmod +x scripts/prepare-sandbox.sh
+./scripts/prepare-sandbox.sh
+cd fixture/sandbox
 npm install
 npm test
 ```
@@ -35,6 +42,8 @@ npm test -- --run -t "allows debit equal to full balance"
 ```
 
 ## Verification (after fix)
+
+From `fixture/sandbox/`:
 
 ```bash
 npm test
@@ -52,6 +61,20 @@ All tests must pass.
 
 - Agent workflow: [`seeded-bug-diagnoser.md`](seeded-bug-diagnoser.md)
 - Evaluator answer key: [`EVALUATOR.md`](EVALUATOR.md) *(hidden from candidates during eval)*
+
+## Layout
+
+```
+I6/
+├── README.md
+├── EVALUATOR.md
+├── fixture/
+│   ├── seed-bug.patch          # introduces <= bug into B5 copy
+│   └── sandbox/                # created by prepare-sandbox.sh (gitignored)
+├── scripts/
+│   └── prepare-sandbox.sh      # copy B5 + apply patch — does not touch canonical B5
+└── seeded-bug-diagnoser.md
+```
 
 ## Alternate anchor (PHP)
 

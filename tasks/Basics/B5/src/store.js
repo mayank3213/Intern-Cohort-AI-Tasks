@@ -33,7 +33,7 @@ export class TransactionStore {
       throw new ValidationError("description must be 1-200 characters");
     }
 
-    if (payload.type === "debit" && this.balance() <= amount /* SEEDED BUG (I6): should be < */) {
+    if (payload.type === "debit" && this.balance() < amount) {
       throw new InsufficientFundsError(
         `Insufficient funds: balance ${formatAmount(this.balance())}, requested debit ${formatAmount(amount)}`,
       );

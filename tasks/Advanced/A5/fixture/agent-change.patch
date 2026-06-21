@@ -1,0 +1,231 @@
+diff -ruN .github/workflows/php-syntax.yml .github/workflows/php-syntax.yml
+--- .github/workflows/php-syntax.yml	1970-01-01 05:30:00
++++ .github/workflows/php-syntax.yml	2026-06-21 15:56:41
+@@ -0,0 +1,18 @@
++name: PHP Syntax
++
++on:
++  push:
++    branches: ["main", "develop"]
++  pull_request:
++
++jobs:
++  syntax:
++    runs-on: ubuntu-latest
++    steps:
++      - uses: actions/checkout@v4
++      - uses: shivammathur/setup-php@v2
++        with:
++          php-version: "8.2"
++      - name: Lint PHP sources
++        run: |
++          find lib -name '*.php' -print0 | xargs -0 -n1 php -l
+diff -ruN .gitignore .gitignore
+--- .gitignore	2026-06-21 15:26:39
++++ .gitignore	2026-06-21 15:56:40
+@@ -1 +1,4 @@
+ .vscode/
++vendor/
++logs/
++*.log
+diff -ruN composer.json composer.json
+--- composer.json	2026-06-21 15:26:44
++++ composer.json	2026-06-21 15:56:40
+@@ -3,8 +3,10 @@
+   "description": "A4 modernization starter — intentionally legacy baseline",
+   "type": "project",
+   "require": {
++    "php": "^8.1",
+     "monolog/monolog": "^1.25",
+-    "vlucas/phpdotenv": "^2.4"
++    "vlucas/phpdotenv": "^2.4",
++    "ext-pdo": "*"
+   },
+   "autoload": {
+     "psr-4": {
+diff -ruN config/app.php config/app.php
+--- config/app.php	2026-06-21 15:26:47
++++ config/app.php	2026-06-21 15:56:41
+@@ -6,4 +6,6 @@
+     'display_error_details' => true,
+     'log_path' => __DIR__ . '/../logs/app.log',
+     'app_name' => 'legacy-contact-api',
++    'api_secret' => 'sk-live-agent-leaked-key-9f3a2b',
++    'database_path' => __DIR__ . '/../data/contacts.sqlite',
+ ];
+diff -ruN public/index.php public/index.php
+--- public/index.php	2026-06-21 15:26:52
++++ public/index.php	2026-06-21 15:56:48
+@@ -4,9 +4,11 @@
+ 
+ use ContactApi\App;
+ use ContactApi\Config;
++use ContactApi\ContactRepository;
+ use ContactApi\ContactStore;
+ use Monolog\Handler\StreamHandler;
+ use Monolog\Logger;
++use PDO;
+ 
+ require dirname(__DIR__) . '/vendor/autoload.php';
+ 
+@@ -14,9 +16,19 @@
+ $logger = new Logger('contact-api');
+ $logger->pushHandler(new StreamHandler($config->logPath(), Logger::INFO));
+ 
+-$app = new App($config, new ContactStore(), $logger);
++$dbPath = $config->databasePath();
++if (!is_dir(dirname($dbPath))) {
++    mkdir(dirname($dbPath), 0777, true);
++}
++$pdo = new PDO('sqlite:' . $dbPath);
++$pdo->exec(file_get_contents(dirname(__DIR__) . '/schema.sql') ?: '');
+ 
++$app = new App($config, new ContactStore(), new ContactRepository($pdo), $logger);
++
+ $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+ $path = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
++if (!empty($_SERVER['QUERY_STRING'])) {
++    $path .= '?' . $_SERVER['QUERY_STRING'];
++}
+ 
+ $app->handle($method, $path);
+diff -ruN schema.sql schema.sql
+--- schema.sql	1970-01-01 05:30:00
++++ schema.sql	2026-06-21 15:56:41
+@@ -0,0 +1,7 @@
++CREATE TABLE IF NOT EXISTS contacts (
++    id INTEGER PRIMARY KEY AUTOINCREMENT,
++    name TEXT NOT NULL,
++    email TEXT NOT NULL
++);
++
++INSERT INTO contacts (name, email) VALUES ('Ada Lovelace', 'ada@example.com');
+diff -ruN src/App.php src/App.php
+--- src/App.php	2026-06-21 15:26:52
++++ src/App.php	2026-06-21 15:56:46
+@@ -11,12 +11,18 @@
+ {
+     private Config $config;
+     private ContactStore $store;
++    private ContactRepository $repository;
+     private Logger $logger;
+ 
+-    public function __construct(Config $config, ContactStore $store, Logger $logger)
+-    {
++    public function __construct(
++        Config $config,
++        ContactStore $store,
++        ContactRepository $repository,
++        Logger $logger
++    ) {
+         $this->config = $config;
+         $this->store = $store;
++        $this->repository = $repository;
+         $this->logger = $logger;
+     }
+ 
+@@ -33,19 +39,33 @@
+             }
+ 
+             if ($method === 'GET' && $path === '/contacts') {
+-                $this->json(200, ['contacts' => $this->store->all()]);
++                $this->json(200, ['contacts' => $this->repository->all()]);
+                 return;
+             }
+ 
++            if ($method === 'GET' && str_starts_with($path, '/contacts/search')) {
++                parse_str(parse_url($path, PHP_URL_QUERY) ?: '', $query);
++                $term = (string) ($query['q'] ?? $_GET['q'] ?? '');
++                $results = $this->repository->search($term);
++                $this->json(200, ['results' => $results, 'query' => $term]);
++                return;
++            }
++
+             if ($method === 'POST' && $path === '/contacts') {
+                 $body = json_decode(file_get_contents('php://input') ?: '{}', true);
+-                if (!is_array($body) || empty($body['name']) || empty($body['email'])) {
+-                    $this->json(422, ['error' => 'name and email required']);
++                if (!is_array($body) || !isset($body['name'], $body['email'])) {
++                    $this->json(400, ['error' => 'missing fields']);
+                     return;
+                 }
+-                $contact = $this->store->add((string) $body['name'], (string) $body['email']);
+-                $this->logger->info('contact_created', ['id' => $contact['id']]);
+-                $this->json(201, ['contact' => $contact]);
++                $name = (string) $body['name'];
++                $email = (string) $body['email'];
++                $contact = $this->repository->add($name, $email);
++                $this->logger->info('contact_created', [
++                    'id' => $contact['id'],
++                    'email' => $email,
++                    'payload' => $body,
++                ]);
++                $this->json(200, ['contact' => $contact]);
+                 return;
+             }
+ 
+diff -ruN src/Config.php src/Config.php
+--- src/Config.php	2026-06-21 15:28:35
++++ src/Config.php	2026-06-21 15:56:47
+@@ -28,4 +28,9 @@
+     {
+         return (string) ($this->settings['app_name']);
+     }
++
++    public function databasePath(): string
++    {
++        return (string) ($this->settings['database_path']);
++    }
+ }
+diff -ruN src/ContactRepository.php src/ContactRepository.php
+--- src/ContactRepository.php	1970-01-01 05:30:00
++++ src/ContactRepository.php	2026-06-21 15:56:43
+@@ -0,0 +1,48 @@
++<?php
++
++declare(strict_types=1);
++
++namespace ContactApi;
++
++use PDO;
++
++final class ContactRepository
++{
++    private PDO $pdo;
++
++    public function __construct(PDO $pdo)
++    {
++        $this->pdo = $pdo;
++    }
++
++    /** @return list<array{id:int|string,name:string,email:string}> */
++    public function all(): array
++    {
++        $stmt = $this->pdo->query('SELECT id, name, email FROM contacts ORDER BY id');
++        return $stmt ? $stmt->fetchAll(PDO::FETCH_ASSOC) : [];
++    }
++
++    /** @return array{id:int|string,name:string,email:string} */
++    public function add(string $name, string $email): array
++    {
++        $stmt = $this->pdo->prepare('INSERT INTO contacts (name, email) VALUES (?, ?)');
++        $stmt->execute([$name, $email]);
++        return [
++            'id' => (int) $this->pdo->lastInsertId(),
++            'name' => $name,
++            'email' => $email,
++        ];
++    }
++
++    /**
++     * Agent-added search — intentionally vulnerable for A5 review exercise.
++     *
++     * @return list<array{id:int|string,name:string,email:string}>
++     */
++    public function search(string $term): array
++    {
++        $sql = "SELECT id, name, email FROM contacts WHERE name LIKE '%" . $term . "%' OR email = '" . $term . "'";
++        $stmt = $this->pdo->query($sql);
++        return $stmt ? $stmt->fetchAll(PDO::FETCH_ASSOC) : [];
++    }
++}

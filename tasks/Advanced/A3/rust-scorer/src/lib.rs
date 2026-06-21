@@ -74,6 +74,11 @@ pub fn score_transaction(tx: &TransactionInput, now: DateTime<Utc>) -> RiskScore
         reasons.push("high_amount_tier1".to_string());
     }
 
+    if tx.amount >= 10000.0 {
+        score += 15;
+        reasons.push("high_amount_tier3".to_string());
+    }
+
     if tx.country.to_uppercase() != "US" {
         score += 15;
         reasons.push("foreign_country".to_string());
@@ -163,11 +168,31 @@ mod tests {
     }
 
     #[test]
-    fn score_caps_at_one_hundred() {
+    fn high_risk_foreign_gambling_night_combined() {
         let tx = sample_tx(9000.0, "DE", "gambling", 1);
         let result = score_transaction(&tx, Utc.with_ymd_and_hms(2025, 6, 17, 1, 0, 1).unwrap());
 
+        assert_eq!(result.risk_score, 90);
+        assert_eq!(result.risk_level, RiskLevel::High);
+        assert_eq!(
+            result.reasons,
+            vec![
+                "high_amount_tier2".to_string(),
+                "foreign_country".to_string(),
+                "risky_merchant_category".to_string(),
+                "night_transaction".to_string(),
+            ]
+        );
+    }
+
+    #[test]
+    fn score_caps_at_one_hundred() {
+        let tx = sample_tx(12000.0, "DE", "gambling", 1);
+        let result = score_transaction(&tx, Utc.with_ymd_and_hms(2025, 6, 17, 1, 0, 1).unwrap());
+
+        // tier2 (35) + tier3 (15) + foreign (15) + risky category (30) + night (10) = 105 → capped at 100
         assert_eq!(result.risk_score, 100);
         assert_eq!(result.risk_level, RiskLevel::High);
+        assert!(result.reasons.contains(&"high_amount_tier3".to_string()));
     }
 }

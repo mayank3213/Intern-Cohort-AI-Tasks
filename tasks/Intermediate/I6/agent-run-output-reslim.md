@@ -3,11 +3,11 @@
 ```yaml
 agent: seeded-bug-diagnoser
 version: 1.0
-repo_root: /Users/mayanksrivastava/Desktop/agent/tasks/Basics/B5
+repo_root: /Users/mayanksrivastava/Desktop/agent/tasks/Intermediate/I6/fixture/sandbox
 bug_summary: "Debit equal to full balance returns 400 instead of 201 due to wrong comparison operator"
 failure_anchor: "npm test -- --run -t \"allows debit equal to full balance\""
-reproduction_command: "cd tasks/Basics/B5 && npm test -- --run -t \"allows debit equal to full balance\""
-verification_command: "cd tasks/Basics/B5 && npm test"
+reproduction_command: "cd tasks/Intermediate/I6 && ./scripts/prepare-sandbox.sh && cd fixture/sandbox && npm install && npm test -- --run -t \"allows debit equal to full balance\""
+verification_command: "cd tasks/Intermediate/I6/fixture/sandbox && npm test"
 diff_stats: "1 file, +0 -0 (analysis only — fix changes <= to <)"
 result: fixed
 ```
@@ -16,7 +16,9 @@ result: fixed
 
 1. Install and run targeted test:
    ```bash
-   cd tasks/Basics/B5
+   cd tasks/Intermediate/I6
+   ./scripts/prepare-sandbox.sh
+   cd fixture/sandbox
    npm install
    npm test -- --run -t "allows debit equal to full balance"
    ```
@@ -26,10 +28,10 @@ result: fixed
 #### 3. Root cause with file paths
 
 - Cause statement: Debit guard uses `<=` so when balance equals debit amount, the condition triggers incorrectly.
-- Impacted path: `tasks/Basics/B5/src/store.js` in `TransactionStore.add`
+- Impacted path: `fixture/sandbox/src/store.js` in `TransactionStore.add`
 - Source citations:
-  - `source: tasks/Basics/B5/src/store.js:36`
-  - `source: tasks/Basics/B5/tests/api.test.js` — `allows debit equal to full balance`
+  - `source: fixture/sandbox/src/store.js:36`
+  - `source: fixture/sandbox/tests/api.test.js` — `allows debit equal to full balance`
 
 #### 4. Minimal fix
 
@@ -42,7 +44,7 @@ Change `this.balance() <= amount` to `this.balance() < amount` in the debit guar
 #### 5. Verification command and result
 
 ```bash
-cd tasks/Basics/B5 && npm test
+cd tasks/Intermediate/I6/fixture/sandbox && npm test
 ```
 
 ```

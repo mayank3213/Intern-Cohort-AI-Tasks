@@ -62,3 +62,11 @@ From this folder (`tasks/Basics/B6`):
 ```bash
 cargo run -- sample.log
 ```
+
+## Output
+
+### CLI (`cargo run -- sample.log`)
+
+<p align="center">
+  <img src="proof/cargo-run-sample-log.png" alt="Terminal showing cargo run -- sample.log with INFO: 2, WARN: 1, ERROR: 1" width="900" />
+</p>

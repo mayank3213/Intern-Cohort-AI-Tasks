@@ -49,3 +49,19 @@ pytest -q
 - `type` must be `credit` or `debit`
 - `description` is required (1–200 characters)
 - debits that would make the balance negative return `400 Bad Request`
+
+## Output
+
+### Tests (`pytest -q` / `pytest -v`)
+
+<p align="center">
+  <img src="proof/pytest-all-tests-passed.png" alt="Terminal showing pytest -q and pytest -v with all 5 API tests passed" width="900" />
+</p>
+
+### Server (`uvicorn app.main:app --reload`)
+
+Interactive API docs at [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs):
+
+<p align="center">
+  <img src="proof/uvicorn-swagger-docs.png" alt="Browser showing Swagger UI for Transaction Ledger API with GET/POST /transactions and GET /balance" width="900" />
+</p>

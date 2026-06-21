@@ -66,6 +66,16 @@ B5/
 │   └── server.js    # HTTP server entry point
 ├── tests/
 │   └── api.test.js  # API tests (Vitest + Supertest)
+├── proof/
+│   └── npm-test-all-tests-passed.png
 ├── package.json
 └── README.md
 ```
+
+## Output
+
+### Tests (`npm test`)
+
+<p align="center">
+  <img src="proof/npm-test-all-tests-passed.png" alt="Terminal showing npm test with Vitest — all 6 API tests passed" width="900" />
+</p>

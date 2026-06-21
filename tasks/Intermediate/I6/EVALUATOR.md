@@ -1,13 +1,15 @@
 # I6 Evaluator Answer Key — DO NOT SHARE WITH CANDIDATES
 
-## Seeded bug (B5)
+## Seeded bug (B5 sandbox)
 
 | Field | Value |
 |-------|-------|
-| Repo | `tasks/Basics/B5` |
+| Base repo | `tasks/Basics/B5` (canonical — **must stay fixed**) |
+| Exercise copy | `tasks/Intermediate/I6/fixture/sandbox/` |
+| Patch | `tasks/Intermediate/I6/fixture/seed-bug.patch` |
 | Symptom | Debit equal to full balance returns 400 instead of 201 |
 | Root cause | Off-by-one comparison in debit guard uses `<=` instead of `<` |
-| Source | `tasks/Basics/B5/src/store.js:36` |
+| Source | `fixture/sandbox/src/store.js:36` (after `prepare-sandbox.sh`) |
 
 ### Faulty line
 
@@ -25,12 +27,14 @@ When balance is exactly equal to debit amount, `<=` treats it as insufficient fu
 
 ### Failing test (seeded)
 
-`tasks/Basics/B5/tests/api.test.js` — `allows debit equal to full balance`
+`fixture/sandbox/tests/api.test.js` — `allows debit equal to full balance`
 
 ### Reproduction
 
 ```bash
-cd tasks/Basics/B5
+cd tasks/Intermediate/I6
+./scripts/prepare-sandbox.sh
+cd fixture/sandbox
 npm install
 npm test -- --run -t "allows debit equal to full balance"
 # Expected: FAIL with status 400
@@ -39,6 +43,7 @@ npm test -- --run -t "allows debit equal to full balance"
 ### Verification after fix
 
 ```bash
+cd fixture/sandbox
 npm test
 # Expected: all tests PASS
 ```

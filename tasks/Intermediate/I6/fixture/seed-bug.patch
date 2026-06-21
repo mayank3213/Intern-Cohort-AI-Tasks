@@ -1,0 +1,12 @@
+diff -ruN src/store.js src/store.js
+--- src/store.js
++++ src/store.js
+@@ -33,7 +33,7 @@
+       throw new ValidationError("description must be 1-200 characters");
+     }
+ 
+-    if (payload.type === "debit" && this.balance() < amount) {
++    if (payload.type === "debit" && this.balance() <= amount) {
+       throw new InsufficientFundsError(
+         `Insufficient funds: balance ${formatAmount(this.balance())}, requested debit ${formatAmount(amount)}`,
+       );

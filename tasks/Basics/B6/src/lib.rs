@@ -9,7 +9,7 @@ pub struct LogCounts {
     pub error: u32,
 }
 
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug)]
 pub enum CountError {
     MissingFile { path: String },
     ReadFailed { path: String, source: io::Error },
