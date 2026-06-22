@@ -10,7 +10,7 @@ Diagnose a **seeded bug** in an unfamiliar repo: reproduce it, find root cause w
 
 **Do not modify** canonical `tasks/Basics/B5` (that copy must stay green for B5 eval).
 
-## Symptom (do not read EVALUATOR.md)
+## Symptom
 
 After seeding balance with a credit, a **debit equal to the full balance** should succeed (balance → 0). The API incorrectly returns **400 Bad Request**.
 
@@ -60,14 +60,12 @@ All tests must pass.
 ## Reference
 
 - Agent workflow: [`seeded-bug-diagnoser.md`](seeded-bug-diagnoser.md)
-- Evaluator answer key: [`EVALUATOR.md`](EVALUATOR.md) *(hidden from candidates during eval)*
 
 ## Layout
 
 ```
 I6/
 ├── README.md
-├── EVALUATOR.md
 ├── fixture/
 │   ├── seed-bug.patch          # introduces <= bug into B5 copy
 │   └── sandbox/                # created by prepare-sandbox.sh (gitignored)

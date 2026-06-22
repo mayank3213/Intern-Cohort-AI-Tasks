@@ -535,7 +535,7 @@ tasks/Advanced/A1/parallel-plan-txn-feature.md
 
 ```
 Task: A1-DEMO — Parallel README + config hardening (disjoint files)
-Repo: /Users/mayanksrivastava/Desktop/agent/reSlim
+Repo: $REPO_ROOT/extras/cloned-repos/reSlim
 Lanes:
   L-readme owns readme.md
   L-config owns src/config.php

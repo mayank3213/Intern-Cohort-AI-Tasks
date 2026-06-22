@@ -31,7 +31,6 @@ HTTP client → API Gateway (HTTP API) → Lambda (Python) → S3 bucket (artifa
 ```
 D1/
 ├── README.md
-├── EVALUATOR.md
 ├── docker-compose.localstack.yml
 ├── terraform/
 │   ├── versions.tf          # terraform + providers + local backend
@@ -165,7 +164,3 @@ Never commit `terraform.tfvars` — it is gitignored.
 For AI-assisted runs, see [`terraform-small-service-agent.md`](terraform-small-service-agent.md).
 
 Captured run output: [`terraform-run-d1-aws-demo.md`](terraform-run-d1-aws-demo.md).
-
-## Evaluator
-
-Graders: see [`EVALUATOR.md`](EVALUATOR.md) *(do not share with candidates during eval)*.

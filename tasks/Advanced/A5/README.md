@@ -14,8 +14,6 @@ Review an **agent-generated pull request** for correctness, security, test quali
 
 The patch simulates an agent follow-up to A4: platform pin + CI + SQLite + search endpoint — with **deliberate flaws**.
 
-Do **not** read [`EVALUATOR.md`](EVALUATOR.md) during the exercise.
-
 ## Deliverables
 
 Submit one markdown review with:
@@ -84,7 +82,6 @@ chmod +x scripts/*.sh
 ```
 A5/
 ├── README.md
-├── EVALUATOR.md
 ├── fixture/
 │   ├── PR_DESCRIPTION.md
 │   ├── agent-change.patch
@@ -102,7 +99,3 @@ A5/
 For AI-assisted runs, see [`agent-pr-reviewer.md`](agent-pr-reviewer.md).
 
 Golden sample (reSlim): [`agent-run-output-reslim.md`](agent-run-output-reslim.md).
-
-## Evaluator
-
-Graders: [`EVALUATOR.md`](EVALUATOR.md).

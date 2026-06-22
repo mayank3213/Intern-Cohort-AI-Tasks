@@ -1,0 +1,90 @@
+# B5 Route Verification — captured 2026-06-22T18:01:33Z
+
+## Server startup
+
+```bash
+cd $REPO_ROOT/tasks/Basics/B5
+PORT=9010 node src/server.js
+```
+
+## GET /transactions
+
+```bash
+curl -s -w '
+HTTP_STATUS: %{http_code}
+' http://127.0.0.1:9010/transactions
+```
+
+```
+[]
+HTTP_STATUS: 200
+```
+
+## GET /balance
+
+```bash
+curl -s -w '
+HTTP_STATUS: %{http_code}
+' http://127.0.0.1:9010/balance
+```
+
+```
+{"balance":"0.00"}
+HTTP_STATUS: 200
+```
+
+## POST /transactions (credit)
+
+```bash
+curl -s -w '
+HTTP_STATUS: %{http_code}
+' -X POST http://127.0.0.1:9010/transactions \
+  -H "Content-Type: application/json" \
+  -d '{"amount": "200.00", "type": "credit", "description": "B2 route verification deposit"}'
+```
+
+```
+{"id":1,"amount":"200.00","type":"credit","description":"B2 route verification deposit"}
+HTTP_STATUS: 201
+```
+
+## POST /transactions (debit)
+
+```bash
+curl -s -w '
+HTTP_STATUS: %{http_code}
+' -X POST http://127.0.0.1:9010/transactions \
+  -H "Content-Type: application/json" \
+  -d '{"amount": "50.00", "type": "debit", "description": "B2 route verification withdrawal"}'
+```
+
+```
+{"id":2,"amount":"50.00","type":"debit","description":"B2 route verification withdrawal"}
+HTTP_STATUS: 201
+```
+
+## GET /balance (after mutations)
+
+```bash
+curl -s -w '
+HTTP_STATUS: %{http_code}
+' http://127.0.0.1:9010/balance
+```
+
+```
+{"balance":"150.00"}
+HTTP_STATUS: 200
+```
+
+## GET /transactions (after mutations)
+
+```bash
+curl -s -w '
+HTTP_STATUS: %{http_code}
+' http://127.0.0.1:9010/transactions
+```
+
+```
+[{"id":1,"amount":"200.00","type":"credit","description":"B2 route verification deposit"},{"id":2,"amount":"50.00","type":"debit","description":"B2 route verification withdrawal"}]
+HTTP_STATUS: 200
+```

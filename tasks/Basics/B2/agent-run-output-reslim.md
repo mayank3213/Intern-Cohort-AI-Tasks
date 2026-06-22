@@ -1,6 +1,6 @@
 # Externally Exposed Route Discovery — reSlim
 
-Repository: `/Users/mayanksrivastava/Desktop/kyc-mini/reSlim`
+Repository: `$REPO_ROOT/extras/cloned-repos/reSlim`
 
 **Framework:** Slim 3 (PHP REST API) — no SPA frontend routes detected
 **Indexed:** 10 router files, Postman collections, nginx/htaccess configs

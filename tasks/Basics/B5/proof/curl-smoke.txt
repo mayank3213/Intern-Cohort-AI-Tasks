@@ -1,0 +1,49 @@
+# B5 API Smoke Tests — captured 2026-06-22T18:21:09Z
+
+## Server startup
+
+```bash
+cd $REPO_ROOT/tasks/Basics/B5
+PORT=9010 node src/server.js
+```
+
+## POST /transactions
+
+```bash
+curl -s -w "
+HTTP_STATUS: %{http_code}
+" -X POST http://127.0.0.1:9010/transactions \
+  -H "Content-Type: application/json" \
+  -d '{"amount": "100.00", "type": "credit", "description": "B5 smoke test deposit"}'
+```
+
+```
+{"id":1,"amount":"100.00","type":"credit","description":"B5 smoke test deposit"}
+HTTP_STATUS: 201
+```
+
+## GET /transactions
+
+```bash
+curl -s -w "
+HTTP_STATUS: %{http_code}
+" http://127.0.0.1:9010/transactions
+```
+
+```
+[{"id":1,"amount":"100.00","type":"credit","description":"B5 smoke test deposit"}]
+HTTP_STATUS: 200
+```
+
+## GET /balance
+
+```bash
+curl -s -w "
+HTTP_STATUS: %{http_code}
+" http://127.0.0.1:9010/balance
+```
+
+```
+{"balance":"100.00"}
+HTTP_STATUS: 200
+```

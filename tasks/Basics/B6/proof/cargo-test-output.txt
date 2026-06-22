@@ -1,0 +1,13 @@
+   Compiling log-counter v0.1.0 (/Users/mayanksrivastava/Desktop/agent/tasks/Basics/B6)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.47s
+     Running unittests src/lib.rs (/var/folders/kl/f9cywzmj4mv6y0xz6szhspph0000gp/T/cursor-sandbox-cache/df94ac9afed59656b1361afaf2cadddc/cargo-target/debug/deps/log_counter-254a8d523b546998)
+
+running 5 tests
+test tests::count_missing_file_returns_error ... ok
+test tests::counts_mixed_levels ... ok
+test tests::format_counts_output ... ok
+test tests::ignores_lines_without_levels ... ok
+test tests::error_takes_precedence_over_info_on_same_line ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

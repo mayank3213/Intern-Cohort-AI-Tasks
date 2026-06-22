@@ -416,7 +416,6 @@ Infra and DevOps/
 │   ├── docker-compose.localstack.yml
 │   ├── terraform-small-service-agent.md   # agent workflow
 │   ├── terraform-run-d1-aws-demo.md       # golden sample
-│   └── EVALUATOR.md                       # graders only
 │
 ├── D2/  Multi-service Compose stack
 │   ├── README.md
@@ -434,7 +433,6 @@ Infra and DevOps/
 │   ├── scripts/                           # run-ci-local, demo-failure
 │   ├── ci-pipeline-writer.md
 │   ├── ci-run-d3-demo.md
-│   └── EVALUATOR.md
 │
 ├── D4/  Kubernetes manifests
 │   ├── README.md
@@ -443,7 +441,6 @@ Infra and DevOps/
 │   ├── scripts/                           # cluster-up, deploy, verify, teardown
 │   ├── k8s-manifests-agent.md
 │   ├── k8s-run-d4-demo.md
-│   └── EVALUATOR.md
 │
 ├── D5/  Repo bootstrap
 │   ├── README.md
@@ -461,7 +458,6 @@ Infra and DevOps/
     ├── scripts/                           # obs-up, load, verify-metrics, obs-down
     ├── observability-stack-agent.md
     ├── obs-run-d6-demo.md
-    └── EVALUATOR.md
 ```
 
 | Artifact | Purpose |
@@ -470,7 +466,6 @@ Infra and DevOps/
 | `*-agent.md` | Step-by-step workflow for AI-assisted runs |
 | `*-run-*-demo.md` | Golden sample — reference quality bar for deliverables |
 | `scripts/` | Repeatable commands (`validate.sh`, `run-e2e.sh`, `obs-up.sh`, etc.) |
-| `EVALUATOR.md` | Hidden answer key for graders — **do not read during exercise** |
 
 ---
 
@@ -490,7 +485,6 @@ Infra and DevOps/
 ## Hygiene & conventions
 
 - **Do not commit** generated artifacts: `.venv/`, `node_modules/`, `.terraform/`, `*.tfstate*`, Docker volume data
-- **EVALUATOR.md** — hidden answer keys; candidates must not read them during the exercise
 - **Image reuse** — D4 builds from `D3/service/`; do not fork the echo API unless the task brief asks for it
 - **LocalStack only for D1 apply** — real AWS is optional and may incur cost; never commit `terraform.tfvars`
 - **Golden samples** — compare your output to `*-run-*-demo.md`; capture your own command output as proof

@@ -1,0 +1,14 @@
+# Validation rejection — invalid POST /transactions
+# Expected: HTTP 422 or HTTP 400
+
+## Request body
+{"amount": -10, "type": "credit", "description": "Invalid amount"}
+
+## Command
+curl -s -w "\nHTTP %{http_code}\n" -X POST http://127.0.0.1:9877/transactions \
+  -H "Content-Type: application/json" \
+  -d '{"amount": -10, "type": "credit", "description": "Invalid amount"}'
+
+## Response
+{"detail":[{"type":"greater_than","loc":["body","amount"],"msg":"Input should be greater than 0","input":-10,"ctx":{"gt":0}}]}
+HTTP 422

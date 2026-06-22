@@ -1,0 +1,10 @@
+$ cd /Users/mayanksrivastava/Desktop/agent/tasks/Advanced/A4
+$ ./scripts/verify-baseline.sh
+==> PHP syntax check (starter baseline)
+No syntax errors detected in src/App.php
+No syntax errors detected in src/Config.php
+No syntax errors detected in src/ContactStore.php
+No syntax errors detected in public/index.php
+
+OK: starter PHP files parse
+exit code: 0

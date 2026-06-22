@@ -1,0 +1,14 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.9.6, pytest-8.3.4, pluggy-1.6.0 -- /Users/mayanksrivastava/Desktop/agent/tasks/Basics/B4/.venv/bin/python3
+cachedir: .pytest_cache
+rootdir: /Users/mayanksrivastava/Desktop/agent/tasks/Basics/B4
+plugins: anyio-4.12.1
+collecting ... collected 5 items
+
+tests/test_api.py::test_create_credit_transaction_returns_201 PASSED     [ 20%]
+tests/test_api.py::test_invalid_amount_is_rejected_with_422 PASSED       [ 40%]
+tests/test_api.py::test_balance_reflects_credits_and_debits PASSED       [ 60%]
+tests/test_api.py::test_debit_rejected_when_insufficient_funds_returns_400 PASSED [ 80%]
+tests/test_api.py::test_list_transactions_returns_created_items PASSED   [100%]
+
+============================== 5 passed in 0.58s ===============================

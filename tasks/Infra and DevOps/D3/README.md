@@ -40,7 +40,6 @@ push / pull_request
 ```
 D3/
 ├── README.md
-├── EVALUATOR.md
 ├── .github/workflows/ci.yml
 ├── service/
 │   ├── Dockerfile
@@ -126,7 +125,3 @@ The D3 service image and Dockerfile are reused by:
 For AI-assisted runs, see [`ci-pipeline-writer.md`](ci-pipeline-writer.md).
 
 Captured run output: [`ci-run-d3-demo.md`](ci-run-d3-demo.md).
-
-## Evaluator
-
-Graders: see [`EVALUATOR.md`](EVALUATOR.md) *(do not share with candidates during eval)*.

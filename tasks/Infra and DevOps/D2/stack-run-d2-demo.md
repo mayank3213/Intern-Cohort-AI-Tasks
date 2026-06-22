@@ -27,13 +27,15 @@ stack_name: d2-job-stack
 services: [db, api, worker]
 api_port: 8080
 e2e_command: ./scripts/run-e2e.sh
-e2e_result: 1  # blocked — Docker Hub TLS in Colima VM (2026-06-21)
+e2e_result: 0  # 3 passed (2026-06-23) — proof: proof/e2e-tests-all-green.txt
 teardown_command: ./scripts/stack-down.sh
-reup_e2e_result: not_run
-result: partial  # scripts complete; live E2E blocked by registry TLS
+reup_e2e_result: 0  # 3 passed after down -v + stack-up — proof: proof/teardown-and-fresh-reup.txt
+result: pass  # E2E green, inter-service logs captured, teardown/re-up verified
 ```
 
-**Environment note:** `./scripts/run-e2e.sh` was executed with Colima Docker running, but image pulls from Docker Hub failed with `x509: certificate signed by unknown authority`. Re-run on a host with working registry access for the full green E2E output (3 passed + inter-service logs).
+**Proof artifacts:** `proof/e2e-tests-all-green.txt`, `proof/service-interaction-logs.txt`, `proof/teardown-and-fresh-reup.txt`
+
+**Environment note:** Colima Docker (2026-06-23). Initial `docker pull postgres:16-alpine` failed with Colima VM TLS (`x509: certificate signed by unknown authority`); image was sideloaded via `crane pull` + `docker load` on the host (macOS trust store). Stack unchanged; all E2E and re-up runs passed with 3/3 pytest green.
 
 ### Summary
 
@@ -212,50 +214,37 @@ chmod +x scripts/*.sh
 ./scripts/run-e2e.sh
 ```
 
-### Output (actual — 2026-06-21, registry TLS blocked)
+### Output (actual — 2026-06-23, all green)
 
-```text
-==> ensure stack is up
-==> docker compose up --build -d
- Image postgres:16-alpine Pulling
- Image postgres:16-alpine Error failed to resolve reference "docker.io/library/postgres:16-alpine": failed to do request: Head "https://registry-1.docker.io/v2/library/postgres/manifests/16-alpine": tls: failed to verify certificate: x509: certificate signed by unknown authority
-Error response from daemon: failed to resolve reference "docker.io/library/postgres:16-alpine": failed to do request: Head "https://registry-1.docker.io/v2/library/postgres/manifests/16-alpine": tls: failed to verify certificate: x509: certificate signed by unknown authority
-```
-
-Exit code: **1**
-
-### Output (expected when Docker registry works)
+See full capture in `proof/e2e-tests-all-green.txt`. Summary:
 
 ```text
 ==> ensure stack is up
 ==> docker compose up --build -d
 ...
 api healthy
-==> install test deps (if needed)
 ==> run e2e tests against http://127.0.0.1:8080
-============================= test session starts ==============================
 tests/test_e2e.py::test_health PASSED
 tests/test_e2e.py::test_seeded_job_readable PASSED
 tests/test_e2e.py::test_api_worker_pipeline PASSED
-============================== 3 passed in X.XXs ===============================
-
-==> inter-service log sample
-...
+============================== 3 passed in 1.46s ===============================
 All E2E checks passed.
 ```
+
+Exit code: **0**
 
 ---
 
 ## Inter-Service Log Proof
 
-**Not captured in this run** — stack did not start (registry TLS). When the stack runs, expect log lines like these (patterns to grep after `./scripts/run-e2e.sh`):
+Captured in `proof/service-interaction-logs.txt` (2026-06-23):
 
-| step | service | log excerpt (expected) |
+| step | service | log excerpt (actual) |
 |---|---|---|
-| ingest | api | `INFO [api] created job job-XXXXXXXXXXXX status=pending payload='docker compose e2e'` |
-| poll | worker | `INFO [worker] processing job job-XXXXXXXXXXXX` |
-| complete | worker | `INFO [worker] completed job job-XXXXXXXXXXXX result='DOCKER COMPOSE E2E'` |
-| read | api | `INFO [api] GET /jobs/job-XXXXXXXXXXXX status=done` |
+| ingest | api | `INFO [api] created job job-c566a81f0f83 status=pending payload='docker compose e2e'` |
+| poll | worker | `INFO [worker] processing job job-c566a81f0f83` |
+| complete | worker | `INFO [worker] completed job job-c566a81f0f83 result='DOCKER COMPOSE E2E'` |
+| read | api | `INFO [api] GET /jobs/job-c566a81f0f83 status=done` |
 | seed proof | api | E2E hits `/jobs/seeded` → `seed-welcome` / `done` |
 
 Collect live excerpts:
@@ -285,6 +274,8 @@ Removes containers **and** the `pgdata` volume (`docker compose down -v`).
 ```
 
 Second E2E run must pass again (fresh DB, seed re-applied, worker processes new job).
+
+**Verified 2026-06-23** — see `proof/teardown-and-fresh-reup.txt`: `stack-down` exit 0, `stack-up` exit 0, second `./scripts/run-e2e.sh` exit 0 (3 passed in 2.51s).
 
 ---
 

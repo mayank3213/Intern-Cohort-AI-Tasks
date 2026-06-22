@@ -1,0 +1,12 @@
+{
+  "transaction_id": "tx-curl-1782153788",
+  "risk_score": 90,
+  "risk_level": "HIGH",
+  "reasons": [
+    "high_amount_tier2",
+    "foreign_country",
+    "risky_merchant_category",
+    "night_transaction"
+  ],
+  "computed_at": "2026-06-22T18:43:11.480794Z"
+}

@@ -1,0 +1,3 @@
+$ docker inspect --format='{{.State.Health.Status}}' i5-echo
+container: i5-echo (0c72bbe7a38f1adffb98667477132ab4b83fc528a2d3268a567d1399d2b906d0)
+healthy

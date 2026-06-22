@@ -1,0 +1,303 @@
+# Commands executed
+cd tasks/Infra and DevOps/D1/terraform
+terraform init
+terraform plan -var-file=terraform.tfvars.example -input=false
+
+# Note: -var-file=terraform.tfvars.example sets use_localstack=true (see README and terraform-run-d1-aws-demo.md)
+
+# terraform init output
+[0m[1mInitializing provider plugins found in the configuration...[0m
+- Reusing previous version of hashicorp/archive from the dependency lock file
+- Reusing previous version of hashicorp/aws from the dependency lock file
+- Using previously-installed hashicorp/archive v2.8.0
+- Using previously-installed hashicorp/aws v5.100.0
+
+[0m[1mInitializing the backend...[0m
+
+
+
+[0m[1m[32mTerraform has been successfully initialized![0m[32m[0m
+[0m[32m
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.[0m
+
+terraform init EXIT_CODE=0
+
+# terraform plan output
+[0m[1mdata.archive_file.lambda_zip: Reading...[0m[0m
+[0m[1mdata.archive_file.lambda_zip: Read complete after 0s [id=97d85a4710625a342ad1944289de82ba811d5f86][0m
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  [32m+[0m create[0m
+
+Terraform will perform the following actions:
+
+[1m  # aws_apigatewayv2_api.http_api[0m will be created
+[0m  [32m+[0m[0m resource "aws_apigatewayv2_api" "http_api" {
+      [32m+[0m[0m api_endpoint                 = (known after apply)
+      [32m+[0m[0m api_key_selection_expression = "$request.header.x-api-key"
+      [32m+[0m[0m arn                          = (known after apply)
+      [32m+[0m[0m execution_arn                = (known after apply)
+      [32m+[0m[0m id                           = (known after apply)
+      [32m+[0m[0m ip_address_type              = (known after apply)
+      [32m+[0m[0m name                         = "d1-small-api-http-api"
+      [32m+[0m[0m protocol_type                = "HTTP"
+      [32m+[0m[0m route_selection_expression   = "$request.method $request.path"
+      [32m+[0m[0m tags                         = {
+          [32m+[0m[0m "Environment" = "dev"
+          [32m+[0m[0m "ManagedBy"   = "terraform"
+          [32m+[0m[0m "Project"     = "d1-small-api"
+        }
+      [32m+[0m[0m tags_all                     = {
+          [32m+[0m[0m "Environment" = "dev"
+          [32m+[0m[0m "ManagedBy"   = "terraform"
+          [32m+[0m[0m "Project"     = "d1-small-api"
+        }
+    }
+
+[1m  # aws_apigatewayv2_integration.lambda_proxy[0m will be created
+[0m  [32m+[0m[0m resource "aws_apigatewayv2_integration" "lambda_proxy" {
+      [32m+[0m[0m api_id                                    = (known after apply)
+      [32m+[0m[0m connection_type                           = "INTERNET"
+      [32m+[0m[0m id                                        = (known after apply)
+      [32m+[0m[0m integration_response_selection_expression = (known after apply)
+      [32m+[0m[0m integration_type                          = "AWS_PROXY"
+      [32m+[0m[0m integration_uri                           = (known after apply)
+      [32m+[0m[0m payload_format_version                    = "2.0"
+      [32m+[0m[0m timeout_milliseconds                      = (known after apply)
+    }
+
+[1m  # aws_apigatewayv2_route.default[0m will be created
+[0m  [32m+[0m[0m resource "aws_apigatewayv2_route" "default" {
+      [32m+[0m[0m api_id             = (known after apply)
+      [32m+[0m[0m api_key_required   = false
+      [32m+[0m[0m authorization_type = "NONE"
+      [32m+[0m[0m id                 = (known after apply)
+      [32m+[0m[0m route_key          = "ANY /{proxy+}"
+      [32m+[0m[0m target             = (known after apply)
+    }
+
+[1m  # aws_apigatewayv2_route.root[0m will be created
+[0m  [32m+[0m[0m resource "aws_apigatewayv2_route" "root" {
+      [32m+[0m[0m api_id             = (known after apply)
+      [32m+[0m[0m api_key_required   = false
+      [32m+[0m[0m authorization_type = "NONE"
+      [32m+[0m[0m id                 = (known after apply)
+      [32m+[0m[0m route_key          = "ANY /"
+      [32m+[0m[0m target             = (known after apply)
+    }
+
+[1m  # aws_apigatewayv2_stage.default[0m will be created
+[0m  [32m+[0m[0m resource "aws_apigatewayv2_stage" "default" {
+      [32m+[0m[0m api_id        = (known after apply)
+      [32m+[0m[0m arn           = (known after apply)
+      [32m+[0m[0m auto_deploy   = true
+      [32m+[0m[0m deployment_id = (known after apply)
+      [32m+[0m[0m execution_arn = (known after apply)
+      [32m+[0m[0m id            = (known after apply)
+      [32m+[0m[0m invoke_url    = (known after apply)
+      [32m+[0m[0m name          = "$default"
+      [32m+[0m[0m tags          = {
+          [32m+[0m[0m "Environment" = "dev"
+          [32m+[0m[0m "ManagedBy"   = "terraform"
+          [32m+[0m[0m "Project"     = "d1-small-api"
+        }
+      [32m+[0m[0m tags_all      = {
+          [32m+[0m[0m "Environment" = "dev"
+          [32m+[0m[0m "ManagedBy"   = "terraform"
+          [32m+[0m[0m "Project"     = "d1-small-api"
+        }
+    }
+
+[1m  # aws_iam_role.lambda_exec[0m will be created
+[0m  [32m+[0m[0m resource "aws_iam_role" "lambda_exec" {
+      [32m+[0m[0m arn                   = (known after apply)
+      [32m+[0m[0m assume_role_policy    = jsonencode(
+            {
+              [32m+[0m[0m Statement = [
+                  [32m+[0m[0m {
+                      [32m+[0m[0m Action    = "sts:AssumeRole"
+                      [32m+[0m[0m Effect    = "Allow"
+                      [32m+[0m[0m Principal = {
+                          [32m+[0m[0m Service = "lambda.amazonaws.com"
+                        }
+                    },
+                ]
+              [32m+[0m[0m Version   = "2012-10-17"
+            }
+        )
+      [32m+[0m[0m create_date           = (known after apply)
+      [32m+[0m[0m force_detach_policies = false
+      [32m+[0m[0m id                    = (known after apply)
+      [32m+[0m[0m managed_policy_arns   = (known after apply)
+      [32m+[0m[0m max_session_duration  = 3600
+      [32m+[0m[0m name                  = "d1-small-api-lambda-role"
+      [32m+[0m[0m name_prefix           = (known after apply)
+      [32m+[0m[0m path                  = "/"
+      [32m+[0m[0m tags                  = {
+          [32m+[0m[0m "Environment" = "dev"
+          [32m+[0m[0m "ManagedBy"   = "terraform"
+          [32m+[0m[0m "Project"     = "d1-small-api"
+        }
+      [32m+[0m[0m tags_all              = {
+          [32m+[0m[0m "Environment" = "dev"
+          [32m+[0m[0m "ManagedBy"   = "terraform"
+          [32m+[0m[0m "Project"     = "d1-small-api"
+        }
+      [32m+[0m[0m unique_id             = (known after apply)
+
+      [32m+[0m[0m inline_policy (known after apply)
+    }
+
+[1m  # aws_iam_role_policy.lambda_s3[0m will be created
+[0m  [32m+[0m[0m resource "aws_iam_role_policy" "lambda_s3" {
+      [32m+[0m[0m id          = (known after apply)
+      [32m+[0m[0m name        = "d1-small-api-lambda-s3"
+      [32m+[0m[0m name_prefix = (known after apply)
+      [32m+[0m[0m policy      = (known after apply)
+      [32m+[0m[0m role        = (known after apply)
+    }
+
+[1m  # aws_lambda_function.api_handler[0m will be created
+[0m  [32m+[0m[0m resource "aws_lambda_function" "api_handler" {
+      [32m+[0m[0m architectures                  = (known after apply)
+      [32m+[0m[0m arn                            = (known after apply)
+      [32m+[0m[0m code_sha256                    = (known after apply)
+      [32m+[0m[0m filename                       = "./lambda.zip"
+      [32m+[0m[0m function_name                  = "d1-small-api-handler"
+      [32m+[0m[0m handler                        = "handler.handler"
+      [32m+[0m[0m id                             = (known after apply)
+      [32m+[0m[0m invoke_arn                     = (known after apply)
+      [32m+[0m[0m last_modified                  = (known after apply)
+      [32m+[0m[0m memory_size                    = 128
+      [32m+[0m[0m package_type                   = "Zip"
+      [32m+[0m[0m publish                        = false
+      [32m+[0m[0m qualified_arn                  = (known after apply)
+      [32m+[0m[0m qualified_invoke_arn           = (known after apply)
+      [32m+[0m[0m reserved_concurrent_executions = -1
+      [32m+[0m[0m role                           = (known after apply)
+      [32m+[0m[0m runtime                        = "python3.12"
+      [32m+[0m[0m signing_job_arn                = (known after apply)
+      [32m+[0m[0m signing_profile_version_arn    = (known after apply)
+      [32m+[0m[0m skip_destroy                   = false
+      [32m+[0m[0m source_code_hash               = "xTVuBFkGhkrg12OTI+bzm9BhTIHdunoa+tY08vsFn6k="
+      [32m+[0m[0m source_code_size               = (known after apply)
+      [32m+[0m[0m tags                           = {
+          [32m+[0m[0m "Environment" = "dev"
+          [32m+[0m[0m "ManagedBy"   = "terraform"
+          [32m+[0m[0m "Project"     = "d1-small-api"
+        }
+      [32m+[0m[0m tags_all                       = {
+          [32m+[0m[0m "Environment" = "dev"
+          [32m+[0m[0m "ManagedBy"   = "terraform"
+          [32m+[0m[0m "Project"     = "d1-small-api"
+        }
+      [32m+[0m[0m timeout                        = 10
+      [32m+[0m[0m version                        = (known after apply)
+
+      [32m+[0m[0m environment {
+          [32m+[0m[0m variables = {
+              [32m+[0m[0m "BUCKET_NAME" = "d1-small-api-artifacts"
+            }
+        }
+
+      [32m+[0m[0m ephemeral_storage (known after apply)
+
+      [32m+[0m[0m logging_config (known after apply)
+
+      [32m+[0m[0m tracing_config (known after apply)
+    }
+
+[1m  # aws_lambda_permission.apigw_invoke[0m will be created
+[0m  [32m+[0m[0m resource "aws_lambda_permission" "apigw_invoke" {
+      [32m+[0m[0m action              = "lambda:InvokeFunction"
+      [32m+[0m[0m function_name       = "d1-small-api-handler"
+      [32m+[0m[0m id                  = (known after apply)
+      [32m+[0m[0m principal           = "apigateway.amazonaws.com"
+      [32m+[0m[0m source_arn          = (known after apply)
+      [32m+[0m[0m statement_id        = "AllowAPIGatewayInvoke"
+      [32m+[0m[0m statement_id_prefix = (known after apply)
+    }
+
+[1m  # aws_s3_bucket.artifacts[0m will be created
+[0m  [32m+[0m[0m resource "aws_s3_bucket" "artifacts" {
+      [32m+[0m[0m acceleration_status         = (known after apply)
+      [32m+[0m[0m acl                         = (known after apply)
+      [32m+[0m[0m arn                         = (known after apply)
+      [32m+[0m[0m bucket                      = "d1-small-api-artifacts"
+      [32m+[0m[0m bucket_domain_name          = (known after apply)
+      [32m+[0m[0m bucket_prefix               = (known after apply)
+      [32m+[0m[0m bucket_regional_domain_name = (known after apply)
+      [32m+[0m[0m force_destroy               = false
+      [32m+[0m[0m hosted_zone_id              = (known after apply)
+      [32m+[0m[0m id                          = (known after apply)
+      [32m+[0m[0m object_lock_enabled         = (known after apply)
+      [32m+[0m[0m policy                      = (known after apply)
+      [32m+[0m[0m region                      = (known after apply)
+      [32m+[0m[0m request_payer               = (known after apply)
+      [32m+[0m[0m tags                        = {
+          [32m+[0m[0m "Environment" = "dev"
+          [32m+[0m[0m "ManagedBy"   = "terraform"
+          [32m+[0m[0m "Project"     = "d1-small-api"
+        }
+      [32m+[0m[0m tags_all                    = {
+          [32m+[0m[0m "Environment" = "dev"
+          [32m+[0m[0m "ManagedBy"   = "terraform"
+          [32m+[0m[0m "Project"     = "d1-small-api"
+        }
+      [32m+[0m[0m website_domain              = (known after apply)
+      [32m+[0m[0m website_endpoint            = (known after apply)
+
+      [32m+[0m[0m cors_rule (known after apply)
+
+      [32m+[0m[0m grant (known after apply)
+
+      [32m+[0m[0m lifecycle_rule (known after apply)
+
+      [32m+[0m[0m logging (known after apply)
+
+      [32m+[0m[0m object_lock_configuration (known after apply)
+
+      [32m+[0m[0m replication_configuration (known after apply)
+
+      [32m+[0m[0m server_side_encryption_configuration (known after apply)
+
+      [32m+[0m[0m versioning (known after apply)
+
+      [32m+[0m[0m website (known after apply)
+    }
+
+[1mPlan:[0m [0m10 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  [32m+[0m[0m api_gateway_id       = (known after apply)
+  [32m+[0m[0m api_invoke_url       = (known after apply)
+  [32m+[0m[0m iam_role_name        = "d1-small-api-lambda-role"
+  [32m+[0m[0m lambda_function_arn  = (known after apply)
+  [32m+[0m[0m lambda_function_name = "d1-small-api-handler"
+  [32m+[0m[0m s3_bucket_name       = "d1-small-api-artifacts"
+[33m╷[0m[0m
+[33m│[0m [0m[1m[33mWarning: [0m[0m[1mInvalid Attribute Combination[0m
+[33m│[0m [0m
+[33m│[0m [0m[0m  with provider["registry.terraform.io/hashicorp/aws"],
+[33m│[0m [0m  on providers.tf line 13, in provider "aws":
+[33m│[0m [0m  13:     content [4m{[0m[0m
+[33m│[0m [0m
+[33m│[0m [0mOnly one of the following attributes should be set: "endpoints[0].logs",
+[33m│[0m [0m"endpoints[0].cloudwatchlog", "endpoints[0].cloudwatchlogs"
+[33m│[0m [0m
+[33m│[0m [0mThis will be an error in a future release.
+[33m╵[0m[0m
+[90m
+─────────────────────────────────────────────────────────────────────────────[0m
+
+Note: You didn't use the -out option to save this plan, so Terraform can't
+guarantee to take exactly these actions if you run "terraform apply" now.
+
+terraform plan EXIT_CODE=0

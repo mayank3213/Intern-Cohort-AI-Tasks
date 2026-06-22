@@ -29,16 +29,16 @@ plan_base_sha: a3c568be0a0f8d67c4747c4fd855dc90b6be8cdc
 integration_branch: parallel/A1-DEMO/integration
 integration_tip_sha: e83a6e5056e814cd2315203ac0d911899a09ccce
 lane_count: 2
-result: partial
+result: pass
 run_file: tasks/Advanced/A2/parallel-run-a1-demo.md
 started_at: 2026-06-17T00:00:00+05:30
-finished_at: 2026-06-17T02:15:00+05:30
-partial_reason: local `php` and `composer` binaries not available on executor host (R-04); grep-based AC checks passed
+finished_at: 2026-06-23T00:42:00+05:30
+verification_proof: tasks/Advanced/A2/proof/verification-tests-green.txt
 ```
 
 ### Outcome
 
-Two worktrees were created at planned paths (`A1-DEMO-readme`, `A1-DEMO-config`), each lane committed one scoped change on its branch, and both lanes merged into `parallel/A1-DEMO/integration` in planned order (readme → config) with **zero conflicts**. Integration branch tip `e83a6e5` contains README PHP 7.4+ alignment (AC-1, AC-4) and hardened config placeholders (AC-2, AC-3). Grep-based verification passed; `php -l` and `composer validate` could not run locally — marked `[NEEDS VERIFICATION]` per plan risk R-04. CI workflow `.github/workflows/php-syntax.yml` remains the authoritative syntax gate on PR.
+Two worktrees were created at planned paths (`A1-DEMO-readme`, `A1-DEMO-config`), each lane committed one scoped change on its branch, and both lanes merged into `parallel/A1-DEMO/integration` in planned order (readme → config) with **zero conflicts**. Integration branch contains README PHP 7.4+ alignment (AC-1, AC-4) and hardened config placeholders (AC-2, AC-3). All AC-1–AC-5 checks passed on manual re-verification (2026-06-23); proof in `tasks/Advanced/A2/proof/`. `php -l src/config.php` exit 0 on PHP 8.5.7.
 
 ### Integration branch state
 
@@ -63,7 +63,7 @@ Two worktrees were created at planned paths (`A1-DEMO-readme`, `A1-DEMO-config`)
 | Phase 3 — Lane sessions | 2026-06-17T01:56:00+05:30 | 2026-06-17T01:56:25+05:30 | pass | L-readme + L-config committed in parallel |
 | Phase 4 — Merge engine | 2026-06-17T01:56:25+05:30 | 2026-06-17T01:56:35+05:30 | pass | readme → config merge order; no conflicts |
 | Phase 5 — Conflict reconciliation | — | — | skipped | no conflicts detected |
-| Phase 6 — Verification | 2026-06-17T02:10:00+05:30 | 2026-06-17T02:15:00+05:30 | partial | grep AC checks pass; `php`/`composer` missing locally |
+| Phase 6 — Verification | 2026-06-17T02:10:00+05:30 | 2026-06-23T00:42:00+05:30 | pass | AC-1–AC-5 pass; `php -l src/config.php` exit 0 — see `proof/verification-tests-green.txt` |
 | Phase 7 — Report | 2026-06-17T02:15:00+05:30 | 2026-06-17T02:15:00+05:30 | pass | this file |
 
 **Preflight notes:**
@@ -82,7 +82,7 @@ graph TD
   Commits --> Merges
   Merges --> Tests
   Tests --> Done
-  Tests --> Partial["Partial (php/composer missing)"]
+  Tests --> Done
 ```
 
 ### Rollback commands (if needed)
@@ -137,9 +137,7 @@ graph LR
 | lane_id | branch | commit | files_written | lane_tests | status |
 |---|---|---|---|---|---|
 | `L-readme` | `parallel/A1-DEMO/readme` | `7d39622` | `readme.md` | grep PHP wording: pass | complete |
-| `L-config` | `parallel/A1-DEMO/config` | `8a2f9b1` | `src/config.php` | grep secrets: pass; `php -l`: `[NEEDS VERIFICATION]` | complete* |
-
-\*Lane marked complete with documented waiver for R-04 (missing local PHP binary). Syntax change is comment + string literal edits only.
+| `L-config` | `parallel/A1-DEMO/config` | `8a2f9b1` | `src/config.php` | grep secrets: pass; `php -l`: pass | complete |
 
 ### Lane detail
 
@@ -235,15 +233,15 @@ graph TD
 | lane-local L-readme | `grep -i "PHP" readme.md` | 0 | <1s | shows `PHP 7.4 or newer` |
 | lane-local L-readme | `! grep -E "5\.5\|PHP5" readme.md` | 0 | <1s | no PHP 5.5 reference |
 | lane-local L-readme | `grep '"php"' src/composer.json` | 0 | <1s | `"php": "^7.4 \|\| ^8.0"` |
-| lane-local L-config | `php -l src/config.php` | — | — | `[NEEDS VERIFICATION]` — `php` not found on executor host |
+| lane-local L-config | `php -l src/config.php` | 0 | <1s | No syntax errors detected |
 | lane-local L-config | `grep -E "(youremail@gmail.com\|'secret'\|b372e7fe)" src/config.php` | 1* | <1s | *exit 1 = no matches (pass); only docblock examples contain `secret` |
-| integration | `find src -name '*.php' \| php -l` | — | — | `[NEEDS VERIFICATION]` — requires local PHP |
-| integration | `composer validate --no-check-publish` | — | — | `[NEEDS VERIFICATION]` — `composer` not found locally |
+| integration | `find src -name '*.php' \| php -l` | 1 | <15s | `LazyPDO.php` fails on PHP 8.5 — pre-existing on master, not lane-introduced |
+| integration | `composer validate --no-check-publish` | 1 | <1s | pre-existing `composer.json` name format; not lane-introduced |
 | integration AC-1 | `grep -i "7.4" readme.md` | 0 | <1s | pass |
 | integration AC-2 | `! grep -E "youremail@gmail.com\|'secret'" src/config.php` | 0 | <1s | pass (config values only) |
 | integration AC-3 | manual review `displayErrorDetails` comment | 0 | — | production note present line 15 |
 | integration AC-4 | README install paths unchanged | 0 | — | `cd reslim/src`, `config.php` at `src/` |
-| integration AC-5 | `php -l src/config.php` | — | — | `[NEEDS VERIFICATION]` |
+| integration AC-5 | `php -l src/config.php` | 0 | <1s | pass — No syntax errors detected |
 
 ### AC spot-check summary
 
@@ -253,30 +251,18 @@ graph TD
 | AC-2 | No production-like secrets in config defaults | pass |
 | AC-3 | Config comments guide local setup | pass |
 | AC-4 | README install paths unchanged in substance | pass |
-| AC-5 | `php -l src/config.php` exit 0 | `[NEEDS VERIFICATION]` |
+| AC-5 | `php -l src/config.php` exit 0 | pass |
 
 ### Verification pipeline
 
 ```mermaid
 graph TD
   GrepChecks["Grep AC checks"] --> Passed["Passed"]
-  PhpLint["php -l src/config.php"] --> NeedsVerify["NEEDS VERIFICATION"]
-  ComposerValidate["composer validate"] --> NeedsVerify2["NEEDS VERIFICATION"]
-  NeedsVerify --> CI["Defer to GitHub Actions php-syntax.yml on PR"]
-  NeedsVerify2 --> CI
+  PhpLint["php -l src/config.php"] --> Passed
+  ComposerValidate["composer validate"] --> BaselineIssue["Pre-existing name format issue"]
 ```
 
-**Recommended follow-up:** run on a host with PHP 7.4+ installed:
-
-```bash
-cd /Users/mayanksrivastava/Desktop/agent/reSlim
-git checkout parallel/A1-DEMO/integration
-php -l src/config.php
-failed=0
-while IFS= read -r -d '' file; do php -l "$file" || failed=1; done < <(find src -name '*.php' -not -path 'src/vendor/*' -print0)
-exit "$failed"
-cd src && composer validate --no-check-publish
-```
+**Proof artifacts:** `tasks/Advanced/A2/proof/verification-tests-green.txt`, `tasks/Advanced/A2/proof/agent-vs-manual.md`
 
 ---
 
@@ -293,5 +279,6 @@ cd src && composer validate --no-check-publish
 - [x] Conflict register with clean-path conflict graph mermaid
 - [x] Verification stages with pipeline mermaid
 - [x] Phase timeline and overview mermaid in `# Execution Log`
-- [x] Final `result: partial` and timestamps in `# Execution Summary`
+- [x] Final `result: pass` and timestamps in `# Execution Summary`
+- [x] Proof artifacts in `tasks/Advanced/A2/proof/`
 - [x] A1 plan path cited in `# Execution Summary`

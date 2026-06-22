@@ -1,0 +1,111 @@
+=== A3 Polyglot Fraud Pipeline — integration run ===
+Captured: 2026-06-22T18:42:54Z
+Root: /Users/mayanksrivastava/Desktop/agent/tasks/Advanced/A3
+Transaction ID: tx-proof-1782153774
+
+================================================================================
+Step 0 — Build Rust scorer
+Command: cd rust-scorer && cargo build --release
+================================================================================
+    Finished `release` profile [optimized] target(s) in 0.08s
+Exit code: 0
+
+================================================================================
+Step 1 — Start FastAPI (background)
+Command: uvicorn app.main:app --host 127.0.0.1 --port 8000
+================================================================================
+Uvicorn PID: 20395
+--- uvicorn startup log ---
+INFO:     Started server process [20395]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+
+================================================================================
+Step 2 — Start Node worker (background)
+Command: npm start
+================================================================================
+Worker PID: 20453
+--- worker startup log ---
+
+> fraud-score-worker@1.0.0 start
+> node src/worker.js
+
+worker started | data=/Users/mayanksrivastava/Desktop/agent/tasks/Advanced/A3/data | scorer=/Users/mayanksrivastava/Desktop/agent/tasks/Advanced/A3/rust-scorer/target/release/fraud-scorer | poll=300ms
+
+================================================================================
+Step 3 — POST /transactions (ingest)
+================================================================================
+Request payload:
+{
+  "transaction_id": "tx-proof-1782153774",
+  "amount": 6200,
+  "currency": "USD",
+  "merchant_category": "gambling",
+  "country": "CA",
+  "device_id": "device-proof",
+  "timestamp": "2025-06-17T04:00:00Z"
+}
+
+Command:
+curl -s -w '
+HTTP_STATUS: %{http_code}
+' -X POST http://127.0.0.1:8000/transactions -H 'Content-Type: application/json' -d '...'
+Response:
+{"transaction_id":"tx-proof-1782153774","status":"pending"}
+HTTP_STATUS: 202
+
+================================================================================
+Step 4 — Poll GET /transactions/{id} until scored
+================================================================================
+--- poll attempt 1 ---
+{"transaction_id":"tx-proof-1782153774","status":"pending","risk_score":null}
+HTTP_STATUS: 200
+--- poll attempt 2 ---
+{"transaction_id":"tx-proof-1782153774","status":"scored","risk_score":{"transaction_id":"tx-proof-1782153774","risk_score":90,"risk_level":"HIGH","reasons":["high_amount_tier2","foreign_country","risky_merchant_category","night_transaction"],"computed_at":"2026-06-22T18:42:58.368395Z"}}
+HTTP_STATUS: 200
+Scored result received on attempt 2
+
+================================================================================
+Step 5 — Queue filesystem state
+================================================================================
+pending/:
+total 0
+drwxr-xr-x@ 3 mayanksrivastava  staff   96 Jun 23 00:12 .
+drwxr-xr-x@ 4 mayanksrivastava  staff  128 Jun 17 01:25 ..
+-rw-r--r--@ 1 mayanksrivastava  staff    0 Jun 17 01:25 .gitkeep
+completed/:
+total 8
+drwxr-xr-x@ 4 mayanksrivastava  staff  128 Jun 23 00:12 .
+drwxr-xr-x@ 4 mayanksrivastava  staff  128 Jun 17 01:25 ..
+-rw-r--r--@ 1 mayanksrivastava  staff    0 Jun 17 01:25 .gitkeep
+-rw-r--r--@ 1 mayanksrivastava  staff  261 Jun 23 00:12 tx-proof-1782153774.json
+--- completed/tx-proof-1782153774.json ---
+{
+  "transaction_id": "tx-proof-1782153774",
+  "risk_score": 90,
+  "risk_level": "HIGH",
+  "reasons": [
+    "high_amount_tier2",
+    "foreign_country",
+    "risky_merchant_category",
+    "night_transaction"
+  ],
+  "computed_at": "2026-06-22T18:42:58.368395Z"
+}
+
+================================================================================
+Step 6 — Worker log (tail)
+================================================================================
+
+> fraud-score-worker@1.0.0 start
+> node src/worker.js
+
+worker started | data=/Users/mayanksrivastava/Desktop/agent/tasks/Advanced/A3/data | scorer=/Users/mayanksrivastava/Desktop/agent/tasks/Advanced/A3/rust-scorer/target/release/fraud-scorer | poll=300ms
+scored tx-proof-1782153774 -> HIGH (90)
+
+================================================================================
+Cleanup — stopping background processes
+================================================================================
+Worker stopped (exit 0)
+Uvicorn stopped (exit 0)

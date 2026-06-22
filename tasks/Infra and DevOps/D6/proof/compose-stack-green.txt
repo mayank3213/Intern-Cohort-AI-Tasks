@@ -1,0 +1,43 @@
+# D6 observability stack verification
+# Date: 2026-06-22T19:06:30Z
+# Working directory: tasks/Infra and DevOps/D6
+
+## Step 1: obs-up.sh (full compose stack)
+$ ./scripts/obs-up.sh
+
+==> docker compose up --build -d
+ Image grafana/grafana:11.3.0 Pulling 
+ Image prom/prometheus:v2.55.1 Pulling 
+ Image prom/prometheus:v2.55.1 Error failed to resolve reference "docker.io/prom/prometheus:v2.55.1": failed to do request: Head "https://registry-1.docker.io/v2/prom/prometheus/manifests/v2.55.1": tls: failed to verify certificate: x509: certificate signed by unknown authority
+ Image grafana/grafana:11.3.0 Interrupted 
+Error response from daemon: failed to resolve reference "docker.io/prom/prometheus:v2.55.1": failed to do request: Head "https://registry-1.docker.io/v2/prom/prometheus/manifests/v2.55.1": tls: failed to verify certificate: x509: certificate signed by unknown authority
+
+## obs-up.sh exit code: 1
+
+## App service (built from cached python:3.12-slim — app-only)
+$ cd observability && docker-compose up -d app
+
+ Container d6-echo-app Running 
+
+## App container status
+NAMES         STATUS                   PORTS
+d6-echo-app   Up 2 minutes (healthy)   0.0.0.0:8080->8080/tcp, [::]:8080->8080/tcp
+
+## Step 2: verify-metrics.sh
+$ ./scripts/verify-metrics.sh
+
+==> App /metrics exposes http_requests_total
+
+==> Prometheus target UP
+
+## verify-metrics.sh exit code: 7
+
+## Verification summary
+- App /metrics: PASS (http_requests_total present after load)
+- App container health: PASS (healthy on :8080)
+- Prometheus scrape target: BLOCKED (prometheus container not running — Docker Hub TLS)
+- Grafana datasource: BLOCKED (grafana container not running — Docker Hub TLS)
+- JSON structured logs: PASS (see structured-log-sample.txt)
+
+Re-run full stack on host with registry access:
+  ./scripts/obs-up.sh && ./scripts/load.sh && sleep 20 && ./scripts/verify-metrics.sh

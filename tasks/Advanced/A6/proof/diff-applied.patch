@@ -1,0 +1,15 @@
+diff --git a/tmp/FileScanner.slow.php b/fixture/FileScanner.php
+index d589bdb9..384aff6d 100644
+--- a/tmp/FileScanner.slow.php
++++ b/fixture/FileScanner.php
+@@ -33,7 +33,9 @@ final class FileScanner
+             $path = $directory . DIRECTORY_SEPARATOR . $entry;
+ 
+             if (is_dir($path)) {
+-                $files = array_merge($files, self::fileSearch($path, $extension));
++                foreach (self::fileSearch($path, $extension) as $childFile) {
++                    $files[] = $childFile;
++                }
+             } elseif (self::matchesExtension($entry, $extension)) {
+                 $files[] = $path;
+             }

@@ -1,0 +1,21 @@
+# kubectl apply proof — cluster-up then deploy
+# Run date: 2026-06-23
+
+$ cd tasks/Infra and DevOps/D4
+$ ./scripts/cluster-up.sh
+==> Creating kind cluster 'd4-echo'
+Creating cluster "d4-echo" ...
+ • Ensuring node image (kindest/node:v1.36.1) 🖼  ...
+ ✗ Ensuring node image (kindest/node:v1.36.1) 🖼
+ERROR: failed to create cluster: failed to pull image "kindest/node:v1.36.1@sha256:3489c7674813ba5d8b1a9977baea8a6e553784dab7b84759d1014dbd78f7ebd5": command "docker pull kindest/node:v1.36.1@sha256:3489c7674813ba5d8b1a9977baea8a6e553784dab7b84759d1014dbd78f7ebd5" failed with error: exit status 1
+
+Command Output: Error response from daemon: failed to resolve reference "docker.io/kindest/node@sha256:3489c7674813ba5d8b1a9977baea8a6e553784dab7b84759d1014dbd78f7ebd5": failed to do request: Head "https://registry-1.docker.io/v2/kindest/node/manifests/sha256:3489c7674813ba5d8b1a9977baea8a6e553784dab7b84759d1014dbd78f7ebd5": tls: failed to verify certificate: x509: certificate signed by unknown authority
+
+cluster-up exit code: 1
+
+$ ./scripts/deploy.sh
+ERROR: kubectl cannot reach a cluster. Run ./scripts/cluster-up.sh first
+
+deploy exit code: 1
+
+# Note: kubectl apply was not executed — no reachable cluster (kind create blocked by Docker Hub TLS in Colima).

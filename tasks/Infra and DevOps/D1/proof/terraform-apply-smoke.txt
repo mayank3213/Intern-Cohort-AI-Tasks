@@ -1,0 +1,37 @@
+# Optional apply smoke test — not executed
+
+## Status
+
+LocalStack apply smoke test was NOT performed. No local apply environment was available at proof capture time.
+
+## Commands attempted
+
+cd tasks/Infra and DevOps/D1
+docker-compose -f docker-compose.localstack.yml up -d
+curl -sf http://localhost:4566/_localstack/health
+
+## Result
+
+LocalStack was not running before the attempt.
+
+docker-compose -f docker-compose.localstack.yml up -d
+ Image localstack/localstack:3 Pulling 
+ Image localstack/localstack:3 Error failed to resolve reference "docker.io/localstack/localstack:3": failed to do request: Head "https://registry-1.docker.io/v2/localstack/localstack/manifests/3": tls: failed to verify certificate: x509: certificate signed by unknown authority
+Error response from daemon: failed to resolve reference "docker.io/localstack/localstack:3": failed to do request: Head "https://registry-1.docker.io/v2/localstack/localstack/manifests/3": tls: failed to verify certificate: x509: certificate signed by unknown authority
+
+curl health check: not reached (LocalStack did not start)
+
+EXIT_CODE (docker-compose up): 1
+
+## Planned apply flow (when LocalStack is available)
+
+From tasks/Infra and DevOps/D1:
+
+  docker-compose -f docker-compose.localstack.yml up -d
+  curl -s http://localhost:4566/_localstack/health
+  ./scripts/plan-localstack.sh
+  ./scripts/apply-localstack.sh
+  curl -s "$(cd terraform && terraform output -raw api_invoke_url)"
+  ./scripts/destroy-localstack.sh
+
+No apply output or HTTP responses were fabricated.

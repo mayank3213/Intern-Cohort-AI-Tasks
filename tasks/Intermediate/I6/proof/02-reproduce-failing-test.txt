@@ -1,0 +1,59 @@
+$ cd /Users/mayanksrivastava/Desktop/agent/tasks/Intermediate/I6/fixture/sandbox && npm install && npm test -- -t "allows debit equal to full balance"
+
+> transaction-ledger-api@1.0.0 test
+> vitest run -t allows debit equal to full balance
+
+
+ RUN  v3.2.6 /Users/mayanksrivastava/Desktop/agent/tasks/Intermediate/I6/fixture/sandbox
+
+ ❯ tests/api.test.js (6 tests | 1 failed | 5 skipped) 21ms
+   ↓ Transaction Ledger API > creates a credit transaction and returns 201
+   ↓ Transaction Ledger API > rejects invalid amounts with 422
+   ↓ Transaction Ledger API > returns balance reflecting credits and debits
+   × Transaction Ledger API > allows debit equal to full balance 20ms
+     → expected 400 to be 201 // Object.is equality
+   ↓ Transaction Ledger API > rejects debits when funds are insufficient with 400
+   ↓ Transaction Ledger API > lists created transactions
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/api.test.js > Transaction Ledger API > allows debit equal to full balance
+AssertionError: expected 400 to be 201 // Object.is equality
+
+- Expected
++ Received
+
+- 201
++ 400
+
+ ❯ tests/api.test.js:70:29
+     68|       .send({ amount: "100", type: "debit", description: "Full withdra…
+     69| 
+     70|     expect(response.status).toBe(201);
+       |                             ^
+     71|     expect(response.body.amount).toBe("100.00");
+     72|     expect(response.body.type).toBe("debit");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 skipped (6)
+   Start at  00:05:37
+   Duration  610ms (transform 71ms, setup 0ms, collect 246ms, tests 21ms, environment 0ms, prepare 52ms)
+
+npm install stderr (non-fatal):
+
+up to date, audited 144 packages in 2s
+
+34 packages are looking for funding
+  run `npm fund` for details
+
+1 low severity vulnerability
+
+To address all issues, run:
+  npm audit fix
+
+Run `npm audit` for details.
+
+Exit code: 1

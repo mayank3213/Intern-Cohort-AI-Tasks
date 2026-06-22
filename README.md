@@ -111,7 +111,7 @@ Same concepts across **Python, Node.js, Rust, PHP, Terraform, Docker, and Kubern
 
 ### 📊 Reports & Verification
 
-Structured markdown deliverables with mandatory **`source: path:line-range`** citations. Golden `agent-run-output-*.md` samples, hidden `EVALUATOR.md` rubrics, and `proof/` screenshot evidence for runnable systems.
+Structured markdown deliverables with mandatory **`source: path:line-range`** citations. Golden `agent-run-output-*.md` samples and `proof/` screenshot evidence for runnable systems.
 
 </td>
 </tr>
@@ -165,7 +165,6 @@ flowchart TD
         Tasks["tasks/<br/>24 exercises · 4 tracks"]
         Specs["Agent Workflow Specs<br/>18 structured skills"]
         Golden["Golden Samples<br/>agent-run-output-*.md"]
-        Evaluator["EVALUATOR.md<br/>hidden rubrics"]
     end
 
     subgraph Explorer["🗺️ AgentAtlas"]
@@ -290,7 +289,6 @@ agent/
 ├── README.md                 # Task brief — goal, deliverables, pass criteria, setup
 ├── {skill}-*.md              # Agent workflow spec (optional)
 ├── agent-run-output-*.md     # Golden sample from a completed run
-├── EVALUATOR.md              # Hidden answer key for graders
 ├── scripts/                  # benchmark.sh, verify-*.sh, stack-up.sh
 ├── fixture/ or starter/      # Target code, patches, seeded bugs
 └── proof/                    # Screenshot / terminal evidence
@@ -420,7 +418,6 @@ Each `*-mapper.md`, `*-splitter.md`, or `*-agent.md` file defines a **repeatable
 2. Load agent workflow spec       → discovery strategy + output contract
 3. Execute against target repo    → cite source: path:line on every finding
 4. Compare to golden sample       → structure and depth, not copy-paste
-5. Never read EVALUATOR.md        → hidden rubric for graders only
 ```
 
 ---
@@ -620,7 +617,6 @@ Every eval produces **evidence**, not claims:
 | Parallel plan/run logs | `parallel-plan-*.md`, `parallel-run-*.md` | A1, A2 |
 | Screenshot proof | `proof/` | B4, B5, B6, A3 |
 | Benchmark scripts | `scripts/benchmark.sh` | A6 |
-| Hidden rubrics | `EVALUATOR.md` | Graders only |
 | Test suites | `pytest`, `npm test`, `cargo test` | All build tasks |
 
 **Pass gate examples:**
@@ -637,7 +633,6 @@ Every eval produces **evidence**, not claims:
 - **Source citations** — every analysis finding must include `source: path:line-range`
 - **Time boxes** — pass criteria assume stated duration; scope accordingly
 - **Do not commit** generated artifacts: `.venv/`, `node_modules/`, `vendor/`, `target/`, `.pytest_cache/`, `*.tfstate*`
-- **EVALUATOR.md** — hidden answer keys; candidates must not read during exercise
 - **Canonical apps** — I6 modifies `fixture/sandbox/`, never canonical `Basics/B5`
 - **A1 is plan-only** — no worktrees or commits; hand off execution to A2
 

@@ -1,0 +1,14 @@
+
+> transaction-ledger-api@1.0.0 test
+> vitest run
+
+
+ RUN  v3.2.6 /Users/mayanksrivastava/Desktop/agent/tasks/Basics/B5
+
+ ✓ tests/api.test.js (6 tests) 37ms
+
+ Test Files  1 passed (1)
+      Tests  6 passed (6)
+   Start at  23:50:58
+   Duration  662ms (transform 27ms, setup 0ms, collect 158ms, tests 37ms, environment 0ms, prepare 59ms)
+

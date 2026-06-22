@@ -1,0 +1,13 @@
+# Command
+cargo run -- sample.log
+
+# stdout
+   Compiling log-counter v0.1.0 (/Users/mayanksrivastava/Desktop/agent/tasks/Basics/B6)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.46s
+     Running `/var/folders/kl/f9cywzmj4mv6y0xz6szhspph0000gp/T/cursor-sandbox-cache/df94ac9afed59656b1361afaf2cadddc/cargo-target/debug/log-counter sample.log`
+INFO: 2
+WARN: 1
+ERROR: 1
+
+# exit code
+0

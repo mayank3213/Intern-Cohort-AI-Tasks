@@ -35,7 +35,6 @@ Optional: `Ingress` (`echo.local`) when ingress-nginx is installed on kind.
 ```
 D4/
 ├── README.md
-├── EVALUATOR.md
 ├── kind-config.yaml           # kind cluster with ingress-ready node label
 ├── k8s/
 │   ├── namespace.yaml
@@ -180,7 +179,3 @@ curl -s http://echo.local/health
 For AI-assisted runs, see [`k8s-manifests-agent.md`](k8s-manifests-agent.md).
 
 Captured run output: [`k8s-run-d4-demo.md`](k8s-run-d4-demo.md).
-
-## Evaluator
-
-Graders: see [`EVALUATOR.md`](EVALUATOR.md) *(do not share with candidates during eval)*.

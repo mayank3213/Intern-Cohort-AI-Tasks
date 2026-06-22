@@ -1,0 +1,34 @@
+sequenceDiagram
+    participant Client
+    participant Nginx
+    participant Slim as Slim App
+    participant HttpCache as HttpCache Middleware
+    participant ValUser as ValidateParam Username
+    participant ValPass as ValidateParam Password
+    participant Route as user.router closure
+    participant User as User service
+    participant Auth as Auth service
+    participant DB as MySQL user_data / user_auth
+
+    Client->>Nginx: POST /user/login {Username, Password}
+    Nginx->>Slim: api/index.php → app.php → run()
+    Slim->>HttpCache: dispatch middleware
+    HttpCache->>ValUser: next()
+    ValUser->>ValPass: validate Username OK
+    ValPass->>Route: validate Password OK
+    Route->>User: login()
+    User->>DB: SELECT user_data (isRegistered)
+    DB-->>User: row exists
+    User->>DB: SELECT user_data StatusID=1 (isActivated)
+    DB-->>User: active
+    User->>DB: SELECT user_data Password (isPasswordMatch)
+    DB-->>User: password hash
+    User->>Auth: verifyPassword (password_verify)
+    Auth-->>User: match
+    User->>Auth: generateToken(db, username)
+    Auth->>Auth: encodeAPIKey(username + timestamp)
+    Auth->>DB: BEGIN; INSERT user_auth
+    DB-->>Auth: commit
+    Auth-->>User: {status, token, code}
+    User-->>Route: JSON::encode(data)
+    Route->>Client: Cors::modify 200 JSON + token

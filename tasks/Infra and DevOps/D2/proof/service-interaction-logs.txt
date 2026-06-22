@@ -1,0 +1,108 @@
+# D2 Service Interaction Logs
+# Date: 2026-06-22T18:57:49Z
+# Working directory: tasks/Infra and DevOps/D2
+
+## Commands executed
+$ docker-compose logs --no-color api worker db
+$ docker-compose logs --no-color api worker | grep -E "created job|processing job|completed job|GET /jobs|worker started|batch processed"
+
+## Full logs (api, worker, db)
+worker-1  | 2026-06-22 18:57:01,567 INFO [worker] worker started poll=2.0s db=db:5432/jobs
+worker-1  | 2026-06-22 18:57:03,718 INFO [worker] processing job job-c566a81f0f83
+worker-1  | 2026-06-22 18:57:03,733 INFO [worker] completed job job-c566a81f0f83 result='DOCKER COMPOSE E2E'
+worker-1  | 2026-06-22 18:57:03,735 INFO [worker] batch processed 1 job(s)
+db-1      | The files belonging to this database system will be owned by user "postgres".
+db-1      | This user must also own the server process.
+db-1      | 
+db-1      | The database cluster will be initialized with locale "en_US.utf8".
+db-1      | The default database encoding has accordingly been set to "UTF8".
+db-1      | The default text search configuration will be set to "english".
+db-1      | 
+db-1      | Data page checksums are disabled.
+db-1      | 
+db-1      | fixing permissions on existing directory /var/lib/postgresql/data ... ok
+db-1      | creating subdirectories ... ok
+db-1      | selecting dynamic shared memory implementation ... posix
+db-1      | selecting default max_connections ... 100
+db-1      | selecting default shared_buffers ... 128MB
+db-1      | selecting default time zone ... UTC
+db-1      | creating configuration files ... ok
+db-1      | running bootstrap script ... ok
+db-1      | sh: locale: not found
+db-1      | 2026-06-22 18:56:47.351 UTC [88] WARNING:  no usable system locales were found
+db-1      | performing post-bootstrap initialization ... ok
+db-1      | syncing data to disk ... ok
+db-1      | 
+db-1      | initdb: warning: enabling "trust" authentication for local connections
+db-1      | initdb: hint: You can change this by editing pg_hba.conf or using the option -A, or --auth-local and --auth-host, the next time you run initdb.
+db-1      | 
+db-1      | Success. You can now start the database server using:
+db-1      | 
+db-1      |     pg_ctl -D /var/lib/postgresql/data -l logfile start
+db-1      | 
+db-1      | waiting for server to start....2026-06-22 18:56:49.270 UTC [107] LOG:  starting PostgreSQL 16.14 on x86_64-pc-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit
+db-1      | 2026-06-22 18:56:49.273 UTC [107] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+db-1      | 2026-06-22 18:56:49.293 UTC [114] LOG:  database system was shut down at 2026-06-22 18:56:48 UTC
+db-1      | 2026-06-22 18:56:49.318 UTC [107] LOG:  database system is ready to accept connections
+db-1      |  done
+db-1      | server started
+db-1      | CREATE DATABASE
+db-1      | 
+db-1      | 
+db-1      | /usr/local/bin/docker-entrypoint.sh: running /docker-entrypoint-initdb.d/01-schema.sql
+db-1      | CREATE TABLE
+db-1      | CREATE INDEX
+db-1      | 
+db-1      | 
+db-1      | /usr/local/bin/docker-entrypoint.sh: running /docker-entrypoint-initdb.d/02-seed.sql
+db-1      | INSERT 0 1
+db-1      | 
+db-1      | 
+db-1      | waiting for server to shut down....2026-06-22 18:56:49.809 UTC [107] LOG:  received fast shutdown request
+db-1      | 2026-06-22 18:56:49.811 UTC [107] LOG:  aborting any active transactions
+db-1      | 2026-06-22 18:56:49.835 UTC [107] LOG:  background worker "logical replication launcher" (PID 121) exited with exit code 1
+db-1      | 2026-06-22 18:56:49.835 UTC [111] LOG:  shutting down
+db-1      | 2026-06-22 18:56:49.838 UTC [111] LOG:  checkpoint starting: shutdown immediate
+db-1      | 2026-06-22 18:56:49.906 UTC [111] LOG:  checkpoint complete: wrote 935 buffers (5.7%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.040 s, sync=0.022 s, total=0.069 s; sync files=306, longest=0.009 s, average=0.001 s; distance=4304 kB, estimate=4304 kB; lsn=0/192B2D8, redo lsn=0/192B2D8
+db-1      | 2026-06-22 18:56:49.921 UTC [107] LOG:  database system is shut down
+db-1      |  done
+db-1      | server stopped
+db-1      | 
+db-1      | PostgreSQL init process complete; ready for start up.
+db-1      | 
+db-1      | 2026-06-22 18:56:50.127 UTC [1] LOG:  starting PostgreSQL 16.14 on x86_64-pc-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit
+db-1      | 2026-06-22 18:56:50.130 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+db-1      | 2026-06-22 18:56:50.131 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+db-1      | 2026-06-22 18:56:50.135 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+db-1      | 2026-06-22 18:56:50.152 UTC [163] LOG:  database system was shut down at 2026-06-22 18:56:49 UTC
+db-1      | 2026-06-22 18:56:50.176 UTC [1] LOG:  database system is ready to accept connections
+api-1     | INFO:     Started server process [1]
+api-1     | INFO:     Waiting for application startup.
+api-1     | INFO:     Application startup complete.
+api-1     | INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+api-1     | INFO:     127.0.0.1:36412 - "GET /health HTTP/1.1" 200 OK
+api-1     | INFO:     172.18.0.1:44298 - "GET /health HTTP/1.1" 200 OK
+api-1     | INFO:     172.18.0.1:44310 - "GET /health HTTP/1.1" 200 OK
+api-1     | INFO:     172.18.0.1:44310 - "GET /jobs/seeded HTTP/1.1" 200 OK
+api-1     | 2026-06-22 18:57:02,899 INFO [api] created job job-c566a81f0f83 status=pending payload='docker compose e2e'
+api-1     | INFO:     172.18.0.1:44310 - "POST /jobs HTTP/1.1" 201 Created
+api-1     | 2026-06-22 18:57:02,961 INFO [api] GET /jobs/job-c566a81f0f83 status=pending
+api-1     | INFO:     172.18.0.1:44310 - "GET /jobs/job-c566a81f0f83 HTTP/1.1" 200 OK
+api-1     | 2026-06-22 18:57:04,072 INFO [api] GET /jobs/job-c566a81f0f83 status=done
+api-1     | INFO:     172.18.0.1:44310 - "GET /jobs/job-c566a81f0f83 HTTP/1.1" 200 OK
+api-1     | INFO:     127.0.0.1:58824 - "GET /health HTTP/1.1" 200 OK
+api-1     | INFO:     127.0.0.1:53880 - "GET /health HTTP/1.1" 200 OK
+api-1     | INFO:     127.0.0.1:49478 - "GET /health HTTP/1.1" 200 OK
+api-1     | INFO:     127.0.0.1:34930 - "GET /health HTTP/1.1" 200 OK
+
+## Filtered inter-service interaction lines
+worker-1  | 2026-06-22 18:57:01,567 INFO [worker] worker started poll=2.0s db=db:5432/jobs
+worker-1  | 2026-06-22 18:57:03,718 INFO [worker] processing job job-c566a81f0f83
+worker-1  | 2026-06-22 18:57:03,733 INFO [worker] completed job job-c566a81f0f83 result='DOCKER COMPOSE E2E'
+worker-1  | 2026-06-22 18:57:03,735 INFO [worker] batch processed 1 job(s)
+api-1     | INFO:     172.18.0.1:44310 - "GET /jobs/seeded HTTP/1.1" 200 OK
+api-1     | 2026-06-22 18:57:02,899 INFO [api] created job job-c566a81f0f83 status=pending payload='docker compose e2e'
+api-1     | 2026-06-22 18:57:02,961 INFO [api] GET /jobs/job-c566a81f0f83 status=pending
+api-1     | INFO:     172.18.0.1:44310 - "GET /jobs/job-c566a81f0f83 HTTP/1.1" 200 OK
+api-1     | 2026-06-22 18:57:04,072 INFO [api] GET /jobs/job-c566a81f0f83 status=done
+api-1     | INFO:     172.18.0.1:44310 - "GET /jobs/job-c566a81f0f83 HTTP/1.1" 200 OK

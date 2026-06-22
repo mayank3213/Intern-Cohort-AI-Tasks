@@ -30,7 +30,6 @@ load.sh → app (:8080) → JSON logs (stdout)
 ```
 D6/
 ├── README.md
-├── EVALUATOR.md
 ├── service/                         # D5 echo + structlog + prometheus_client
 │   ├── Dockerfile
 │   ├── requirements.txt
@@ -144,7 +143,3 @@ curl -s -u admin:admin http://127.0.0.1:3000/api/datasources/name/Prometheus
 For AI-assisted runs, see [`observability-stack-agent.md`](observability-stack-agent.md).
 
 Captured run output: [`obs-run-d6-demo.md`](obs-run-d6-demo.md).
-
-## Evaluator
-
-Graders: see [`EVALUATOR.md`](EVALUATOR.md) *(do not share with candidates during eval)*.

@@ -1,0 +1,103 @@
+# B4 Route Verification — captured 2026-06-22T18:01:32Z
+
+## Server startup
+
+```bash
+cd $REPO_ROOT/tasks/Basics/B4
+source .venv/bin/activate
+uvicorn app.main:app --host 127.0.0.1 --port 8000
+```
+
+## OpenAPI paths (GET /openapi.json)
+
+```bash
+curl -s http://127.0.0.1:8000/openapi.json | python3 -c "import sys,json; d=json.load(sys.stdin); print('
+'.join(sorted(d.get('paths',{}).keys())))"
+```
+
+```
+/balance
+/transactions
+```
+
+## GET /transactions
+
+```bash
+curl -s -w '
+HTTP_STATUS: %{http_code}
+' http://127.0.0.1:8000/transactions
+```
+
+```
+[]
+HTTP_STATUS: 200
+```
+
+## GET /balance
+
+```bash
+curl -s -w '
+HTTP_STATUS: %{http_code}
+' http://127.0.0.1:8000/balance
+```
+
+```
+{"balance":"0.00"}
+HTTP_STATUS: 200
+```
+
+## POST /transactions (credit)
+
+```bash
+curl -s -w '
+HTTP_STATUS: %{http_code}
+' -X POST http://127.0.0.1:8000/transactions \
+  -H "Content-Type: application/json" \
+  -d '{"amount": "150.00", "type": "credit", "description": "B2 route verification deposit"}'
+```
+
+```
+{"id":1,"amount":"150.00","type":"credit","description":"B2 route verification deposit"}
+HTTP_STATUS: 201
+```
+
+## POST /transactions (debit)
+
+```bash
+curl -s -w '
+HTTP_STATUS: %{http_code}
+' -X POST http://127.0.0.1:8000/transactions \
+  -H "Content-Type: application/json" \
+  -d '{"amount": "25.00", "type": "debit", "description": "B2 route verification withdrawal"}'
+```
+
+```
+{"id":2,"amount":"25.00","type":"debit","description":"B2 route verification withdrawal"}
+HTTP_STATUS: 201
+```
+
+## GET /balance (after mutations)
+
+```bash
+curl -s -w '
+HTTP_STATUS: %{http_code}
+' http://127.0.0.1:8000/balance
+```
+
+```
+{"balance":"125.00"}
+HTTP_STATUS: 200
+```
+
+## GET /transactions (after mutations)
+
+```bash
+curl -s -w '
+HTTP_STATUS: %{http_code}
+' http://127.0.0.1:8000/transactions
+```
+
+```
+[{"id":1,"amount":"150.00","type":"credit","description":"B2 route verification deposit"},{"id":2,"amount":"25.00","type":"debit","description":"B2 route verification withdrawal"}]
+HTTP_STATUS: 200
+```

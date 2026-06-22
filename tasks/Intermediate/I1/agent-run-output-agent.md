@@ -3,18 +3,18 @@
 ```yaml
 agent: er-diagram-mapper
 version: 1.0
-repo_root: /Users/mayanksrivastava/Desktop/agent
-scanned_at: 2026-06-17
+repo_root: .
+scanned_at: 2026-06-22
 schema_sources_found: 2
 table_count: 8
 entity_count: 5
-fk_declared: 11
+fk_declared: 10
 fk_inferred: 0
 ```
 
 ## Executive summary
 
-The repo’s only relational schema lives in **reSlim** (MariaDB/MySQL). `reSlim/resources/database/reSlim.sql` defines **8 tables** centered on `user_data`, with `core_status` and `user_role` as shared lookup tables. Eleven **declared** foreign keys enforce cascading updates/deletes. Application PHP classes (`User`, `Auth`, `Upload`, `Pages`) map to these tables via raw SQL. Separate tutorial apps under `tasks/Basics/B4` and `tasks/Basics/B5` define **in-memory** `Transaction` models with no SQL tables or FKs.
+The repo’s only relational schema lives in **reSlim** (MariaDB/MySQL). `reSlim/resources/database/reSlim.sql` defines **8 tables** centered on `user_data`, with `core_status` and `user_role` as shared lookup tables. Ten **declared** foreign keys enforce cascading updates/deletes. Application PHP classes (`User`, `Auth`, `Upload`, `Pages`) map to these tables via raw SQL. Separate tutorial apps under `tasks/Basics/B4` and `tasks/Basics/B5` define **in-memory** `Transaction` models with no SQL tables or FKs.
 
 ---
 

@@ -1,0 +1,8 @@
+# curl proof — requires deployed service
+# Run date: 2026-06-23
+
+$ cd tasks/Infra and DevOps/D4
+$ ./scripts/verify.sh
+ERROR: deployment/d4-echo-api not found in namespace d4-echo — run ./scripts/deploy.sh first
+
+verify exit code: 1

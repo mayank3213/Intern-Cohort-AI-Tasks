@@ -166,7 +166,6 @@ function getFileStats(full) {
 
 function classifyFile(rel, name) {
   if (name === 'README.md') return 'readme';
-  if (name === 'EVALUATOR.md') return 'evaluator';
   if (/^agent-run-output/i.test(name)) return 'output';
   if (AGENT_FILE_PATTERNS.some(p => p.test(name))) return 'agent-spec';
   if (/\.(png|jpg|jpeg|gif|webp|svg)$/i.test(name)) return 'image';
@@ -176,11 +175,10 @@ function classifyFile(rel, name) {
   return 'other';
 }
 
-function determineStatus(taskFiles, outputs, proofs, evaluator) {
+function determineStatus(taskFiles, outputs, proofs) {
   if (outputs.length > 0 && proofs.length > 0) return 'PASS';
   if (outputs.length > 0) return 'PASS';
   if (proofs.length > 0) return 'PARTIAL';
-  if (evaluator) return 'PARTIAL';
   const hasAgentSpec = taskFiles.some(f => f.type === 'agent-spec');
   if (hasAgentSpec) return 'PARTIAL';
   return 'INCOMPLETE';
@@ -220,7 +218,6 @@ function buildAgents() {
       const agentSpecFiles = allFiles.filter(f => classifyFile(f.rel, f.name) === 'agent-spec');
       const outputFiles = allFiles.filter(f => classifyFile(f.rel, f.name) === 'output');
       const proofFiles = allFiles.filter(f => f.rel.startsWith('proof/') && classifyFile(f.rel, f.name) === 'image');
-      const evaluatorFile = allFiles.find(f => f.name === 'EVALUATOR.md');
       const mdFiles = allFiles.filter(f => f.ext === '.md');
 
       let agentName = taskId;
@@ -245,7 +242,7 @@ function buildAgents() {
 
       const status = determineStatus(
         mdFiles.map(f => ({ type: classifyFile(f.rel, f.name) })),
-        outputFiles, proofFiles, evaluatorFile
+        outputFiles, proofFiles
       );
       const score = computeScore(status, bestScore, outputFiles.length > 0, proofFiles.length > 0);
       const languages = detectLanguages(allText, allFiles);
@@ -285,7 +282,7 @@ function buildAgents() {
           ? ['Tests referenced in documentation']
           : [],
         risks: extractSections(allText)['risks'] || extractSections(allText)['gaps_uncertainty'] || '',
-        verification: evaluatorFile ? fs.readFileSync(evaluatorFile.full, 'utf-8').slice(0, 3000) : '',
+        verification: '',
       };
 
       const dates = files.filter(f => f.updatedAt).map(f => f.updatedAt);
@@ -313,7 +310,7 @@ function buildAgents() {
         agentSpecPath: agentSpecFiles[0] ? `${relBase}/${agentSpecFiles[0].rel}` : null,
         readmePath: readmeFile ? `${relBase}/README.md` : null,
         primaryOutputPath: primaryOutput ? `${relBase}/${primaryOutput.rel}` : null,
-        evaluatorPath: evaluatorFile ? `${relBase}/EVALUATOR.md` : null,
+        evaluatorPath: null,
         proofImages: proofFiles.map(f => `${relBase}/${f.rel}`),
         evidence,
         sections: primaryOutput ? extractSections(fs.readFileSync(primaryOutput.full, 'utf-8')) : extractSections(readmeContent),

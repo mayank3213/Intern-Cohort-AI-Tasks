@@ -1,0 +1,123 @@
+# ER source audit — 5-table sample
+
+Sample selection: `python3 -c "import random; random.seed(42); ..."` from the 8 SQL tables in `extras/cloned-repos/reSlim/resources/database/reSlim.sql`.
+
+Tables sampled: `core_status`, `data_page`, `user_api`, `user_forgot`, `user_upload`
+
+---
+
+## core_status
+
+DDL (primary source):
+→ extras/cloned-repos/reSlim/resources/database/reSlim.sql:26-29
+
+```sql
+CREATE TABLE `core_status` (
+  `StatusID` int(11) NOT NULL,
+  `Status` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+```
+
+FK references (referenced by other tables):
+→ extras/cloned-repos/reSlim/resources/database/reSlim.sql:362 (user_data.StatusID)
+→ extras/cloned-repos/reSlim/resources/database/reSlim.sql:342 (data_page.StatusID)
+
+Application SQL (lookup joins):
+→ extras/cloned-repos/reSlim/src/classes/User.php:597 (`inner join core_status b on a.StatusID=b.StatusID`)
+→ extras/cloned-repos/reSlim/src/classes/Upload.php:322 (`inner join core_status b on a.StatusID=b.StatusID`)
+
+---
+
+## data_page
+
+DDL (primary source):
+→ extras/cloned-repos/reSlim/resources/database/reSlim.sql:95-109
+
+```sql
+CREATE TABLE `data_page` (
+  `PageID` int(11) NOT NULL,
+  ...
+  `StatusID` int(11) NOT NULL,
+  `Username` varchar(50) NOT NULL,
+  ...
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+```
+
+Declared FK constraints:
+→ extras/cloned-repos/reSlim/resources/database/reSlim.sql:341-343 (`data_page_ibfk_1`, `data_page_ibfk_2`)
+
+Application entity:
+→ extras/cloned-repos/reSlim/src/modules/pages/Pages.php:88 (`INSERT INTO data_page ...`)
+→ extras/cloned-repos/reSlim/src/modules/pages/Pages.php:389 (`from data_page a`)
+
+---
+
+## user_api
+
+DDL (primary source):
+→ extras/cloned-repos/reSlim/resources/database/reSlim.sql:117-125
+
+```sql
+CREATE TABLE `user_api` (
+  `Domain` varchar(50) NOT NULL,
+  `ApiKey` varchar(255) NOT NULL,
+  `StatusID` int(11) NOT NULL,
+  ...
+  `Username` varchar(50) NOT NULL,
+  ...
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+```
+
+Declared FK constraints:
+→ extras/cloned-repos/reSlim/resources/database/reSlim.sql:348-350 (`user_api_ibfk_1`, `user_api_ibfk_2`)
+
+Application SQL:
+→ extras/cloned-repos/reSlim/src/classes/Auth.php:507 (`INSERT INTO user_api ...`)
+→ extras/cloned-repos/reSlim/src/classes/middleware/ApiKey.php:49-50 (`FROM user_api a ... INNER JOIN user_data b`)
+
+---
+
+## user_forgot
+
+DDL (primary source):
+→ extras/cloned-repos/reSlim/resources/database/reSlim.sql:175-180
+
+```sql
+CREATE TABLE `user_forgot` (
+  `Email` varchar(50) NOT NULL,
+  `Verifylink` varchar(255) NOT NULL,
+  `Created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+  `Expired` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+```
+
+Declared FK constraint:
+→ extras/cloned-repos/reSlim/resources/database/reSlim.sql:368-369 (`user_forgot_ibfk_1` → `user_data.Email`)
+
+Application SQL:
+→ extras/cloned-repos/reSlim/src/classes/User.php:298 (`INSERT INTO user_forgot (Email,Verifylink,Created,Expired)`)
+→ extras/cloned-repos/reSlim/src/classes/User.php:346 (`from user_forgot a inner join user_data b on a.Email=b.Email`)
+
+---
+
+## user_upload
+
+DDL (primary source):
+→ extras/cloned-repos/reSlim/resources/database/reSlim.sql:210-224
+
+```sql
+CREATE TABLE `user_upload` (
+  `ItemID` int(11) NOT NULL,
+  ...
+  `Username` varchar(50) NOT NULL,
+  ...
+  `StatusID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+```
+
+Declared FK constraints:
+→ extras/cloned-repos/reSlim/resources/database/reSlim.sql:374-376 (`user_upload_ibfk_1`, `user_upload_ibfk_2`)
+
+Application entity:
+→ extras/cloned-repos/reSlim/src/classes/Upload.php:147 (`INSERT INTO user_upload ...`)
+→ extras/cloned-repos/reSlim/src/classes/Upload.php:321-322 (`from user_upload a inner join core_status b`)

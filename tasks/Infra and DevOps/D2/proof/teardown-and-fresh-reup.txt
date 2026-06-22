@@ -1,0 +1,305 @@
+# D2 Teardown and Fresh Re-up Proof
+# Date: 2026-06-22T18:57:56Z
+# Working directory: tasks/Infra and DevOps/D2
+
+=== Phase 1: Teardown ===
+
+## Command
+$ ./scripts/stack-down.sh
+
+## Output
+==> docker compose down -v
+ Container d2-job-stack-worker-1 Stopping 
+ Container d2-job-stack-worker-1 Stopped 
+ Container d2-job-stack-worker-1 Removing 
+ Container d2-job-stack-worker-1 Removed 
+ Container d2-job-stack-api-1 Stopping 
+ Container d2-job-stack-api-1 Stopped 
+ Container d2-job-stack-api-1 Removing 
+ Container d2-job-stack-api-1 Removed 
+ Container d2-job-stack-db-1 Stopping 
+ Container d2-job-stack-db-1 Stopped 
+ Container d2-job-stack-db-1 Removing 
+ Container d2-job-stack-db-1 Removed 
+ Network d2-job-stack_default Removing 
+ Volume d2-job-stack_pgdata Removing 
+ Volume d2-job-stack_pgdata Removed 
+ Network d2-job-stack_default Removed 
+stack torn down (containers + volumes removed)
+
+EXIT_CODE=0
+
+=== Phase 2: Fresh startup ===
+
+## Command
+$ ./scripts/stack-up.sh
+
+## Output
+==> docker compose up --build -d
+time="2026-06-23T00:28:08+05:30" level=warning msg="Docker Compose requires buildx plugin to be installed"
+ Image d2-job-stack-api Building 
+ Image d2-job-stack-api Building 
+Sending build context to Docker daemon  1.619kB
+Step 1/12 : FROM python:3.12-slim
+ ---> 565187088255
+Step 2/12 : WORKDIR /app
+ ---> Using cache
+ ---> bb28be8367de
+Step 3/12 : ENV PYTHONDONTWRITEBYTECODE=1     PYTHONUNBUFFERED=1     PORT=8080
+ ---> Using cache
+ ---> 82aec4761d0f
+Step 4/12 : RUN adduser --disabled-password --gecos "" appuser
+ ---> Using cache
+ ---> 0598fe55ac60
+Step 5/12 : COPY requirements.txt .
+ ---> Using cache
+ ---> 4969d9d6a717
+Step 6/12 : RUN pip install --no-cache-dir -r requirements.txt
+ ---> Using cache
+ ---> 783700de33fb
+Step 7/12 : COPY app ./app
+ ---> Using cache
+ ---> 7a477ace799d
+Step 8/12 : USER appuser
+ ---> Using cache
+ ---> ce8e42db0659
+Step 9/12 : EXPOSE 8080
+ ---> Using cache
+ ---> 52ca7e259d90
+Step 10/12 : HEALTHCHECK --interval=10s --timeout=3s --start-period=5s --retries=3     CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health')" || exit 1
+ ---> Using cache
+ ---> 15d7ee1e6b1e
+Step 11/12 : CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
+ ---> Using cache
+ ---> 4fa03173d205
+Step 12/12 : LABEL com.docker.compose.image.builder=classic
+ ---> Using cache
+ ---> 85b15ae68db2
+Successfully built 85b15ae68db2
+Successfully tagged d2-job-stack-api:latest
+ Image d2-job-stack-api Built 
+ Image d2-job-stack-api Built 
+ Image d2-job-stack-worker Building 
+ Image d2-job-stack-worker Building 
+Sending build context to Docker daemon  1.227kB
+Step 1/10 : FROM python:3.12-slim
+ ---> 565187088255
+Step 2/10 : WORKDIR /app
+ ---> Using cache
+ ---> bb28be8367de
+Step 3/10 : ENV PYTHONDONTWRITEBYTECODE=1     PYTHONUNBUFFERED=1
+ ---> Using cache
+ ---> 57da216af33a
+Step 4/10 : RUN adduser --disabled-password --gecos "" appuser
+ ---> Using cache
+ ---> 12d31f0d07dd
+Step 5/10 : COPY requirements.txt .
+ ---> Using cache
+ ---> b539e2ac1b41
+Step 6/10 : RUN pip install --no-cache-dir -r requirements.txt
+ ---> Using cache
+ ---> 506541e9067e
+Step 7/10 : COPY worker.py .
+ ---> Using cache
+ ---> a85c2846c54f
+Step 8/10 : USER appuser
+ ---> Using cache
+ ---> 72f4d6f1b31e
+Step 9/10 : CMD ["python", "worker.py"]
+ ---> Using cache
+ ---> 67cfdf180a54
+Step 10/10 : LABEL com.docker.compose.image.builder=classic
+ ---> Using cache
+ ---> d98af8aa77ec
+Successfully built d98af8aa77ec
+Successfully tagged d2-job-stack-worker:latest
+ Image d2-job-stack-worker Built 
+ Image d2-job-stack-worker Built 
+ Network d2-job-stack_default Creating 
+ Network d2-job-stack_default Created 
+ Volume d2-job-stack_pgdata Creating 
+ Volume d2-job-stack_pgdata Created 
+ Container d2-job-stack-db-1 Creating 
+ db The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested 
+ Container d2-job-stack-db-1 Created 
+ Container d2-job-stack-api-1 Creating 
+ Container d2-job-stack-api-1 Created 
+ Container d2-job-stack-worker-1 Creating 
+ Container d2-job-stack-worker-1 Created 
+ Container d2-job-stack-db-1 Starting 
+ Container d2-job-stack-db-1 Started 
+ Container d2-job-stack-db-1 Waiting 
+ Container d2-job-stack-db-1 Healthy 
+ Container d2-job-stack-api-1 Starting 
+ Container d2-job-stack-api-1 Started 
+ Container d2-job-stack-api-1 Waiting 
+ Container d2-job-stack-db-1 Waiting 
+ Container d2-job-stack-db-1 Healthy 
+ Container d2-job-stack-api-1 Healthy 
+ Container d2-job-stack-worker-1 Starting 
+ Container d2-job-stack-worker-1 Started 
+==> wait for api health on port 8080
+api healthy
+
+EXIT_CODE=0
+
+=== Phase 3: Container status after re-up ===
+
+## Command
+$ docker-compose ps
+
+## Output
+NAME                    IMAGE                 COMMAND                  SERVICE   CREATED          STATUS                    PORTS
+d2-job-stack-api-1      d2-job-stack-api      "uvicorn app.main:ap…"   api       16 seconds ago   Up 5 seconds (healthy)    0.0.0.0:8080->8080/tcp, [::]:8080->8080/tcp
+d2-job-stack-db-1       postgres:16-alpine    "docker-entrypoint.s…"   db        16 seconds ago   Up 16 seconds (healthy)   5432/tcp
+d2-job-stack-worker-1   d2-job-stack-worker   "python worker.py"       worker    16 seconds ago   Up Less than a second     
+
+=== Phase 4: Second E2E run (clean state) ===
+
+## Command
+$ ./scripts/run-e2e.sh
+
+## Output
+==> ensure stack is up
+==> docker compose up --build -d
+time="2026-06-23T00:28:24+05:30" level=warning msg="Docker Compose requires buildx plugin to be installed"
+ Image d2-job-stack-api Building 
+ Image d2-job-stack-api Building 
+Sending build context to Docker daemon  1.619kB
+Step 1/12 : FROM python:3.12-slim
+ ---> 565187088255
+Step 2/12 : WORKDIR /app
+ ---> Using cache
+ ---> bb28be8367de
+Step 3/12 : ENV PYTHONDONTWRITEBYTECODE=1     PYTHONUNBUFFERED=1     PORT=8080
+ ---> Using cache
+ ---> 82aec4761d0f
+Step 4/12 : RUN adduser --disabled-password --gecos "" appuser
+ ---> Using cache
+ ---> 0598fe55ac60
+Step 5/12 : COPY requirements.txt .
+ ---> Using cache
+ ---> 4969d9d6a717
+Step 6/12 : RUN pip install --no-cache-dir -r requirements.txt
+ ---> Using cache
+ ---> 783700de33fb
+Step 7/12 : COPY app ./app
+ ---> Using cache
+ ---> 7a477ace799d
+Step 8/12 : USER appuser
+ ---> Using cache
+ ---> ce8e42db0659
+Step 9/12 : EXPOSE 8080
+ ---> Using cache
+ ---> 52ca7e259d90
+Step 10/12 : HEALTHCHECK --interval=10s --timeout=3s --start-period=5s --retries=3     CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health')" || exit 1
+ ---> Using cache
+ ---> 15d7ee1e6b1e
+Step 11/12 : CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
+ ---> Using cache
+ ---> 4fa03173d205
+Step 12/12 : LABEL com.docker.compose.image.builder=classic
+ ---> Using cache
+ ---> 85b15ae68db2
+Successfully built 85b15ae68db2
+Successfully tagged d2-job-stack-api:latest
+ Image d2-job-stack-api Built 
+ Image d2-job-stack-api Built 
+ Image d2-job-stack-worker Building 
+ Image d2-job-stack-worker Building 
+Sending build context to Docker daemon  1.227kB
+Step 1/10 : FROM python:3.12-slim
+ ---> 565187088255
+Step 2/10 : WORKDIR /app
+ ---> Using cache
+ ---> bb28be8367de
+Step 3/10 : ENV PYTHONDONTWRITEBYTECODE=1     PYTHONUNBUFFERED=1
+ ---> Using cache
+ ---> 57da216af33a
+Step 4/10 : RUN adduser --disabled-password --gecos "" appuser
+ ---> Using cache
+ ---> 12d31f0d07dd
+Step 5/10 : COPY requirements.txt .
+ ---> Using cache
+ ---> b539e2ac1b41
+Step 6/10 : RUN pip install --no-cache-dir -r requirements.txt
+ ---> Using cache
+ ---> 506541e9067e
+Step 7/10 : COPY worker.py .
+ ---> Using cache
+ ---> a85c2846c54f
+Step 8/10 : USER appuser
+ ---> Using cache
+ ---> 72f4d6f1b31e
+Step 9/10 : CMD ["python", "worker.py"]
+ ---> Using cache
+ ---> 67cfdf180a54
+Step 10/10 : LABEL com.docker.compose.image.builder=classic
+ ---> Using cache
+ ---> d98af8aa77ec
+Successfully built d98af8aa77ec
+Successfully tagged d2-job-stack-worker:latest
+ Image d2-job-stack-worker Built 
+ Image d2-job-stack-worker Built 
+ Container d2-job-stack-db-1 Running 
+ Container d2-job-stack-api-1 Running 
+ Container d2-job-stack-worker-1 Running 
+ Container d2-job-stack-db-1 Waiting 
+ Container d2-job-stack-db-1 Healthy 
+ Container d2-job-stack-api-1 Waiting 
+ Container d2-job-stack-db-1 Waiting 
+ Container d2-job-stack-api-1 Healthy 
+ Container d2-job-stack-db-1 Healthy 
+==> wait for api health on port 8080
+api healthy
+==> install test deps (if needed)
+WARNING: You are using pip version 21.2.4; however, version 26.0.1 is available.
+You should consider upgrading via the '/Library/Developer/CommandLineTools/usr/bin/python3 -m pip install --upgrade pip' command.
+==> run e2e tests against http://127.0.0.1:8080
+============================= test session starts ==============================
+platform darwin -- Python 3.9.6, pytest-8.3.4, pluggy-1.6.0 -- /Library/Developer/CommandLineTools/usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /Users/mayanksrivastava/Desktop/agent/tasks/Infra and DevOps/D2
+plugins: anyio-4.12.1
+collecting ... collected 3 items
+
+tests/test_e2e.py::test_health PASSED                                    [ 33%]
+tests/test_e2e.py::test_seeded_job_readable PASSED                       [ 66%]
+tests/test_e2e.py::test_api_worker_pipeline PASSED                       [100%]
+
+============================== 3 passed in 2.51s ===============================
+
+==> inter-service log sample
+api-1  | INFO:     Started server process [1]
+api-1     | INFO:     Waiting for application startup.
+api-1     | INFO:     Application startup complete.
+api-1     | INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+worker-1  | 2026-06-22 18:58:25,147 INFO [worker] worker started poll=2.0s db=db:5432/jobs
+worker-1  | 2026-06-22 18:58:29,283 INFO [worker] processing job job-581a312d2234
+worker-1  | 2026-06-22 18:58:29,299 INFO [worker] completed job job-581a312d2234 result='DOCKER COMPOSE E2E'
+worker-1  | 2026-06-22 18:58:29,301 INFO [worker] batch processed 1 job(s)
+api-1     | INFO:     127.0.0.1:40994 - "GET /health HTTP/1.1" 200 OK
+api-1     | INFO:     172.18.0.1:57986 - "GET /health HTTP/1.1" 200 OK
+api-1     | INFO:     172.18.0.1:57996 - "GET /health HTTP/1.1" 200 OK
+api-1     | INFO:     172.18.0.1:58008 - "GET /health HTTP/1.1" 200 OK
+api-1     | INFO:     172.18.0.1:58008 - "GET /jobs/seeded HTTP/1.1" 200 OK
+api-1     | 2026-06-22 18:58:27,522 INFO [api] created job job-581a312d2234 status=pending payload='docker compose e2e'
+api-1     | INFO:     172.18.0.1:58008 - "POST /jobs HTTP/1.1" 201 Created
+api-1     | 2026-06-22 18:58:27,583 INFO [api] GET /jobs/job-581a312d2234 status=pending
+api-1     | INFO:     172.18.0.1:58008 - "GET /jobs/job-581a312d2234 HTTP/1.1" 200 OK
+api-1     | 2026-06-22 18:58:28,678 INFO [api] GET /jobs/job-581a312d2234 status=pending
+api-1     | INFO:     172.18.0.1:58008 - "GET /jobs/job-581a312d2234 HTTP/1.1" 200 OK
+api-1     | 2026-06-22 18:58:29,769 INFO [api] GET /jobs/job-581a312d2234 status=done
+api-1     | INFO:     172.18.0.1:58008 - "GET /jobs/job-581a312d2234 HTTP/1.1" 200 OK
+
+stack left running; use ./scripts/stack-down.sh to tear down
+
+All E2E checks passed.
+
+EXIT_CODE=0
+
+=== Summary ===
+stack-down exit: 0
+stack-up exit: 0
+second e2e exit: 0
+RESULT: Stack torn down, recreated from clean state, and all E2E tests passed again.

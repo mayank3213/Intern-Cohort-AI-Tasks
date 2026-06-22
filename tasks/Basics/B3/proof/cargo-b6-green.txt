@@ -1,0 +1,24 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.01s
+     Running unittests src/lib.rs (/var/folders/kl/f9cywzmj4mv6y0xz6szhspph0000gp/T/cursor-sandbox-cache/df94ac9afed59656b1361afaf2cadddc/cargo-target/debug/deps/log_counter-254a8d523b546998)
+
+running 5 tests
+test tests::format_counts_output ... ok
+test tests::error_takes_precedence_over_info_on_same_line ... ok
+test tests::counts_mixed_levels ... ok
+test tests::ignores_lines_without_levels ... ok
+test tests::count_missing_file_returns_error ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (/var/folders/kl/f9cywzmj4mv6y0xz6szhspph0000gp/T/cursor-sandbox-cache/df94ac9afed59656b1361afaf2cadddc/cargo-target/debug/deps/log_counter-6ff9bfac9733d42b)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests log_counter
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

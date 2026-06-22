@@ -1,0 +1,16 @@
+=== command ===
+./scripts/benchmark.sh
+=== exit code follows output ===
+==> Baseline benchmark (5 iterations)
+{
+    "files_found": 13650,
+    "iterations": 5,
+    "median_wall_ms": 206.413,
+    "median_throughput_files_per_sec": 66129.4,
+    "wall_ms_spread": [
+        185.928,
+        537.468
+    ],
+    "output_hash": "b1fec1e69a84d639c12b10d3d7cbcbed13d0fbc52f6101be03b0a1dafa54b987"
+}
+EXIT_CODE=0

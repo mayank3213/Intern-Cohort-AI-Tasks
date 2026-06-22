@@ -6,7 +6,7 @@ Find a **real performance bottleneck** in the A6 file scanner fixture, profile i
 
 **Fixture:** [`fixture/FileScanner.php`](fixture/FileScanner.php) — recursive directory scan with an intentional **O(n²) `array_merge` pattern** (same class of bug as reSlim `Scanner::fileSearch`).
 
-Do **not** read [`EVALUATOR.md`](EVALUATOR.md) or [`grader/`](grader/) until after your run.
+Do **not** read [`grader/`](grader/) until after your run.
 
 ## Deliverables
 
@@ -77,7 +77,6 @@ Replace recursive **`array_merge($files, child...)`** with appending child paths
 ```
 A6/
 ├── README.md
-├── EVALUATOR.md              # graders only — read after your attempt
 ├── fixture/
 │   ├── FileScanner.php       # slow baseline (you profile & fix this)
 │   ├── generate_fixture.php
@@ -106,7 +105,3 @@ A6/
 See [`targeted-perf-fixer.md`](targeted-perf-fixer.md).
 
 Golden run (reSlim): [`perf-run-scanner-filesearch.md`](perf-run-scanner-filesearch.md).
-
-## Evaluator
-
-Graders: [`EVALUATOR.md`](EVALUATOR.md).

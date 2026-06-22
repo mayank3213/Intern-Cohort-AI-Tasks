@@ -1,0 +1,4 @@
+$ cd /Users/mayanksrivastava/Desktop/agent/tasks/Intermediate/I6 && ./scripts/prepare-sandbox.sh
+patching file 'src/store.js'
+OK: seeded bug applied to sandbox: /Users/mayanksrivastava/Desktop/agent/tasks/Intermediate/I6/fixture/sandbox
+Try: cd "/Users/mayanksrivastava/Desktop/agent/tasks/Intermediate/I6/fixture/sandbox" && npm install && npm test

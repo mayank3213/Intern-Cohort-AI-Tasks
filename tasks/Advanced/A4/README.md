@@ -8,8 +8,6 @@ Analyze a **legacy PHP API** for modernization opportunities, prioritize them, t
 
 **Alternate:** `extras/cloned-repos/reSlim/` at `extras/cloned-repos/reSlim/` (larger; use only if instructed).
 
-Do **not** read [`EVALUATOR.md`](EVALUATOR.md) during the exercise.
-
 ## Intentional gaps in `starter/` (discovery exercise)
 
 The starter ships with known legacy signals — your job is to **find them with evidence**, not memorize this list:
@@ -96,7 +94,6 @@ curl -s http://127.0.0.1:8080/contacts
 ```
 A4/
 ├── README.md
-├── EVALUATOR.md
 ├── starter/                 # legacy baseline (candidate target)
 ├── scripts/
 │   ├── verify-baseline.sh
@@ -110,7 +107,3 @@ A4/
 For AI-assisted runs, see [`modernization-first-stepper.md`](modernization-first-stepper.md).
 
 Golden sample (reSlim): [`agent-run-output-reslim.md`](agent-run-output-reslim.md).
-
-## Evaluator
-
-Graders: [`EVALUATOR.md`](EVALUATOR.md).

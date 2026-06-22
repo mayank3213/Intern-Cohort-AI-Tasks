@@ -1,0 +1,23 @@
+=== behavior verification after optimization ===
+
+=== command 1: php -l fixture/FileScanner.php ===
+No syntax errors detected in fixture/FileScanner.php
+EXIT_CODE=0
+
+=== command 2: output hash (expected baseline) ===
+file_count=13650
+sha256=0b438886a5d6f1fa3c6cc0ab4f5731c6934dd3a8e66aed5f48d7ca104f8e11e2
+EXIT_CODE=0
+
+=== command 3: ./scripts/verify-improvement.sh ===
+OK: behavior unchanged (13650 files, hash match)
+
+==> Fixed scanner timing (5 iterations)
+{
+    "fixed_median_wall_ms": 280.191
+}
+EXIT_CODE=0
+
+=== command 4: fixture file count ===
+   13650
+EXIT_CODE=0

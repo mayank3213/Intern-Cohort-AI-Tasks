@@ -1,0 +1,45 @@
+# Client verification — captured 2026-06-22T18:32:45Z
+# Prerequisite: FastAPI service running at http://127.0.0.1:8000
+
+## Command
+
+```bash
+cd tasks/Intermediate/I4/client
+node scripts/verify.mjs
+```
+
+## stdout
+
+```
+validation checks passed
+live service checks passed
+all client verification checks passed
+```
+
+## Exit code
+
+0
+
+## Assertions performed (from scripts/verify.mjs)
+
+### verifyValidation() — local only, no service required
+
+- `parseArgs(["0", "USD", "EUR"])` throws: `Amount must be a number greater than zero`
+- `normalizeCurrency("US", "from_currency")` throws: `must be a 3-letter currency code`
+- `normalizeCurrency("JPY", "to_currency")` throws: `not supported locally`
+
+### verifyLiveService() — requires service on CONVERTER_URL (default http://127.0.0.1:8000)
+
+- `GET /health` returns HTTP 200
+- `convertCurrency({ amount: 100, fromCurrency: "USD", toCurrency: "EUR" })` returns `converted_amount === 92`, `rate === 0.92`
+- CLI `node bin/convert.js 25 GBP USD` exits 0; stdout matches `/25 GBP = .* USD/`
+- CLI `node bin/convert.js -1 USD EUR` exits non-zero; stderr matches `/Amount must be a number greater than zero/`
+
+## Alternate entry point (equivalent)
+
+```bash
+cd tasks/Intermediate/I4/client
+npm run verify
+```
+
+`npm test` runs the same script (`node scripts/verify.mjs`).

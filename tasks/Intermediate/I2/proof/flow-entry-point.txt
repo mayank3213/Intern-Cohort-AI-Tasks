@@ -1,0 +1,113 @@
+# flow-tracer proof — POST /user/login
+# agent: flow-tracer v1.0 (tasks/Intermediate/I2/flow-tracer.md)
+# repo: extras/cloned-repos/reSlim  (git submodule; see tasks/Intermediate/I2/README.md)
+# anchor: POST /user/login (matches agent-run-output-reslim.md flow_anchor)
+# verified_at: 2026-06-22
+
+== endpoint selected ==
+POST /user/login
+Body: Username, Password (form/JSON parsed body)
+Handler: anonymous closure → classes\User::login()
+Registration: $app->post('/user/login', …) in user.router.php
+
+== commands executed ==
+cd /Users/mayanksrivastava/Desktop/agent
+REPO=extras/cloned-repos/reSlim
+
+# route registration
+rg -n "post\('/user/login'" "$REPO/src/routers/user.router.php"
+# → 204:    $app->post('/user/login', function (Request $request, Response $response) {
+
+# bootstrap chain
+rg -n "require|run\(\)" "$REPO/src/api/index.php" "$REPO/src/app/app.php"
+# → api/index.php:2 require app.php
+# → app.php:55-58 Scanner::fileSearch loads routers
+# → app.php:70 $app->run()
+
+# service / repository methods
+rg -n "function (login|isRegistered|isActivated|isPasswordMatch)" "$REPO/src/classes/User.php"
+# → 418 isRegistered, 489 isActivated, 509 isPasswordMatch, 1297 login
+
+# auth token generation
+rg -n "function (verifyPassword|generateToken|encodeAPIKey)" "$REPO/src/classes/Auth.php"
+# → 50 verifyPassword, 65 encodeAPIKey, 175 generateToken
+
+# middleware on login route
+rg -n "ValidateParam\('(Username|Password)" "$REPO/src/routers/user.router.php"
+# → 213 Password, 214 Username
+
+# global HttpCache middleware
+rg -n "HttpCache" "$REPO/src/app/dependencies.php"
+# → 9: $app->add(new \Slim\HttpCache\Cache('public',604800));
+
+# SQL targets
+rg -n "user_data|user_auth" "$REPO/src/classes/User.php" "$REPO/src/classes/Auth.php"
+
+== request flow (major hops, source-backed) ==
+
+POST /user/login {Username, Password}
+↓
+src/api/index.php:2
+  require __DIR__.'/../app/app.php'
+↓
+src/app/app.php:49-58,70
+  dependencies.php → middleware.php → Scanner loads user.router.php → $app->run()
+↓
+src/app/dependencies.php:9
+  \Slim\HttpCache\Cache middleware (global, all routes)
+↓
+src/routers/user.router.php:214
+  ValidateParam('Username','1-50','required') middleware
+  (src/classes/middleware/ValidateParam.php:48-71 __invoke → validate)
+↓
+src/routers/user.router.php:213
+  ValidateParam('Password','1-250','required') middleware
+  (ValidateParam.php:48-71)
+↓
+src/routers/user.router.php:204-212
+  route closure: new User($this->db) → map body → $users->login()
+↓
+src/classes/User.php:1297-1333
+  User::login() — username regex gate; orchestrates checks
+↓
+src/classes/User.php:418-432
+  User::isRegistered() — SELECT user_data WHERE Username = :username
+  (binds strtolower($this->username) at line 419-425)
+↓
+src/classes/User.php:489-503
+  User::isActivated() — SELECT user_data WHERE StatusID='1' AND Username = :username
+↓
+src/classes/User.php:509-526
+  User::isPasswordMatch() — SELECT Password FROM user_data; calls Auth::verifyPassword
+↓
+src/classes/Auth.php:50-57
+  Auth::verifyPassword() — password_verify($username.$password, $hash) [no I/O]
+↓
+src/classes/User.php:1308
+  Auth::generateToken($this->db, $this->username)
+↓
+src/classes/Auth.php:175-208
+  Auth::generateToken() — encodeAPIKey (line 177) → BEGIN → INSERT user_auth → commit
+↓
+src/classes/User.php:1332
+  JSON::encode($data, true)
+↓
+src/routers/user.router.php:212
+  Cors::modify($response, $body, 200)
+  (src/classes/Cors.php:65-94)
+↓
+Client ← 200 JSON {status, token, code}
+
+== side effects (happy path) ==
+READ  user_data  SELECT Username         (User.php:421-426, isRegistered)
+READ  user_data  SELECT StatusID='1'     (User.php:491-496, isActivated)
+READ  user_data  SELECT Password         (User.php:511-518, isPasswordMatch)
+WRITE user_auth  INSERT RS_Token         (Auth.php:178-198, generateToken)
+
+== database connection ==
+src/app/dependencies.php:98-118
+  $container['db'] → LazyPDO mysql DSN from $config['db'] (config.php)
+
+== nginx entry (example config, not runtime-verified) ==
+src/example-nginx.conf:18
+  try_files $uri /api/index.php$is_args$args;

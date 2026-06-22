@@ -1,0 +1,36 @@
+=== D5 Bootstrap Proof ===
+Generated: 2026-06-22T19:02:30Z
+Host: Darwin arm64
+Working directory: /Users/mayanksrivastava/Desktop/agent/tasks/Infra and DevOps/D5
+
+=== Simulated fresh clone: make clean ===
+$ make clean
+rm -rf "/Users/mayanksrivastava/Desktop/agent/tasks/Infra and DevOps/D5/service/.venv" "service/.pytest_cache" "service/.ruff_cache"
+exit code: 0
+
+=== Command: make bootstrap ===
+$ make bootstrap
+./scripts/bootstrap.sh
+==> Repo bootstrap (D5 demo)
+==> Root: /Users/mayanksrivastava/Desktop/agent/tasks/Infra and DevOps/D5
+==> Installing pinned tools from .mise.toml
+==> Using Python: /Users/mayanksrivastava/.local/share/mise/installs/python/3.12/bin/python (Python 3.12.13)
+==> Creating venv at /Users/mayanksrivastava/Desktop/agent/tasks/Infra and DevOps/D5/service/.venv
+==> Installing Python dependencies
+==> Running tests
+============================= test session starts ==============================
+platform darwin -- Python 3.12.13, pytest-8.3.4, pluggy-1.6.0 -- /Users/mayanksrivastava/Desktop/agent/tasks/Infra and DevOps/D5/service/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /Users/mayanksrivastava/Desktop/agent/tasks/Infra and DevOps/D5/service
+configfile: pyproject.toml
+plugins: anyio-4.14.0
+collecting ... collected 2 items
+
+tests/test_health.py::test_health_returns_ok PASSED                      [ 50%]
+tests/test_health.py::test_echo_returns_message PASSED                   [100%]
+
+============================== 2 passed in 0.58s ===============================
+
+Bootstrap complete: tools installed, deps installed, tests passed (exit 0)
+exit code: 0
+elapsed_seconds: 14

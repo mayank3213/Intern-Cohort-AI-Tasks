@@ -1,0 +1,38 @@
+# Lane Alpha (L-readme) output — captured 2026-06-22T18:40:51Z
+# Worktree: /Users/mayanksrivastava/Desktop/agent/extras/cloned-repos/reSlim/.worktrees/A1-DEMO-readme
+
+## Branch name
+parallel/A1-DEMO/readme
+
+## git status
+On branch parallel/A1-DEMO/readme
+nothing to commit, working tree clean
+
+## git log --oneline -5
+2b0a0b9 A1-DEMO [L-readme]: align README PHP requirement with Composer 7.4+
+9a78473 - Update Packager module
+
+## Commit hash (HEAD)
+2b0a0b969b4612829a8581b6c20b502e484f500c
+
+## Files modified (vs base)
+M	readme.md
+
+## git diff (summary)
+ readme.md | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+## git diff (full)
+diff --git a/readme.md b/readme.md
+index 56ca48a..49f9daa 100644
+--- a/readme.md
++++ b/readme.md
+@@ -39,7 +39,7 @@ Here is the basic UI template for production use with reSlim >> [reSlim-ui-boile
+ System Requirements
+ ---------------
+ 
+-1. PHP 5.5 or newer (last tested on PHP7.3)
++1. PHP 7.4 or newer (7.4 and 8.x supported; see src/composer.json)
+ 2. MySQL 5.6 or MariaDB
+ 3. Web server with URL rewriting
+ 4. Apache or NGINX Server

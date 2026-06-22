@@ -1,0 +1,16 @@
+$ cd /Users/mayanksrivastava/Desktop/agent/tasks/Intermediate/I6/fixture/sandbox && npm test
+
+> transaction-ledger-api@1.0.0 test
+> vitest run
+
+
+ RUN  v3.2.6 /Users/mayanksrivastava/Desktop/agent/tasks/Intermediate/I6/fixture/sandbox
+
+ ✓ tests/api.test.js (6 tests) 38ms
+
+ Test Files  1 passed (1)
+      Tests  6 passed (6)
+   Start at  00:06:04
+   Duration  491ms (transform 22ms, setup 0ms, collect 124ms, tests 38ms, environment 0ms, prepare 50ms)
+
+Exit code: 0

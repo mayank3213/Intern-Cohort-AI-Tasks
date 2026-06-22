@@ -1,0 +1,23 @@
+# Uvicorn smoke test — Transaction Ledger API
+# Server: uvicorn app.main:app --host 127.0.0.1 --port 9877
+# Date: 2026-06-22T18:22:00Z
+
+## POST /transactions
+curl -s -w "\nHTTP %{http_code}\n" -X POST http://127.0.0.1:9877/transactions \
+  -H "Content-Type: application/json" \
+  -d '{"amount": "100.00", "type": "credit", "description": "Opening deposit"}'
+
+{"id":1,"amount":"100.00","type":"credit","description":"Opening deposit"}
+HTTP 201
+
+## GET /transactions
+curl -s -w "\nHTTP %{http_code}\n" http://127.0.0.1:9877/transactions
+
+[{"id":1,"amount":"100.00","type":"credit","description":"Opening deposit"}]
+HTTP 200
+
+## GET /balance
+curl -s -w "\nHTTP %{http_code}\n" http://127.0.0.1:9877/balance
+
+{"balance":"100.00"}
+HTTP 200

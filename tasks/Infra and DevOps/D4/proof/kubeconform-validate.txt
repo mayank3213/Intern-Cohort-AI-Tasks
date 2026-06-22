@@ -1,0 +1,8 @@
+$ cd tasks/Infra and DevOps/D4
+$ kubeconform -v
+v0.8.0
+
+$ kubeconform -summary k8s/*.yaml
+Summary: 5 resources found in 5 files - Valid: 5, Invalid: 0, Errors: 0, Skipped: 0
+
+exit code: 0

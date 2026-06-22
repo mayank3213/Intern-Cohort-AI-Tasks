@@ -1,0 +1,47 @@
+# code-artifact-mapper scan — tasks/Basics/B4
+# agent: code-artifact-mapper v1.0 (tasks/Basics/B1/code-artifact-mapper.md)
+# command: follow code-artifact-mapper.md execution flow on tasks/Basics/B4
+repository.root_path: tasks/Basics/B4
+scan_excludes: [.venv, node_modules, vendor, .git, dist, build, target, coverage, proof]
+
+== source files (excluding .venv) ==
+tasks/Basics/B4/.pytest_cache/README.md
+tasks/Basics/B4/README.md
+tasks/Basics/B4/app/__init__.py
+tasks/Basics/B4/app/main.py
+tasks/Basics/B4/app/schemas.py
+tasks/Basics/B4/app/store.py
+tasks/Basics/B4/requirements.txt
+tasks/Basics/B4/tests/__init__.py
+tasks/Basics/B4/tests/test_api.py
+
+== file counts ==
+python_files: 6
+test_files: 2
+markdown_files: 2
+json_files: 0
+
+== class declarations ==
+tasks/Basics/B4/app/store.py:6:class TransactionStore:
+tasks/Basics/B4/app/schemas.py:8:class TransactionType(str, Enum):
+tasks/Basics/B4/app/schemas.py:13:class TransactionCreate(BaseModel):
+tasks/Basics/B4/app/schemas.py:26:class TransactionResponse(BaseModel):
+tasks/Basics/B4/app/schemas.py:33:class BalanceResponse(BaseModel):
+
+== route handlers / FastAPI decorators ==
+tasks/Basics/B4/app/main.py:14:@app.post(
+tasks/Basics/B4/app/main.py:19:def create_transaction(payload: TransactionCreate) -> TransactionResponse:
+tasks/Basics/B4/app/main.py:29:@app.get("/transactions", response_model=list[TransactionResponse])
+tasks/Basics/B4/app/main.py:30:def list_transactions() -> list[TransactionResponse]:
+tasks/Basics/B4/app/main.py:34:@app.get("/balance", response_model=BalanceResponse)
+tasks/Basics/B4/app/main.py:35:def get_balance() -> BalanceResponse:
+
+== pydantic models / enums ==
+tasks/Basics/B4/app/schemas.py:8:class TransactionType(str, Enum):
+tasks/Basics/B4/app/schemas.py:13:class TransactionCreate(BaseModel):
+tasks/Basics/B4/app/schemas.py:26:class TransactionResponse(BaseModel):
+tasks/Basics/B4/app/schemas.py:33:class BalanceResponse(BaseModel):
+
+== manifests ==
+tasks/Basics/B4/README.md
+tasks/Basics/B4/requirements.txt

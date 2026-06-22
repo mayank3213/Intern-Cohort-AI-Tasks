@@ -8,7 +8,7 @@ agent_version: "1.0"
 generated_at: 2026-06-16T00:00:00Z
 repository:
   name: reSlim
-  root_path: /Users/mayanksrivastava/Desktop/agent/reSlim
+  root_path: $REPO_ROOT/extras/cloned-repos/reSlim
   type: single-package
 languages_detected: [php]
 frameworks_detected: [Slim 3, PSR-7, PSR-11, Monolog, PHPMailer, Predis]

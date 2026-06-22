@@ -30,7 +30,6 @@ This pulls [aalfiann/reSlim](https://github.com/aalfiann/reSlim) (PHP Slim 3 RES
 | I1 sample | [`I1/agent-run-output-agent.md`](I1/agent-run-output-agent.md) |
 | I2 sample | [`I2/agent-run-output-reslim.md`](I2/agent-run-output-reslim.md) |
 | I3 sample | [`I3/agent-run-output-b4-ledger.md`](I3/agent-run-output-b4-ledger.md) |
-| I6 answer key | [`I6/EVALUATOR.md`](I6/EVALUATOR.md) |
 
 I4 and I5 ship a **runnable reference implementation** in-repo for verification and agent benchmarking. See each task README for requirements and pass criteria.
 

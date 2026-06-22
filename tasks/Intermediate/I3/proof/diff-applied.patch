@@ -1,0 +1,41 @@
+--- a/tasks/Basics/B4/app/store.py
++++ b/tasks/Basics/B4/app/store.py
+@@ -10,7 +10,10 @@
+ 
+     def add(self, payload: TransactionCreate) -> TransactionResponse:
+         if payload.type is TransactionType.DEBIT and self.balance() < payload.amount:
+-            raise ValueError("Insufficient funds for debit transaction")
++            raise ValueError(
++                f"Insufficient funds: balance {self.balance():.2f}, "
++                f"requested debit {payload.amount:.2f}"
++            )
+ 
+         transaction = TransactionResponse(
+             id=self._next_id,
+--- a/tasks/Basics/B4/tests/test_api.py
++++ b/tasks/Basics/B4/tests/test_api.py
+@@ -59,6 +59,24 @@
+ 
+     assert response.status_code == 200
+     assert response.json()["balance"] == "150.00"
++
++
++def test_debit_rejected_when_insufficient_funds_returns_400() -> None:
++    client.post(
++        "/transactions",
++        json={"amount": "50", "type": "credit", "description": "Seed balance"},
++    )
++
++    response = client.post(
++        "/transactions",
++        json={"amount": "100", "type": "debit", "description": "Overdraw attempt"},
++    )
++
++    assert response.status_code == 400
++    detail = response.json()["detail"]
++    assert "Insufficient funds" in detail
++    assert "50.00" in detail
++    assert "100.00" in detail
+ 
+ 
+ def test_list_transactions_returns_created_items() -> None:

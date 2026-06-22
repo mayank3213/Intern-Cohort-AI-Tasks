@@ -1,0 +1,10 @@
+# Command
+cargo run -- /no/such/file
+
+# stderr
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.01s
+     Running `/var/folders/kl/f9cywzmj4mv6y0xz6szhspph0000gp/T/cursor-sandbox-cache/df94ac9afed59656b1361afaf2cadddc/cargo-target/debug/log-counter /no/such/file`
+error: file not found: /no/such/file
+
+# exit code
+1

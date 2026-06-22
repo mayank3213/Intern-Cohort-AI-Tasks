@@ -203,7 +203,6 @@ Most task directories follow a consistent layout:
 ├── README.md                 # Task brief: goal, deliverables, pass criteria, setup
 ├── {skill}-*.md              # Optional agent workflow spec (step-by-step for AI runs)
 ├── agent-run-output-*.md     # Golden sample output from a completed agent run
-├── EVALUATOR.md              # Answer key for graders (do not read during exercise)
 ├── scripts/                  # Helper scripts (benchmark, bootstrap, stack-up, etc.)
 ├── fixture/ or starter/      # Target code, patches, or seeded bugs
 └── proof/                    # Screenshot or terminal output evidence (where applicable)
@@ -214,7 +213,6 @@ Most task directories follow a consistent layout:
 | `README.md` | **Start here** — everything needed to attempt the task |
 | `*-mapper.md`, `*-splitter.md`, etc. | Structured workflow for AI-assisted eval runs |
 | `agent-run-output-*.md` | Reference quality bar for human or agent deliverables |
-| `EVALUATOR.md` | Hidden from candidates; used by reviewers for scoring |
 | `scripts/` | Repeatable commands (`benchmark.sh`, `run-e2e.sh`, `validate.sh`) |
 | `proof/` | Visual evidence that the system runs (see A3, B4, B5, B6) |
 
@@ -312,7 +310,6 @@ For AI eval runs: read the task `README.md` first, then the agent workflow spec,
 - **Do not commit** generated or local artifacts: `.venv/`, `node_modules/`, `vendor/`, `target/`, `.pytest_cache/`, Terraform `*.tfstate*`
 - **Source citations** — analysis tasks require `source: path:line-range` on every finding
 - **Time boxes** — pass criteria assume the stated duration; scope accordingly
-- **EVALUATOR.md** — hidden answer keys; candidates must not read them during the exercise
 - **Canonical apps** — modify `I6/fixture/sandbox/`, not `Basics/B5`, when debugging I6
 - **Proof screenshots** — store under `proof/` in the task folder (see A3, B4, B5, B6)
 

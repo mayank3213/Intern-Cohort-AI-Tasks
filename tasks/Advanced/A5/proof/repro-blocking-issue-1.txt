@@ -1,0 +1,57 @@
+A5 Adversarial Reproduction — Blocking Issue PRR-001 (SQL Injection)
+Date: 2026-06-23T00:19:00Z
+Fixture: tasks/Advanced/A5/fixture/post/src/ContactRepository.php
+Review reference: agent-run-output-feature-agent-modernize-search.md (PRR-001)
+
+========================================
+COMMAND 1 (primary reproduction)
+========================================
+$ php tasks/Advanced/A5/proof/repro-sql-injection.php
+
+=== PRR-001 SQL injection reproduction ===
+
+Safe term Alice -> 1 row(s)
+Injection term -> 3 row(s)
+[
+    {
+        "id": 1,
+        "name": "Alice",
+        "email": "alice@example.com"
+    },
+    {
+        "id": 2,
+        "name": "Bob",
+        "email": "bob@example.com"
+    },
+    {
+        "id": 3,
+        "name": "Charlie",
+        "email": "charlie@example.com"
+    }
+]
+
+VERDICT: BLOCKING SQL injection confirmed
+exit_code=1
+
+========================================
+COMMAND 2 (HTTP endpoint — live server)
+========================================
+$ cd /tmp/a5-http && php -S 127.0.0.1:19805 -t public &
+$ curl -s -G "http://127.0.0.1:19805/contacts/search" --data-urlencode "q=x' OR '1'='1"
+
+{"results":[{"id":1,"name":"Ada Lovelace","email":"ada@example.com"},{"id":2,"name":"Test","email":"t@t.com"},{"id":3,"name":"Ada Lovelace","email":"ada@example.com"},{"id":4,"name":"Ada Lovelace","email":"ada@example.com"}],"query":"x' OR '1'='1"}
+curl_exit=0
+
+(HTTP repro used disposable copy at `/tmp/a5-http` with `composer install`; canonical `fixture/post` left unchanged.)
+
+========================================
+WHY THIS IS BLOCKING
+========================================
+- ContactRepository::search() builds SQL via string concatenation with unescaped user input (CWE-89).
+- Payload x' OR '1'='1 returns ALL contacts instead of a filtered subset (3 rows in isolated repro; 4 rows via HTTP with schema seed + prior POSTs).
+- Endpoint is unauthenticated: GET /contacts/search?q=...
+- Exploit enables bulk data exfiltration; malicious payloads could also corrupt SQLite data.
+- Fix required: PDO prepared statements before merge.
+
+Vulnerable line (fixture):
+  $sql = "SELECT id, name, email FROM contacts WHERE name LIKE '%" . $term . "%' OR email = '" . $term . "'";

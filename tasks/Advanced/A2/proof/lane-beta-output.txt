@@ -1,0 +1,70 @@
+# Lane Beta (L-config) output — captured 2026-06-22T18:40:51Z
+# Worktree: /Users/mayanksrivastava/Desktop/agent/extras/cloned-repos/reSlim/.worktrees/A1-DEMO-config
+
+## Branch name
+parallel/A1-DEMO/config
+
+## git status
+On branch parallel/A1-DEMO/config
+nothing to commit, working tree clean
+
+## git log --oneline -5
+25380b7 A1-DEMO [L-config]: replace placeholder secrets with safe local defaults
+9a78473 - Update Packager module
+
+## Commit hash (HEAD)
+25380b74d150a087d2d659d515691e89ecbda353
+
+## Files modified (vs base)
+M	src/config.php
+
+## git diff (summary)
+ src/config.php | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
+
+## git diff (full)
+diff --git a/src/config.php b/src/config.php
+index 12b31eb..b01c0b4 100644
+--- a/src/config.php
++++ b/src/config.php
+@@ -11,9 +11,10 @@
+  * @var $config['responseChunkSize'] Size of each chunk read from the Response body when sending to the browser. Default is 4096
+  * @var $config['outputBuffering'] If false, then no output buffering is enabled. If 'append' or 'prepend', then any echo or print statements are captured and are either appended or prepended to the Response returned from the route callable. Default is 'append'
+  * @var $config['determineRouteBeforeAppMiddleware'] When true, the route is calculated before any middleware is executed. This means that you can inspect route parameters in middleware if you need to. Default is false.
++ * Note: Set displayErrorDetails to false in production to avoid leaking stack traces.
+  * 
+  */
+-$config['displayErrorDetails']                  = true;
++$config['displayErrorDetails']                  = true; // false in production
+ $config['addContentLengthHeader']               = false;
+ $config['limitLoadData']                        = 1000;
+ $config['enableApiKeys']                        = true;
+@@ -57,7 +58,7 @@ $config['router']['fileCache']      = 'routes.cache.php';
+  */
+ $config['db']['host']   = 'localhost';
+ $config['db']['user']   = 'root';
+-$config['db']['pass']   = 'root';
++$config['db']['pass']   = ''; // local dev: set your DB password
+ $config['db']['dbname'] = 'reSlim';
+ 
+ /** 
+@@ -107,8 +108,8 @@ $config['smtp']['auth']             = true;
+ $config['smtp']['secure']           = 'tls';
+ $config['smtp']['port']             = 587;
+ $config['smtp']['defaultnamefrom']  = 'reSlim admin';
+-$config['smtp']['username']         = 'youremail@gmail.com';
+-$config['smtp']['password']         = 'secret';
++$config['smtp']['username']         = ''; // CHANGE_ME: your SMTP username
++$config['smtp']['password']         = ''; // CHANGE_ME: your SMTP password
+ $config['smtp']['debug']            = 0;
+ 
+ /**
+@@ -130,7 +131,7 @@ $config['reslim']['universalcache'] = true;
+  * @var $config['cache']['listenfrom'] is the url of server to listen incoming data cache.
+  */
+ $config['cache']['transfer']            = false;
+-$config['cache']['secretkey']           = 'b372e7fe';
++$config['cache']['secretkey']           = 'CHANGE_ME'; // generate a unique secret for multi-server cache sync
+ $config['cache']['listenfrom']          = ['http://localhost:1337/reSlim2/src/api'];
+ 
+ /**

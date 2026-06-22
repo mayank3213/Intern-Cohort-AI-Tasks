@@ -1,0 +1,51 @@
+==> docker build
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  26.11kB
+Step 1/11 : FROM python:3.12-slim
+ ---> 565187088255
+Step 2/11 : WORKDIR /app
+ ---> Using cache
+ ---> bb28be8367de
+Step 3/11 : ENV PYTHONDONTWRITEBYTECODE=1     PYTHONUNBUFFERED=1     PORT=8000
+ ---> Using cache
+ ---> 6590db5714e6
+Step 4/11 : RUN adduser --disabled-password --gecos "" appuser
+ ---> Using cache
+ ---> f7dea1698545
+Step 5/11 : COPY requirements.txt .
+ ---> Using cache
+ ---> 3e1adc07bc86
+Step 6/11 : RUN pip install --no-cache-dir -r requirements.txt
+ ---> Using cache
+ ---> 93b9e4bc040e
+Step 7/11 : COPY app ./app
+ ---> Using cache
+ ---> 76ae4ec685ed
+Step 8/11 : USER appuser
+ ---> Using cache
+ ---> 63701335f095
+Step 9/11 : EXPOSE 8000
+ ---> Using cache
+ ---> cb84669c25ae
+Step 10/11 : HEALTHCHECK --interval=10s --timeout=3s --start-period=5s --retries=3     CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health')" || exit 1
+ ---> Using cache
+ ---> efb8b502016d
+Step 11/11 : CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+ ---> Using cache
+ ---> d43f0a4ca867
+Successfully built d43f0a4ca867
+Successfully tagged i5-echo-service:latest
+==> docker run
+8a2333582547ca469eb880a7deee407012ee3d95f5608cee11cd96cfeb8501b1
+==> wait for health
+==> curl /health
+{"status":"ok"}
+==> curl /echo/hello-docker
+{"message":"hello-docker"}
+==> docker health status
+starting
+
+All checks passed.

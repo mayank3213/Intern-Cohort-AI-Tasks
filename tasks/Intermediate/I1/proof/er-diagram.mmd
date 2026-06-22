@@ -1,0 +1,86 @@
+erDiagram
+    core_status {
+        int StatusID PK
+        string Status
+    }
+    user_role {
+        int RoleID PK
+        string RoleName
+    }
+    user_data {
+        int UserID PK
+        string Username PK
+        string Password
+        string Fullname
+        string Address
+        string Phone
+        string Email
+        string Aboutme
+        string Avatar
+        int RoleID FK
+        int StatusID FK
+        string Created_at
+        string Updated_at
+    }
+    user_auth {
+        string Username PK
+        string RS_Token PK
+        string Created
+        string Expired
+    }
+    user_api {
+        string Domain PK
+        string ApiKey
+        int StatusID FK
+        string Created_at
+        string Username FK
+        string Updated_at
+        string Updated_by
+    }
+    user_forgot {
+        string Email PK
+        string Verifylink PK
+        string Created
+        string Expired
+    }
+    user_upload {
+        int ItemID PK
+        string Date_Upload
+        string Title
+        string Alternate
+        string External_link
+        string Filename
+        string Filepath
+        string Filetype
+        float Filesize
+        string Username FK
+        string Updated_at
+        string Updated_by
+        int StatusID FK
+    }
+    data_page {
+        int PageID PK
+        string Title
+        string Image
+        string Description
+        string Content
+        string Tags
+        int Viewer
+        int StatusID FK
+        string Username FK
+        string Created_at
+        string Updated_at
+        string Updated_by
+        string Last_updated
+    }
+
+    user_role ||--o{ user_data : RoleID
+    core_status ||--o{ user_data : StatusID
+    user_data ||--o{ user_auth : Username
+    user_data ||--o{ user_api : Username
+    user_data ||--o{ user_forgot : Email
+    user_data ||--o{ user_upload : Username
+    user_data ||--o{ data_page : Username
+    core_status ||--o{ user_api : StatusID
+    core_status ||--o{ user_upload : StatusID
+    core_status ||--o{ data_page : StatusID

@@ -1,0 +1,9 @@
+=== command ===
+./scripts/verify-improvement.sh
+OK: behavior unchanged (13650 files, hash match)
+
+==> Fixed scanner timing (5 iterations)
+{
+    "fixed_median_wall_ms": 353.345
+}
+EXIT_CODE=255

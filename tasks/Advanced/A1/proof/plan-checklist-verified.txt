@@ -1,0 +1,67 @@
+# A1 Parallel Plan — Manual Structure Verification
+# Plan file: tasks/Advanced/A1/parallel-plan-a1-demo.md
+# Spec file: tasks/Advanced/A1/parallel-task-splitter.md
+# Verified: 2026-06-23 (manual review of existing plan; no redesign)
+
+✓ Parallel lanes defined
+  - L-readme (readme.md)
+  - L-config (src/config.php)
+  - lane_count: 2; result: parallelizable
+
+✓ Branch/worktree naming documented
+  - Branches: parallel/A1-DEMO/readme, parallel/A1-DEMO/config
+  - Integration: parallel/A1-DEMO/integration
+  - Worktrees: $REPO_ROOT/extras/cloned-repos/reSlim/.worktrees/A1-DEMO-{readme,config}
+
+✓ Merge order documented
+  - Ordered merges: L-readme → integration, then L-config → integration
+  - Rationale: docs-first convention; no ordering dependency between lanes
+  - Conflict resolution playbook present (disjoint writers per hot file)
+
+✓ Agent prompts available
+  - Copy-paste prompts for L-readme and L-config in # Agent Prompts
+  - Each includes scope, owned files, verification commands, stop conditions
+
+✓ Verification plan present
+  - Lane-local commands (grep, php -l) per lane
+  - Integration commands (find + php -l, composer validate, AC spot checks)
+  - Pass criteria mapped to AC-1 through AC-5
+
+✓ Ownership boundaries documented
+  - L-readme write: readme.md only
+  - L-config write: src/config.php only
+  - Read-only cross-lane access explicitly listed
+  - G1 pass: zero write overlap by design
+
+✓ Risk analysis present
+  - Risk register R-01 through R-06 with mitigations
+  - Shared-file conflict mermaid (absence of conflict by design)
+
+✓ Shared constraints documented
+  - PHP platform floor contract, config hardening targets, forbidden actions, commit format
+
+✓ A2 handoff block present
+  - Plan path, repo root, integration branch, pointer to A2 executor spec
+
+~ Rollback strategy (partial)
+  - No dedicated rollback section inside parallel-plan-a1-demo.md
+  - Rollback referenced in parallel-task-splitter.md → tasks/Advanced/A2/parallel-worktree-executor.md (executor responsibility)
+
+✓ No conflicting ownership detected
+  - Manual review: disjoint owns_write paths; semantic read-only coupling only
+
+✓ Repository-relative paths used
+  - All former /Users/mayanksrivastava/... paths replaced with $REPO_ROOT/extras/cloned-repos/reSlim
+
+✓ Required plan sections present (8/8)
+  1. Execution Summary
+  2. Task Breakdown
+  3. Worktrees & Branches
+  4. Shared Constraints
+  5. Agent Prompts
+  6. Merge Order
+  7. Risk Analysis
+  8. Verification Plan
+
+✓ Mermaid diagrams present (4)
+  - Decomposition, worktree fork, merge dependency, shared-file conflict (valid/invalid scenarios)

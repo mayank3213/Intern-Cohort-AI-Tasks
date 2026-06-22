@@ -1,0 +1,16 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.9.6, pytest-8.3.4, pluggy-1.6.0 -- /Users/mayanksrivastava/Desktop/agent/tasks/Intermediate/I4/service/.venv/bin/python3
+cachedir: .pytest_cache
+rootdir: /Users/mayanksrivastava/Desktop/agent/tasks/Intermediate/I4/service
+configfile: pytest.ini
+plugins: anyio-4.12.1
+collecting ... collected 6 items
+
+tests/test_api.py::test_convert_usd_to_eur PASSED                        [ 16%]
+tests/test_api.py::test_convert_normalizes_currency_case PASSED          [ 33%]
+tests/test_api.py::test_convert_rejects_non_positive_amount PASSED       [ 50%]
+tests/test_api.py::test_convert_rejects_invalid_currency_code_length PASSED [ 66%]
+tests/test_api.py::test_convert_rejects_unsupported_currency PASSED      [ 83%]
+tests/test_api.py::test_list_currencies PASSED                           [100%]
+
+============================== 6 passed in 0.03s ===============================

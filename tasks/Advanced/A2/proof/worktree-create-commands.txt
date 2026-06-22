@@ -1,0 +1,35 @@
+# Worktree creation commands — captured 2026-06-22T18:40:21Z
+# Repo: /Users/mayanksrivastava/Desktop/agent/extras/cloned-repos/reSlim
+# Base SHA (master): 9a78473ccfaa76bed6c1515f4e088647933644b5
+
+cd /Users/mayanksrivastava/Desktop/agent/extras/cloned-repos/reSlim
+
+# Step 1: Bootstrap integration branch from master
+git checkout master && git rev-parse HEAD
+Already on 'master'
+Your branch is up to date with 'origin/master'.
+9a78473ccfaa76bed6c1515f4e088647933644b5
+exit: 0
+
+git checkout -B parallel/A1-DEMO/integration 9a78473ccfaa76bed6c1515f4e088647933644b5
+Switched to a new branch 'parallel/A1-DEMO/integration'
+exit: 0
+
+# Step 2: Create Lane Alpha (L-readme) worktree
+git worktree add -B parallel/A1-DEMO/readme .worktrees/A1-DEMO-readme 9a78473ccfaa76bed6c1515f4e088647933644b5
+Preparing worktree (new branch 'parallel/A1-DEMO/readme')
+HEAD is now at 9a78473 - Update Packager module
+exit: 0
+
+# Step 3: Create Lane Beta (L-config) worktree
+git worktree add -B parallel/A1-DEMO/config .worktrees/A1-DEMO-config 9a78473ccfaa76bed6c1515f4e088647933644b5
+Preparing worktree (new branch 'parallel/A1-DEMO/config')
+HEAD is now at 9a78473 - Update Packager module
+exit: 0
+
+# Step 4: Verify worktree list
+git worktree list
+/Users/mayanksrivastava/Desktop/agent/extras/cloned-repos/reSlim                            9a78473 [parallel/A1-DEMO/integration]
+/Users/mayanksrivastava/Desktop/agent/extras/cloned-repos/reSlim/.worktrees/A1-DEMO-config  9a78473 [parallel/A1-DEMO/config]
+/Users/mayanksrivastava/Desktop/agent/extras/cloned-repos/reSlim/.worktrees/A1-DEMO-readme  9a78473 [parallel/A1-DEMO/readme]
+exit: 0

@@ -1,0 +1,13 @@
+diff --git a/src/store.js b/src/store.js
+index a0a11a9..68a4612 100644
+--- a/src/store.js
++++ b/src/store.js
+@@ -33,7 +33,7 @@ export class TransactionStore {
+       throw new ValidationError("description must be 1-200 characters");
+     }
+ 
+-    if (payload.type === "debit" && this.balance() <= amount) {
++    if (payload.type === "debit" && this.balance() < amount) {
+       throw new InsufficientFundsError(
+         `Insufficient funds: balance ${formatAmount(this.balance())}, requested debit ${formatAmount(amount)}`,
+       );

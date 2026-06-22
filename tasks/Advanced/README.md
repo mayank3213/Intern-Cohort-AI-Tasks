@@ -66,20 +66,17 @@ Advanced/
 │   ├── starter/                       ← legacy Contact API baseline
 │   ├── scripts/                       ← verify-baseline.sh, verify-first-step.sh
 │   ├── modernization-first-stepper.md
-│   └── EVALUATOR.md                   ← graders only
 │
 ├── A5/  Agent-generated PR review
 │   ├── fixture/                       ← patch + PR description (+ optional sandbox)
 │   ├── scripts/                       ← show-fixture.sh, apply-fixture.sh
-│   ├── agent-pr-reviewer.md
-│   └── EVALUATOR.md
+│   └── agent-pr-reviewer.md
 │
 └── A6/  Performance profiling + fix
     ├── fixture/FileScanner.php        ← intentional O(n²) bottleneck
     ├── grader/                        ← reference fix (do not read during exercise)
     ├── scripts/benchmark.sh           ← before/after numbers
-    ├── targeted-perf-fixer.md
-    └── EVALUATOR.md
+    └── targeted-perf-fixer.md
 ```
 
 ---
@@ -200,7 +197,7 @@ cd tasks/Advanced/A6
 
 **Pass gate:** Same files found (count + hash) · median ≥10% lower · rollback documented.
 
-**Do not read** [`A6/grader/`](A6/grader/) or [`EVALUATOR.md`](A6/EVALUATOR.md) during the exercise.
+**Do not read** [`A6/grader/`](A6/grader/) during the exercise.
 
 ---
 
@@ -301,7 +298,6 @@ Most Advanced folders follow a consistent layout:
 ├── README.md                 # Start here — goal, deliverables, pass criteria, setup
 ├── {skill}-*.md              # Agent workflow spec (step-by-step for AI runs)
 ├── agent-run-output-*.md     # Golden sample from a completed run
-├── EVALUATOR.md              # Answer key for graders (do not read during exercise)
 ├── scripts/                  # benchmark.sh, verify-*.sh, apply-fixture.sh
 ├── fixture/ or starter/      # Target code, patches, or seeded scenarios
 └── proof/                    # Screenshot evidence (A3)
@@ -312,7 +308,6 @@ Most Advanced folders follow a consistent layout:
 | `README.md` | **Single source of truth** for attempting the task |
 | `*-splitter.md`, `*-executor.md`, etc. | Repeatable AI workflow: inputs, steps, output schema, stop conditions |
 | `agent-run-output-*.md` / `parallel-plan-*.md` | Quality bar — compare your deliverable structure and depth |
-| `EVALUATOR.md` | Hidden scoring rubric; candidates must not read during exercise |
 | `scripts/` | Repeatable commands so baseline/verify numbers are reproducible |
 | `proof/` | Visual evidence that runnable systems work (see A3) |
 
@@ -363,7 +358,6 @@ git submodule update --init extras/cloned-repos/reSlim
 - **Do not commit** local/generated artifacts: `.venv/`, `node_modules/`, `vendor/`, `target/`, `.pytest_cache/`, `A6/fixture/fixtures/`, `A5/fixture/sandbox/`
 - **Source citations** — analysis tasks require `source: path:line-range` on every finding
 - **Time boxes** — pass criteria assume the stated duration; scope accordingly
-- **EVALUATOR.md** — for graders only; do not read during the exercise
 - **Canonical baselines** — apply A5 patches to `fixture/sandbox/`, not `A4/starter/`; tear down A2 worktrees with rollback commands from the A2 README
 - **A1 plan-only** — creating worktrees in A1 violates the exercise rules; hand off to A2
 - **Proof screenshots** — store under `proof/` when the task asks for visual evidence (A3)

@@ -1,0 +1,74 @@
+# POST /convert smoke tests — captured 2026-06-22T18:32:50Z
+# Prerequisite: uvicorn app.main:app --host 127.0.0.1 --port 8000
+
+## Valid request
+
+### Command
+
+```bash
+curl -s -w "\nHTTP_STATUS: %{http_code}\n" \
+  -X POST http://127.0.0.1:8000/convert \
+  -H "Content-Type: application/json" \
+  -d '{"amount": 100, "from_currency": "USD", "to_currency": "EUR"}'
+```
+
+### Request body
+
+```json
+{"amount": 100, "from_currency": "USD", "to_currency": "EUR"}
+```
+
+### Response
+
+```
+{"amount":100.0,"from_currency":"USD","to_currency":"EUR","converted_amount":92.0,"rate":0.92}
+HTTP_STATUS: 200
+```
+
+## Invalid request — non-positive amount (validation error)
+
+### Command
+
+```bash
+curl -s -w "\nHTTP_STATUS: %{http_code}\n" \
+  -X POST http://127.0.0.1:8000/convert \
+  -H "Content-Type: application/json" \
+  -d '{"amount": -5, "from_currency": "USD", "to_currency": "EUR"}'
+```
+
+### Request body
+
+```json
+{"amount": -5, "from_currency": "USD", "to_currency": "EUR"}
+```
+
+### Response
+
+```
+{"detail":[{"type":"greater_than","loc":["body","amount"],"msg":"Input should be greater than 0","input":-5,"ctx":{"gt":0.0}}]}
+HTTP_STATUS: 422
+```
+
+## Invalid request — unsupported currency (application error)
+
+### Command
+
+```bash
+curl -s -w "\nHTTP_STATUS: %{http_code}\n" \
+  -X POST http://127.0.0.1:8000/convert \
+  -H "Content-Type: application/json" \
+  -d '{"amount": 100, "from_currency": "USD", "to_currency": "JPY"}'
+```
+
+### Request body
+
+```json
+{"amount": 100, "from_currency": "USD", "to_currency": "JPY"}
+```
+
+### Response
+
+```
+{"detail":"Unsupported to_currency: JPY. Supported: ['EUR', 'GBP', 'INR', 'USD']"}
+HTTP_STATUS: 400
+```

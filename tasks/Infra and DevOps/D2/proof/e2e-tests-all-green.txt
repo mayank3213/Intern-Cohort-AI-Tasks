@@ -1,0 +1,255 @@
+# D2 E2E — all green proof
+# Date: 2026-06-22T18:56:26Z
+# Working directory: tasks/Infra and DevOps/D2
+
+## Command executed
+$ cd "tasks/Infra and DevOps/D2" && ./scripts/run-e2e.sh
+
+## Output (stdout + stderr)
+==> ensure stack is up
+==> docker compose up --build -d
+time="2026-06-23T00:26:26+05:30" level=warning msg="Docker Compose requires buildx plugin to be installed"
+ Image d2-job-stack-api Building 
+ Image d2-job-stack-api Building 
+Sending build context to Docker daemon  1.619kB
+Step 1/12 : FROM python:3.12-slim
+ ---> 565187088255
+Step 2/12 : WORKDIR /app
+ ---> Using cache
+ ---> bb28be8367de
+Step 3/12 : ENV PYTHONDONTWRITEBYTECODE=1     PYTHONUNBUFFERED=1     PORT=8080
+ ---> Using cache
+ ---> 82aec4761d0f
+Step 4/12 : RUN adduser --disabled-password --gecos "" appuser
+ ---> Using cache
+ ---> 0598fe55ac60
+Step 5/12 : COPY requirements.txt .
+ ---> 4969d9d6a717
+Step 6/12 : RUN pip install --no-cache-dir -r requirements.txt
+ ---> Running in d66251b74b3f
+Collecting fastapi==0.115.6 (from -r requirements.txt (line 1))
+  Downloading fastapi-0.115.6-py3-none-any.whl.metadata (27 kB)
+Collecting uvicorn==0.34.0 (from uvicorn[standard]==0.34.0->-r requirements.txt (line 2))
+  Downloading uvicorn-0.34.0-py3-none-any.whl.metadata (6.5 kB)
+Collecting psycopg==3.2.4 (from psycopg[binary]==3.2.4->-r requirements.txt (line 3))
+  Downloading psycopg-3.2.4-py3-none-any.whl.metadata (4.3 kB)
+Collecting starlette<0.42.0,>=0.40.0 (from fastapi==0.115.6->-r requirements.txt (line 1))
+  Downloading starlette-0.41.3-py3-none-any.whl.metadata (6.0 kB)
+Collecting pydantic!=1.8,!=1.8.1,!=2.0.0,!=2.0.1,!=2.1.0,<3.0.0,>=1.7.4 (from fastapi==0.115.6->-r requirements.txt (line 1))
+  Downloading pydantic-2.13.4-py3-none-any.whl.metadata (109 kB)
+Collecting typing-extensions>=4.8.0 (from fastapi==0.115.6->-r requirements.txt (line 1))
+  Downloading typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)
+Collecting click>=7.0 (from uvicorn==0.34.0->uvicorn[standard]==0.34.0->-r requirements.txt (line 2))
+  Downloading click-8.4.1-py3-none-any.whl.metadata (2.6 kB)
+Collecting h11>=0.8 (from uvicorn==0.34.0->uvicorn[standard]==0.34.0->-r requirements.txt (line 2))
+  Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+Collecting psycopg-binary==3.2.4 (from psycopg[binary]==3.2.4->-r requirements.txt (line 3))
+  Downloading psycopg_binary-3.2.4-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (2.8 kB)
+Collecting httptools>=0.6.3 (from uvicorn[standard]==0.34.0->-r requirements.txt (line 2))
+  Downloading httptools-0.8.0-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl.metadata (3.5 kB)
+Collecting python-dotenv>=0.13 (from uvicorn[standard]==0.34.0->-r requirements.txt (line 2))
+  Downloading python_dotenv-1.2.2-py3-none-any.whl.metadata (27 kB)
+Collecting pyyaml>=5.1 (from uvicorn[standard]==0.34.0->-r requirements.txt (line 2))
+  Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl.metadata (2.4 kB)
+Collecting uvloop!=0.15.0,!=0.15.1,>=0.14.0 (from uvicorn[standard]==0.34.0->-r requirements.txt (line 2))
+  Downloading uvloop-0.22.1-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl.metadata (4.9 kB)
+Collecting watchfiles>=0.13 (from uvicorn[standard]==0.34.0->-r requirements.txt (line 2))
+  Downloading watchfiles-1.2.0-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (4.9 kB)
+Collecting websockets>=10.4 (from uvicorn[standard]==0.34.0->-r requirements.txt (line 2))
+  Downloading websockets-16.0-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl.metadata (6.8 kB)
+Collecting annotated-types>=0.6.0 (from pydantic!=1.8,!=1.8.1,!=2.0.0,!=2.0.1,!=2.1.0,<3.0.0,>=1.7.4->fastapi==0.115.6->-r requirements.txt (line 1))
+  Downloading annotated_types-0.7.0-py3-none-any.whl.metadata (15 kB)
+Collecting pydantic-core==2.46.4 (from pydantic!=1.8,!=1.8.1,!=2.0.0,!=2.0.1,!=2.1.0,<3.0.0,>=1.7.4->fastapi==0.115.6->-r requirements.txt (line 1))
+  Downloading pydantic_core-2.46.4-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (6.6 kB)
+Collecting typing-inspection>=0.4.2 (from pydantic!=1.8,!=1.8.1,!=2.0.0,!=2.0.1,!=2.1.0,<3.0.0,>=1.7.4->fastapi==0.115.6->-r requirements.txt (line 1))
+  Downloading typing_inspection-0.4.2-py3-none-any.whl.metadata (2.6 kB)
+Collecting anyio<5,>=3.4.0 (from starlette<0.42.0,>=0.40.0->fastapi==0.115.6->-r requirements.txt (line 1))
+  Downloading anyio-4.14.0-py3-none-any.whl.metadata (4.6 kB)
+Collecting idna>=2.8 (from anyio<5,>=3.4.0->starlette<0.42.0,>=0.40.0->fastapi==0.115.6->-r requirements.txt (line 1))
+  Downloading idna-3.18-py3-none-any.whl.metadata (6.1 kB)
+Downloading fastapi-0.115.6-py3-none-any.whl (94 kB)
+Downloading uvicorn-0.34.0-py3-none-any.whl (62 kB)
+Downloading psycopg-3.2.4-py3-none-any.whl (198 kB)
+Downloading psycopg_binary-3.2.4-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (4.5 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.5/4.5 MB 3.9 MB/s eta 0:00:00
+Downloading click-8.4.1-py3-none-any.whl (116 kB)
+Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+Downloading httptools-0.8.0-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl (518 kB)
+Downloading pydantic-2.13.4-py3-none-any.whl (472 kB)
+Downloading pydantic_core-2.46.4-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (2.0 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.0/2.0 MB 8.0 MB/s eta 0:00:00
+Downloading python_dotenv-1.2.2-py3-none-any.whl (22 kB)
+Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl (775 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 775.1/775.1 kB 6.5 MB/s eta 0:00:00
+Downloading starlette-0.41.3-py3-none-any.whl (73 kB)
+Downloading typing_extensions-4.15.0-py3-none-any.whl (44 kB)
+Downloading uvloop-0.22.1-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl (4.3 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.3/4.3 MB 3.8 MB/s eta 0:00:00
+Downloading watchfiles-1.2.0-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (453 kB)
+Downloading websockets-16.0-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl (186 kB)
+Downloading annotated_types-0.7.0-py3-none-any.whl (13 kB)
+Downloading anyio-4.14.0-py3-none-any.whl (123 kB)
+Downloading typing_inspection-0.4.2-py3-none-any.whl (14 kB)
+Downloading idna-3.18-py3-none-any.whl (65 kB)
+Installing collected packages: websockets, uvloop, typing-extensions, pyyaml, python-dotenv, psycopg-binary, idna, httptools, h11, click, annotated-types, uvicorn, typing-inspection, pydantic-core, psycopg, anyio, watchfiles, starlette, pydantic, fastapi
+Successfully installed annotated-types-0.7.0 anyio-4.14.0 click-8.4.1 fastapi-0.115.6 h11-0.16.0 httptools-0.8.0 idna-3.18 psycopg-3.2.4 psycopg-binary-3.2.4 pydantic-2.13.4 pydantic-core-2.46.4 python-dotenv-1.2.2 pyyaml-6.0.3 starlette-0.41.3 typing-extensions-4.15.0 typing-inspection-0.4.2 uvicorn-0.34.0 uvloop-0.22.1 watchfiles-1.2.0 websockets-16.0
+[91mWARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+[0m[91m
+[notice] A new release of pip is available: 25.0.1 -> 26.1.2
+[notice] To update, run: pip install --upgrade pip
+[0m ---> Removed intermediate container d66251b74b3f
+ ---> 783700de33fb
+Step 7/12 : COPY app ./app
+ ---> 7a477ace799d
+Step 8/12 : USER appuser
+ ---> Running in 2444733aabcd
+ ---> Removed intermediate container 2444733aabcd
+ ---> ce8e42db0659
+Step 9/12 : EXPOSE 8080
+ ---> Running in 041768462ee9
+ ---> Removed intermediate container 041768462ee9
+ ---> 52ca7e259d90
+Step 10/12 : HEALTHCHECK --interval=10s --timeout=3s --start-period=5s --retries=3     CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health')" || exit 1
+ ---> Running in 91c189d4d171
+ ---> Removed intermediate container 91c189d4d171
+ ---> 15d7ee1e6b1e
+Step 11/12 : CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
+ ---> Running in 8ebfd0ce0ecc
+ ---> Removed intermediate container 8ebfd0ce0ecc
+ ---> 4fa03173d205
+Step 12/12 : LABEL com.docker.compose.image.builder=classic
+ ---> Running in f2a41f2cb8fd
+ ---> Removed intermediate container f2a41f2cb8fd
+ ---> 85b15ae68db2
+Successfully built 85b15ae68db2
+Successfully tagged d2-job-stack-api:latest
+ Image d2-job-stack-api Built 
+ Image d2-job-stack-api Built 
+ Image d2-job-stack-worker Building 
+ Image d2-job-stack-worker Building 
+Sending build context to Docker daemon  1.227kB
+Step 1/10 : FROM python:3.12-slim
+ ---> 565187088255
+Step 2/10 : WORKDIR /app
+ ---> Using cache
+ ---> bb28be8367de
+Step 3/10 : ENV PYTHONDONTWRITEBYTECODE=1     PYTHONUNBUFFERED=1
+ ---> Running in cd2beac348a9
+ ---> Removed intermediate container cd2beac348a9
+ ---> 57da216af33a
+Step 4/10 : RUN adduser --disabled-password --gecos "" appuser
+ ---> Running in f53d26be175d
+usermod: no changes
+ ---> Removed intermediate container f53d26be175d
+ ---> 12d31f0d07dd
+Step 5/10 : COPY requirements.txt .
+ ---> b539e2ac1b41
+Step 6/10 : RUN pip install --no-cache-dir -r requirements.txt
+ ---> Running in 647771d20428
+Collecting psycopg==3.2.4 (from psycopg[binary]==3.2.4->-r requirements.txt (line 1))
+  Downloading psycopg-3.2.4-py3-none-any.whl.metadata (4.3 kB)
+Collecting typing-extensions>=4.6 (from psycopg==3.2.4->psycopg[binary]==3.2.4->-r requirements.txt (line 1))
+  Downloading typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)
+Collecting psycopg-binary==3.2.4 (from psycopg[binary]==3.2.4->-r requirements.txt (line 1))
+  Downloading psycopg_binary-3.2.4-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (2.8 kB)
+Downloading psycopg-3.2.4-py3-none-any.whl (198 kB)
+Downloading psycopg_binary-3.2.4-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (4.5 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.5/4.5 MB 17.8 MB/s eta 0:00:00
+Downloading typing_extensions-4.15.0-py3-none-any.whl (44 kB)
+Installing collected packages: typing-extensions, psycopg-binary, psycopg
+[91mWARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+[0mSuccessfully installed psycopg-3.2.4 psycopg-binary-3.2.4 typing-extensions-4.15.0
+[91m
+[notice] A new release of pip is available: 25.0.1 -> 26.1.2
+[notice] To update, run: pip install --upgrade pip
+[0m ---> Removed intermediate container 647771d20428
+ ---> 506541e9067e
+Step 7/10 : COPY worker.py .
+ ---> a85c2846c54f
+Step 8/10 : USER appuser
+ ---> Running in 2750ca1a5331
+ ---> Removed intermediate container 2750ca1a5331
+ ---> 72f4d6f1b31e
+Step 9/10 : CMD ["python", "worker.py"]
+ ---> Running in 31006a4e0519
+ ---> Removed intermediate container 31006a4e0519
+ ---> 67cfdf180a54
+Step 10/10 : LABEL com.docker.compose.image.builder=classic
+ ---> Running in 9df5e746a49e
+ ---> Removed intermediate container 9df5e746a49e
+ ---> d98af8aa77ec
+Successfully built d98af8aa77ec
+Successfully tagged d2-job-stack-worker:latest
+ Image d2-job-stack-worker Built 
+ Image d2-job-stack-worker Built 
+ Network d2-job-stack_default Creating 
+ Network d2-job-stack_default Created 
+ Volume d2-job-stack_pgdata Creating 
+ Volume d2-job-stack_pgdata Created 
+ Container d2-job-stack-db-1 Creating 
+ db The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested 
+ Container d2-job-stack-db-1 Created 
+ Container d2-job-stack-api-1 Creating 
+ Container d2-job-stack-api-1 Created 
+ Container d2-job-stack-worker-1 Creating 
+ Container d2-job-stack-worker-1 Created 
+ Container d2-job-stack-db-1 Starting 
+ Container d2-job-stack-db-1 Started 
+ Container d2-job-stack-db-1 Waiting 
+ Container d2-job-stack-db-1 Healthy 
+ Container d2-job-stack-api-1 Starting 
+ Container d2-job-stack-api-1 Started 
+ Container d2-job-stack-api-1 Waiting 
+ Container d2-job-stack-db-1 Waiting 
+ Container d2-job-stack-db-1 Healthy 
+ Container d2-job-stack-api-1 Healthy 
+ Container d2-job-stack-worker-1 Starting 
+ Container d2-job-stack-worker-1 Started 
+==> wait for api health on port 8080
+api healthy
+==> install test deps (if needed)
+WARNING: You are using pip version 21.2.4; however, version 26.0.1 is available.
+You should consider upgrading via the '/Library/Developer/CommandLineTools/usr/bin/python3 -m pip install --upgrade pip' command.
+==> run e2e tests against http://127.0.0.1:8080
+============================= test session starts ==============================
+platform darwin -- Python 3.9.6, pytest-8.3.4, pluggy-1.6.0 -- /Library/Developer/CommandLineTools/usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /Users/mayanksrivastava/Desktop/agent/tasks/Infra and DevOps/D2
+plugins: anyio-4.12.1
+collecting ... collected 3 items
+
+tests/test_e2e.py::test_health PASSED                                    [ 33%]
+tests/test_e2e.py::test_seeded_job_readable PASSED                       [ 66%]
+tests/test_e2e.py::test_api_worker_pipeline PASSED                       [100%]
+
+============================== 3 passed in 1.46s ===============================
+
+==> inter-service log sample
+worker-1  | 2026-06-22 18:57:01,567 INFO [worker] worker started poll=2.0s db=db:5432/jobs
+worker-1  | 2026-06-22 18:57:03,718 INFO [worker] processing job job-c566a81f0f83
+worker-1  | 2026-06-22 18:57:03,733 INFO [worker] completed job job-c566a81f0f83 result='DOCKER COMPOSE E2E'
+worker-1  | 2026-06-22 18:57:03,735 INFO [worker] batch processed 1 job(s)
+api-1     | INFO:     Started server process [1]
+api-1     | INFO:     Waiting for application startup.
+api-1     | INFO:     Application startup complete.
+api-1     | INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+api-1     | INFO:     127.0.0.1:36412 - "GET /health HTTP/1.1" 200 OK
+api-1     | INFO:     172.18.0.1:44298 - "GET /health HTTP/1.1" 200 OK
+api-1     | INFO:     172.18.0.1:44310 - "GET /health HTTP/1.1" 200 OK
+api-1     | INFO:     172.18.0.1:44310 - "GET /jobs/seeded HTTP/1.1" 200 OK
+api-1     | 2026-06-22 18:57:02,899 INFO [api] created job job-c566a81f0f83 status=pending payload='docker compose e2e'
+api-1     | INFO:     172.18.0.1:44310 - "POST /jobs HTTP/1.1" 201 Created
+api-1     | 2026-06-22 18:57:02,961 INFO [api] GET /jobs/job-c566a81f0f83 status=pending
+api-1     | INFO:     172.18.0.1:44310 - "GET /jobs/job-c566a81f0f83 HTTP/1.1" 200 OK
+api-1     | 2026-06-22 18:57:04,072 INFO [api] GET /jobs/job-c566a81f0f83 status=done
+api-1     | INFO:     172.18.0.1:44310 - "GET /jobs/job-c566a81f0f83 HTTP/1.1" 200 OK
+
+stack left running; use ./scripts/stack-down.sh to tear down
+
+All E2E checks passed.
+
+## Exit code
+EXIT_CODE=0
+
+## Final success summary
+All E2E checks passed. 3 pytest tests green; stack healthy; inter-service log sample captured.

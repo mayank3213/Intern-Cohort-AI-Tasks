@@ -1,0 +1,59 @@
+# D6 load generation — load.sh
+# Date: 2026-06-22T19:04:44Z
+# Working directory: tasks/Infra and DevOps/D6
+
+## Command executed
+$ ./scripts/load.sh
+
+## Output (stdout + stderr)
+==> Load test against http://127.0.0.1:8080
+    requests=120 concurrency=4
+This is ApacheBench, Version 2.3 <$Revision: 1923142 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking 127.0.0.1 (be patient).....done
+
+
+Server Software:        uvicorn
+Server Hostname:        127.0.0.1
+Server Port:            8080
+
+Document Path:          /echo/load-test
+Document Length:        23 bytes
+
+Concurrency Level:      4
+Time taken for tests:   0.111 seconds
+Complete requests:      120
+Failed requests:        0
+Total transferred:      17760 bytes
+HTML transferred:       2760 bytes
+Requests per second:    1084.69 [#/sec] (mean)
+Time per request:       3.688 [ms] (mean)
+Time per request:       0.922 [ms] (mean, across all concurrent requests)
+Transfer rate:          156.77 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    0   0.0      0       0
+Processing:     2    3   0.8      3       7
+Waiting:        2    3   0.9      3       7
+Total:          2    4   0.9      3       7
+WARNING: The median and mean for the total time are not within a normal deviation
+        These results are probably not that reliable.
+
+Percentage of the requests served within a certain time (ms)
+  50%      3
+  66%      4
+  75%      4
+  80%      4
+  90%      5
+  95%      5
+  98%      6
+  99%      6
+ 100%      7 (longest request)
+404 probe: 404
+
+OK: load complete — run ./scripts/verify-metrics.sh
+
+## Exit code: 0
