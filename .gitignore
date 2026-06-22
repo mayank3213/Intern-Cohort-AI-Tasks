@@ -1,1 +1,7 @@
 .vercel
+.venv/
+node_modules/
+target/
+.terraform/
+*.tfstate*
+.pytest_cache/
