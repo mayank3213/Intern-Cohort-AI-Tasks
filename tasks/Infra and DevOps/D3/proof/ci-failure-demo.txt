@@ -1,0 +1,46 @@
+==> Stage 1: lint
+WARNING: You are using pip version 21.2.4; however, version 26.0.1 is available.
+You should consider upgrading via the '/Library/Developer/CommandLineTools/usr/bin/python3 -m pip install --upgrade pip' command.
+All checks passed!
+lint: OK
+==> Stage 2: test (matrix: 3.11 3.12)
+--- python 3.11 ---
+WARN: python3.11 not found; using python3 for this axis
+WARNING: You are using pip version 21.2.4; however, version 26.0.1 is available.
+You should consider upgrading via the '/Library/Developer/CommandLineTools/usr/bin/python3 -m pip install --upgrade pip' command.
+============================= test session starts ==============================
+platform darwin -- Python 3.9.6, pytest-8.3.4, pluggy-1.6.0 -- /Library/Developer/CommandLineTools/usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /Users/mayanksrivastava/Desktop/agent/tasks/Infra and DevOps/D3/service
+configfile: pyproject.toml
+plugins: anyio-4.12.1
+collecting ... collected 2 items
+
+tests/test_health.py::test_health_returns_ok FAILED                      [ 50%]
+tests/test_health.py::test_echo_returns_message PASSED                   [100%]
+
+=================================== FAILURES ===================================
+____________________________ test_health_returns_ok ____________________________
+
+    def test_health_returns_ok() -> None:
+        response = client.get("/health")
+        assert response.status_code == 200
+>       assert response.json() == {"status": "broken"}
+E       AssertionError: assert {'status': 'ok'} == {'status': 'broken'}
+E         
+E         Differing items:
+E         {'status': 'ok'} != {'status': 'broken'}
+E         
+E         Full diff:
+E           {
+E         -     'status': 'broken',...
+E         
+E         ...Full output truncated (3 lines hidden), use '-vv' to show
+
+tests/test_health.py:11: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_health.py::test_health_returns_ok - AssertionError: assert ...
+========================= 1 failed, 1 passed in 0.34s ==========================
+
+Failure demo: FAILED as expected (exit 1)
+SCRIPT_EXIT_CODE=0

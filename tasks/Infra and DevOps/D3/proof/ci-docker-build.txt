@@ -1,0 +1,49 @@
+COMMAND: docker build -t d3-echo-api:sha-6c445ac6 -t d3-echo-api:main .
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  23.04kB
+Step 1/11 : FROM python:3.12-slim
+ ---> 565187088255
+Step 2/11 : WORKDIR /app
+ ---> Using cache
+ ---> bb28be8367de
+Step 3/11 : ENV PYTHONDONTWRITEBYTECODE=1     PYTHONUNBUFFERED=1     PORT=8080
+ ---> Using cache
+ ---> 82aec4761d0f
+Step 4/11 : RUN adduser --disabled-password --gecos "" appuser
+ ---> Using cache
+ ---> 0598fe55ac60
+Step 5/11 : COPY requirements.txt .
+ ---> Using cache
+ ---> c549d460700b
+Step 6/11 : RUN pip install --no-cache-dir -r requirements.txt
+ ---> Using cache
+ ---> 6e8f3525cb95
+Step 7/11 : COPY app ./app
+ ---> Using cache
+ ---> a3f89ab72fe6
+Step 8/11 : USER appuser
+ ---> Using cache
+ ---> d0d52256b1ae
+Step 9/11 : EXPOSE 8080
+ ---> Using cache
+ ---> 69a387ab1716
+Step 10/11 : HEALTHCHECK --interval=10s --timeout=3s --start-period=5s --retries=3     CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health')" || exit 1
+ ---> Using cache
+ ---> 07bc0b9ac33b
+Step 11/11 : CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
+ ---> Using cache
+ ---> 1d707e270016
+Successfully built 1d707e270016
+Successfully tagged d3-echo-api:sha-6c445ac6
+Successfully tagged d3-echo-api:main
+
+BUILD_EXIT_CODE=0
+
+IMAGE_ID=sha256:1d707e2700165a539a2561305ecd313ad9d8c85a7cf47ea8b9b1a3a1a4ca2ed4
+IMAGE_SHA256=d3-echo-api@sha256:1d707e2700165a539a2561305ecd313ad9d8c85a7cf47ea8b9b1a3a1a4ca2ed4
+REPOSITORY        TAG            IMAGE ID                                                                  CREATED          SIZE
+d3-echo-api       main           sha256:1d707e2700165a539a2561305ecd313ad9d8c85a7cf47ea8b9b1a3a1a4ca2ed4   7 seconds ago    256MB
+d3-echo-api       sha-6c445ac6   sha256:1d707e2700165a539a2561305ecd313ad9d8c85a7cf47ea8b9b1a3a1a4ca2ed4   7 seconds ago    256MB
