@@ -8,7 +8,7 @@ Build an **entity-relationship inventory** for every persisted table in this rep
 
 ```bash
 # from repo root — see tasks/Intermediate/README.md for full setup
-git clone --depth 1 https://github.com/aalfiann/reSlim.git reSlim
+git submodule update --init extras/cloned-repos/reSlim
 ```
 
 Primary schema: `reSlim/resources/database/reSlim.sql`  

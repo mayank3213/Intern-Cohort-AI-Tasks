@@ -6,7 +6,7 @@ Analyze a **legacy PHP API** for modernization opportunities, prioritize them, t
 
 **Primary:** [`starter/`](starter/) — self-contained legacy Contact API (intentional gaps).
 
-**Alternate:** `reSlim/` at repo root (larger; use only if instructed).
+**Alternate:** `extras/cloned-repos/reSlim/` at `extras/cloned-repos/reSlim/` (larger; use only if instructed).
 
 Do **not** read [`EVALUATOR.md`](EVALUATOR.md) during the exercise.
 

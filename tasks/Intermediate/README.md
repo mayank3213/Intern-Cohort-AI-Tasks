@@ -7,7 +7,7 @@ Six timed exercises for engineers working in unfamiliar repos. Each folder has a
 From the repository root:
 
 ```bash
-git clone --depth 1 https://github.com/aalfiann/reSlim.git reSlim
+git submodule update --init extras/cloned-repos/reSlim
 ```
 
 This pulls [aalfiann/reSlim](https://github.com/aalfiann/reSlim) (PHP Slim 3 REST API with MariaDB schema). Required for **I1**, **I2**, and **I6 (PHP variant)**.
@@ -16,8 +16,8 @@ This pulls [aalfiann/reSlim](https://github.com/aalfiann/reSlim) (PHP Slim 3 RES
 
 | Task | Time | Target | Deliverable |
 |------|------|--------|-------------|
-| [I1](I1/README.md) | 45 min | `reSlim/` (+ optional Basics apps) | ER inventory + Mermaid `erDiagram` with source citations |
-| [I2](I2/README.md) | 45 min | `reSlim/` | One flow trace + Mermaid `sequenceDiagram` |
+| [I1](I1/README.md) | 45 min | `extras/cloned-repos/reSlim/` (+ optional Basics apps) | ER inventory + Mermaid `erDiagram` with source citations |
+| [I2](I2/README.md) | 45 min | `extras/cloned-repos/reSlim/` | One flow trace + Mermaid `sequenceDiagram` |
 | [I3](I3/README.md) | 60 min | `tasks/Basics/B4` or `B5` | Minimal diff + test + risk report |
 | [I4](I4/README.md) | 90 min | `I4/` | FastAPI `/convert` + Node CLI + tests |
 | [I5](I5/README.md) | 60 min | `I5/` | Dockerfile + running container proof |

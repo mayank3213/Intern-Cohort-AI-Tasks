@@ -8,7 +8,7 @@ For a module or repository, identify the **test framework**, find **relevant tes
 
 ```bash
 # from repo root — optional for reSlim target
-git clone --depth 1 https://github.com/aalfiann/reSlim.git reSlim
+git submodule update --init extras/cloned-repos/reSlim
 ```
 
 **Suggested targets:**
@@ -18,7 +18,7 @@ git clone --depth 1 https://github.com/aalfiann/reSlim.git reSlim
 | `tasks/Basics/B4` | pytest | `pytest -q` |
 | `tasks/Basics/B5` | Vitest | `npm test` |
 | `tasks/Basics/B6` | cargo test | `cargo test` |
-| `reSlim/` | PHPUnit | `vendor/bin/phpunit` (after `composer install`) |
+| `extras/cloned-repos/reSlim/` | PHPUnit | `vendor/bin/phpunit` (after `composer install`) |
 
 Pick one target and scope to a single module when the repo is large.
 

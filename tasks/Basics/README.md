@@ -78,8 +78,8 @@ Runnable in-repo apps used as:
 
 | Task | Type | Time | Goal | Primary target | Start here |
 |------|------|------|------|----------------|------------|
-| [B1](B1/README.md) | Analysis | 30 min | Structured inventory of classes, services, controllers, configs | `reSlim/` or B4/B5 | [README](B1/README.md) |
-| [B2](B2/README.md) | Analysis | 30 min | Map every external HTTP route to its handler | `reSlim/` or B4/B5 | [README](B2/README.md) |
+| [B1](B1/README.md) | Analysis | 30 min | Structured inventory of classes, services, controllers, configs | `extras/cloned-repos/reSlim/` or B4/B5 | [README](B1/README.md) |
+| [B2](B2/README.md) | Analysis | 30 min | Map every external HTTP route to its handler | `extras/cloned-repos/reSlim/` or B4/B5 | [README](B2/README.md) |
 | [B3](B3/README.md) | Analysis | 15 min | Detect test framework, run tests, interpret results | B4, B5, B6, or reSlim | [README](B3/README.md) |
 | [B4](B4/README.md) | Sample app | — | FastAPI transaction ledger (Python) | in-repo | [README](B4/README.md) |
 | [B5](B5/README.md) | Sample app | — | Express transaction ledger (Node.js) | in-repo | [README](B5/README.md) |
@@ -115,10 +115,10 @@ flowchart LR
 | **2** | B1 on B4 or B5 | Practice artifact inventory on ~5 files instead of a full PHP app |
 | **3** | B2 on the same app | Only 3 routes — learn the report format without reSlim complexity |
 | **4** | B3 on B4, B5, or B6 | Fastest test-discovery loop (pytest / Vitest / cargo test) |
-| **5** | Repeat B1 → B2 → B3 on `reSlim/` | Real-world PHP repo with controllers, models, middleware, and PHPUnit |
+| **5** | Repeat B1 → B2 → B3 on `extras/cloned-repos/reSlim/` | Real-world PHP repo with controllers, models, middleware, and PHPUnit |
 | **6** | Move to [Intermediate](../Intermediate/README.md) | I1 (ER diagrams) and I2 (flow traces) build directly on reSlim literacy |
 
-> **Shortcut:** If you already know reSlim or similar PHP APIs, skip the warm-up and go straight to B1–B3 on `reSlim/`.
+> **Shortcut:** If you already know reSlim or similar PHP APIs, skip the warm-up and go straight to B1–B3 on `extras/cloned-repos/reSlim/`.
 
 ---
 
@@ -200,7 +200,7 @@ flowchart LR
 | [B4](B4/README.md) | pytest | `pytest -q` |
 | [B5](B5/README.md) | Vitest | `npm test` |
 | [B6](B6/README.md) | cargo test | `cargo test` |
-| `reSlim/` | PHPUnit | `vendor/bin/phpunit` (after `composer install`) |
+| `extras/cloned-repos/reSlim/` | PHPUnit | `vendor/bin/phpunit` (after `composer install`) |
 
 | Resource | Link |
 |----------|------|
@@ -308,7 +308,7 @@ Required for B1–B3 when using the primary target, and for all Intermediate tas
 
 ```bash
 # from repository root (sibling to tasks/)
-git clone --depth 1 https://github.com/aalfiann/reSlim.git reSlim
+git submodule update --init extras/cloned-repos/reSlim
 ```
 
 > If an older checkout used a broken submodule pin, use the clone command above instead of `git submodule update`.

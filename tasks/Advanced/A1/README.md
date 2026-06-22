@@ -8,18 +8,18 @@ Take **one feature or analysis task** and split it safely into **parallel worktr
 
 ## Target repo
 
-**Primary:** `reSlim/` at repo root (PHP Slim 3 REST API).
+**Primary:** `extras/cloned-repos/reSlim/` at repo root (PHP Slim 3 REST API).
 
 ```bash
 # from repo root — if not already present
-git clone --depth 1 https://github.com/aalfiann/reSlim.git reSlim
+git submodule update --init extras/cloned-repos/reSlim
 ```
 
 **Alternate targets:** `tasks/Basics/B4`, `tasks/Advanced/A4/starter/` — use only if instructed.
 
 ## Suggested practice task
 
-**A1-DEMO:** Parallel README + config hardening in `reSlim/` with **disjoint file ownership**:
+**A1-DEMO:** Parallel README + config hardening in `extras/cloned-repos/reSlim/` with **disjoint file ownership**:
 
 - **Lane 1:** align `readme.md` PHP version wording with `src/composer.json`
 - **Lane 2:** harden placeholder credentials in `src/config.php`

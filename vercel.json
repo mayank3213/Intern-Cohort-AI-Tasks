@@ -1,8 +1,8 @@
 {
-  "buildCommand": "npm run build --prefix agent-capability-explorer",
-  "devCommand": "npm run dev --prefix agent-capability-explorer",
-  "installCommand": "npm install --prefix agent-capability-explorer",
-  "outputDirectory": "agent-capability-explorer/dist",
+  "buildCommand": "npm run build --prefix extras/frontend/agent-capability-explorer",
+  "devCommand": "npm run dev --prefix extras/frontend/agent-capability-explorer",
+  "installCommand": "npm install --prefix extras/frontend/agent-capability-explorer",
+  "outputDirectory": "extras/frontend/agent-capability-explorer/dist",
   "framework": null,
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }

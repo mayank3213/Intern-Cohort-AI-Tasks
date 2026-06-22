@@ -8,10 +8,10 @@ Identify **every externally exposed route** in an unfamiliar repository — HTTP
 
 ```bash
 # from repo root
-git clone --depth 1 https://github.com/aalfiann/reSlim.git reSlim
+git submodule update --init extras/cloned-repos/reSlim
 ```
 
-**Primary target:** `reSlim/` (PHP Slim 3 REST API)
+**Primary target:** `extras/cloned-repos/reSlim/` (PHP Slim 3 REST API)
 
 **Alternate targets (smaller):** `tasks/Basics/B4` (FastAPI), `tasks/Basics/B5` (Express)
 

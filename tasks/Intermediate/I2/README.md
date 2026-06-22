@@ -7,7 +7,7 @@ Trace **one** HTTP endpoint, event handler, or cron job from entry point through
 ## Setup
 
 ```bash
-git clone --depth 1 https://github.com/aalfiann/reSlim.git reSlim
+git submodule update --init extras/cloned-repos/reSlim
 ```
 
 **Recommended anchor:** `POST /user/login` in reSlim (authentication flow with DB reads + token insert).

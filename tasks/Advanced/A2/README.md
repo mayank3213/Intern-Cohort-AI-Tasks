@@ -13,12 +13,12 @@ A2 **executes** a plan from [A1](../A1/README.md). Do not re-plan lanes unless A
 
 ```bash
 # from repo root
-git clone --depth 1 https://github.com/aalfiann/reSlim.git reSlim   # if needed
-cd reSlim
+git submodule update --init extras/cloned-repos/reSlim   # if needed
+cd extras/cloned-repos/reSlim
 git status   # working tree should be clean before starting
 ```
 
-**Primary target:** `reSlim/`  
+**Primary target:** `extras/cloned-repos/reSlim/`  
 **Practice plan:** A1-DEMO (2 lanes: `readme.md` + `src/config.php`)
 
 ## Deliverables
@@ -57,10 +57,10 @@ Include **Mermaid diagrams** in major sections (worktree flow, merge order, veri
 
 ## Setup (A1-DEMO example)
 
-Using the bundled demo plan against `reSlim/`:
+Using the bundled demo plan against `extras/cloned-repos/reSlim/`:
 
 ```bash
-cd reSlim
+cd extras/cloned-repos/reSlim
 
 # Review the plan first
 cat ../tasks/Advanced/A1/parallel-plan-a1-demo.md
@@ -120,7 +120,7 @@ Golden sample: [`parallel-run-a1-demo.md`](parallel-run-a1-demo.md) — note thi
 If you need to tear down worktrees and branches after practice:
 
 ```bash
-cd reSlim
+cd extras/cloned-repos/reSlim
 
 git worktree remove .worktrees/A1-DEMO-readme --force
 git worktree remove .worktrees/A1-DEMO-config --force

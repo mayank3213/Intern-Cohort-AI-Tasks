@@ -88,8 +88,8 @@ Advanced/
 
 | Task | Time | Type | Target | Deliverable | Details |
 |------|------|------|--------|-------------|---------|
-| [**A1**](A1/README.md) | 45 min | Analysis | `reSlim/` | `parallel-plan-{slug}.md` | [parallel-task-splitter](A1/parallel-task-splitter.md) |
-| [**A2**](A2/README.md) | 90 min | Execution | `reSlim/` | `parallel-run-{slug}.md` | [parallel-worktree-executor](A2/parallel-worktree-executor.md) |
+| [**A1**](A1/README.md) | 45 min | Analysis | `extras/cloned-repos/reSlim/` | `parallel-plan-{slug}.md` | [parallel-task-splitter](A1/parallel-task-splitter.md) |
+| [**A2**](A2/README.md) | 90 min | Execution | `extras/cloned-repos/reSlim/` | `parallel-run-{slug}.md` | [parallel-worktree-executor](A2/parallel-worktree-executor.md) |
 | [**A3**](A3/README.md) | ~90 min | Build | `A3/` (in-repo) | Running pipeline + passing tests | Full system README |
 | [**A4**](A4/README.md) | 90 min | Analysis + patch | `A4/starter/` | Modernization report + one safe change | [modernization-first-stepper](A4/modernization-first-stepper.md) |
 | [**A5**](A5/README.md) | 60 min | Analysis | `A5/fixture/` | Structured PR review + verdict | [agent-pr-reviewer](A5/agent-pr-reviewer.md) |
@@ -101,7 +101,7 @@ Advanced/
 
 **Critical rule:** A1 is **plan-only**. No worktrees, commits, or code changes.
 
-**Practice task (A1-DEMO):** Parallel README alignment + config hardening in `reSlim/` — two lanes, two files, zero overlap.
+**Practice task (A1-DEMO):** Parallel README alignment + config hardening in `extras/cloned-repos/reSlim/` — two lanes, two files, zero overlap.
 
 **Golden sample:** [`A1/parallel-plan-a1-demo.md`](A1/parallel-plan-a1-demo.md)
 
@@ -265,7 +265,7 @@ flowchart TB
 From the **repository root** (sibling to `tasks/`):
 
 ```bash
-git clone --depth 1 https://github.com/aalfiann/reSlim.git reSlim
+git submodule update --init extras/cloned-repos/reSlim
 ```
 
 | Task | Requires reSlim? |
@@ -342,7 +342,7 @@ Used as the primary target for **A1** and **A2**. Provides a realistic multi-fil
 
 ```bash
 # from repo root
-git clone --depth 1 https://github.com/aalfiann/reSlim.git reSlim
+git submodule update --init extras/cloned-repos/reSlim
 ```
 
 > If an older checkout used a broken submodule pin, use the clone command above instead of `git submodule update`.

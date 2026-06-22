@@ -84,8 +84,8 @@ Tracks are **independent** — you can start anywhere — but the [recommended p
 
 | Task | Time | Goal | Primary target | Details |
 |------|------|------|----------------|---------|
-| [B1](Basics/B1/README.md) | 30 min | Structured inventory of classes, services, controllers, configs | `reSlim/` or B4/B5 | [code-artifact-mapper](Basics/B1/code-artifact-mapper.md) |
-| [B2](Basics/B2/README.md) | 30 min | Map every externally exposed HTTP route to its handler | `reSlim/` or B4/B5 | [route-discovery-mapper](Basics/B2/route-discovery-mapper.md) |
+| [B1](Basics/B1/README.md) | 30 min | Structured inventory of classes, services, controllers, configs | `extras/cloned-repos/reSlim/` or B4/B5 | [code-artifact-mapper](Basics/B1/code-artifact-mapper.md) |
+| [B2](Basics/B2/README.md) | 30 min | Map every externally exposed HTTP route to its handler | `extras/cloned-repos/reSlim/` or B4/B5 | [route-discovery-mapper](Basics/B2/route-discovery-mapper.md) |
 | [B3](Basics/B3/README.md) | 15 min | Detect test framework, run tests, interpret results | B4, B5, B6, or reSlim | [test-discovery-executor](Basics/B3/test-discovery-executor.md) |
 | [B4](Basics/B4/README.md) | — | **Sample app:** FastAPI transaction ledger | in-repo | `pytest`, `uvicorn` |
 | [B5](Basics/B5/README.md) | — | **Sample app:** Express transaction ledger (B4 counterpart) | in-repo | `npm test`, `npm start` |
@@ -101,8 +101,8 @@ See also the track overview: [Intermediate/README.md](Intermediate/README.md).
 
 | Task | Time | Goal | Primary target | Agent spec |
 |------|------|------|----------------|------------|
-| [I1](Intermediate/I1/README.md) | 45 min | ER inventory + Mermaid `erDiagram` with citations | `reSlim/` | [er-diagram-mapper](Intermediate/I1/er-diagram-mapper.md) |
-| [I2](Intermediate/I2/README.md) | 45 min | One flow trace + Mermaid `sequenceDiagram` | `reSlim/` | [flow-tracer](Intermediate/I2/flow-tracer.md) |
+| [I1](Intermediate/I1/README.md) | 45 min | ER inventory + Mermaid `erDiagram` with citations | `extras/cloned-repos/reSlim/` | [er-diagram-mapper](Intermediate/I1/er-diagram-mapper.md) |
+| [I2](Intermediate/I2/README.md) | 45 min | One flow trace + Mermaid `sequenceDiagram` | `extras/cloned-repos/reSlim/` | [flow-tracer](Intermediate/I2/flow-tracer.md) |
 | [I3](Intermediate/I3/README.md) | 60 min | Minimal diff + test + risk report (≤2 prod files) | B4 or B5 | [surgical-patcher](Intermediate/I3/surgical-patcher.md) |
 | [I4](Intermediate/I4/README.md) | 90 min | FastAPI `/convert` + Node CLI + tests | `I4/` (in-repo) | reference implementation |
 | [I5](Intermediate/I5/README.md) | 60 min | Dockerfile + running container proof | `I5/` (in-repo) | reference implementation |
@@ -116,8 +116,8 @@ I4 and I5 ship **runnable reference implementations** for verification. I6 uses 
 
 | Task | Time | Goal | Primary target | Agent spec |
 |------|------|------|----------------|------------|
-| [A1](Advanced/A1/README.md) | 45 min | Split one feature into 2–5 parallel lanes (**plan only**) | `reSlim/` | [parallel-task-splitter](Advanced/A1/parallel-task-splitter.md) |
-| [A2](Advanced/A2/README.md) | 90 min | **Execute** A1 plan: worktrees, merges, verification | `reSlim/` | [parallel-worktree-executor](Advanced/A2/parallel-worktree-executor.md) |
+| [A1](Advanced/A1/README.md) | 45 min | Split one feature into 2–5 parallel lanes (**plan only**) | `extras/cloned-repos/reSlim/` | [parallel-task-splitter](Advanced/A1/parallel-task-splitter.md) |
+| [A2](Advanced/A2/README.md) | 90 min | **Execute** A1 plan: worktrees, merges, verification | `extras/cloned-repos/reSlim/` | [parallel-worktree-executor](Advanced/A2/parallel-worktree-executor.md) |
 | [A3](Advanced/A3/README.md) | — | **Build task:** Python + Node + Rust fraud scoring pipeline | `A3/` (in-repo) | multi-component system |
 | [A4](Advanced/A4/README.md) | 90 min | Modernization findings + one safe first step | `A4/starter/` | [modernization-first-stepper](Advanced/A4/modernization-first-stepper.md) |
 | [A5](Advanced/A5/README.md) | 60 min | Review agent-generated PR — structured issue list + verdict (analysis only) | `A5/fixture/` | [agent-pr-reviewer](Advanced/A5/agent-pr-reviewer.md) |
@@ -242,18 +242,25 @@ Both ledgers expose the same API contract:
 
 ## External dependencies
 
-Several tasks target **[reSlim](https://github.com/aalfiann/reSlim)** — a PHP Slim 3 REST API with MariaDB schema. Clone it once at the **repository root** (sibling to `tasks/`):
+Several tasks target **[reSlim](https://github.com/aalfiann/reSlim)** — a PHP Slim 3 REST API with MariaDB schema. It is included as a git submodule at **`extras/cloned-repos/reSlim`**:
 
 ```bash
-# from repo root
-git clone --depth 1 https://github.com/aalfiann/reSlim.git reSlim
+# from repo root (after clone)
+git submodule update --init extras/cloned-repos/reSlim
+```
+
+Manual clone (if not using submodules):
+
+```bash
+mkdir -p extras/cloned-repos
+git clone --depth 1 https://github.com/aalfiann/reSlim.git extras/cloned-repos/reSlim
 ```
 
 | Tasks requiring reSlim |
 |------------------------|
 | B1, B2, B3 (primary target), I1, I2, I6 (PHP variant), A1, A2, A4 (alternate) |
 
-> **Note:** If an older checkout used a broken submodule pin, use the clone command above instead of `git submodule update`.
+> **Note:** After cloning this repo, run `git submodule update --init extras/cloned-repos/reSlim` (or use the manual clone command below).
 
 ### Tooling summary
 
@@ -346,7 +353,7 @@ For AI eval runs: read the task `README.md` first, then the agent workflow spec,
 
 1. Pick a task from the [catalog](#task-catalog) (or follow the [learning path](#recommended-learning-path)).
 2. Open that task's `README.md` — it has goal, deliverables, setup, and pass criteria.
-3. Clone [reSlim](https://github.com/aalfiann/reSlim) if the task requires it.
+3. Run `git submodule update --init extras/cloned-repos/reSlim` if the task requires it.
 4. For AI-assisted runs, also read the agent workflow spec linked in the task README.
 5. Compare your output to the golden `agent-run-output-*.md` sample when one exists.
 
