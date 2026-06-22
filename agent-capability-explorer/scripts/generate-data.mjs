@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Scans ../tasks/ and generates static data for Agent Capability Explorer.
+ * Scans ../tasks/ and generates static data for AgentAtlas.
  * Run: node scripts/generate-data.mjs
  */
 import fs from 'fs';

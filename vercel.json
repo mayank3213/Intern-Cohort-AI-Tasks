@@ -1,0 +1,10 @@
+{
+  "buildCommand": "npm run build --prefix agent-capability-explorer",
+  "devCommand": "npm run dev --prefix agent-capability-explorer",
+  "installCommand": "npm install --prefix agent-capability-explorer",
+  "outputDirectory": "agent-capability-explorer/dist",
+  "framework": null,
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}

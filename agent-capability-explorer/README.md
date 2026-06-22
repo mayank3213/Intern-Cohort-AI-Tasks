@@ -1,6 +1,6 @@
-# Agent Capability Explorer
+# AgentAtlas
 
-Interactive showcase of repository analysis, multi-agent workflows, polyglot systems, and infrastructure artifacts — generated entirely from the local `tasks/` folder.
+Interactive map of agent evaluation tasks — repository analysis, multi-agent workflows, polyglot systems, and infrastructure artifacts — generated entirely from the local `tasks/` folder.
 
 ## Quick Start
 

@@ -72,8 +72,8 @@ export function Sidebar() {
             <Sparkles className="h-4 w-4 text-violet-400" />
           </div>
           <div>
-            <p className="text-sm font-semibold text-zinc-100">Agent Explorer</p>
-            <p className="text-[11px] text-zinc-500">Capability showcase</p>
+            <p className="text-sm font-semibold text-zinc-100">AgentAtlas</p>
+            <p className="text-[11px] text-zinc-500">Agent evaluation tasks</p>
           </div>
         </div>
       </div>

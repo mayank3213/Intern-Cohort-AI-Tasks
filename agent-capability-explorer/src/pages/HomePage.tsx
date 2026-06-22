@@ -41,7 +41,7 @@ export function HomePage() {
             <Sparkles className="h-3 w-3" /> Interactive showcase
           </motion.div>
           <h1 className="mt-6 text-4xl font-bold tracking-tight text-zinc-50 md:text-5xl lg:text-6xl">
-            Agent Capability Explorer
+            AgentAtlas
           </h1>
           <p className="mt-5 text-lg leading-relaxed text-zinc-400 md:text-xl">
             Interactive showcase of repository analysis, multi-agent workflows, polyglot systems, and infrastructure artifacts.

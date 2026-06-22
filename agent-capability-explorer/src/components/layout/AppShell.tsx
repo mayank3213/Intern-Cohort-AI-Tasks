@@ -9,7 +9,7 @@ import { Sidebar } from './Sidebar';
 import { PageTransition } from './PageTransition';
 
 const titles: Record<string, { title: string; subtitle?: string }> = {
-  '/': { title: 'Agent Capability Explorer', subtitle: 'Interactive showcase of repository analysis and multi-agent workflows' },
+  '/': { title: 'AgentAtlas', subtitle: 'A map of timed agent evaluation tasks — from repo discovery to DevOps' },
   '/agents': { title: 'Agents', subtitle: 'Browse all agent specifications and capabilities' },
   '/explore': { title: 'Agents', subtitle: 'Browse all agent specifications and capabilities' },
   '/services': { title: 'Services', subtitle: 'Polyglot implementations across the task catalog' },
@@ -20,7 +20,7 @@ const titles: Record<string, { title: string; subtitle?: string }> = {
 function matchMeta(pathname: string) {
   if (pathname.startsWith('/agent/')) return { title: 'Agent Detail', subtitle: 'Requirements, artifacts, and implementation' };
   if (pathname.startsWith('/doc/')) return { title: 'Document', subtitle: 'Markdown documentation viewer' };
-  return titles[pathname] ?? { title: 'Agent Capability Explorer' };
+  return titles[pathname] ?? { title: 'AgentAtlas' };
 }
 
 export function AppShell() {
